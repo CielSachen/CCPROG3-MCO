@@ -32,15 +32,24 @@ public class TruckController {
         System.out.println();
 
         boolean isSpecial = this.input.getBoolean("Is this truck a special coffee truck (true/false)?");
+        String location;
 
-        System.out.print("Where will this truck be located? ");
+        while (true) {
+            System.out.print("Where will this truck be located? ");
 
-        String location = this.scanner.nextLine();
+            location = this.scanner.nextLine();
 
-        if (this.service.isOccupiedLocation(location)) {
-            System.out.println(PrintColor.set("A truck already exists on this location!", PrintColor.RED));
+            if (this.service.isOccupiedLocation(location)) {
+                System.out.println();
 
-            return null;
+                System.out.println(PrintColor.set("A truck already exists on this location!", PrintColor.RED));
+
+                System.out.println();
+
+                continue;
+            }
+
+            break;
         }
 
         int id = this.service.getTrucks().size() + 1;
