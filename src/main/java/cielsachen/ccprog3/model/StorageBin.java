@@ -21,22 +21,22 @@ public class StorageBin {
         return this.capacity;
     }
 
-    public boolean increaseCapacity(double additionalCapacity) {
-        if (additionalCapacity <= 0) {
-            return false;
-        }
-
-        this.capacity += additionalCapacity;
-
-        return true;
-    }
-
     public boolean decreaseCapacity(double deductibleCapacity) {
         if (deductibleCapacity > this.capacity) {
             return false;
         }
 
         this.capacity -= deductibleCapacity;
+
+        return true;
+    }
+
+    public boolean increaseCapacity(double additionalCapacity) {
+        if (additionalCapacity <= 0) {
+            return false;
+        }
+
+        this.capacity += additionalCapacity;
 
         return true;
     }

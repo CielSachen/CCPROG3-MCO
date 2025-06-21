@@ -6,6 +6,20 @@ import cielsachen.ccprog3.util.UnitConversion;
 public class Espresso {
     private float price = Coffee.DEFAULT_PRICE;
 
+    public float getPrice() {
+        return this.price;
+    }
+
+    public boolean setPrice(float newPrice) {
+        if (newPrice < 0) {
+            return false;
+        }
+
+        this.price = newPrice;
+
+        return true;
+    }
+
     public boolean brew(double amount, EspressoRatio ratio, StorageBin coffeeBeanStorageBin,
             StorageBin waterStorageBin) {
         if (!this.canBrew(amount, ratio, coffeeBeanStorageBin, waterStorageBin)) {
@@ -24,20 +38,6 @@ public class Espresso {
                 || waterStorageBin.getCapacity() < ratio.waterDecimal * amount) {
             return false;
         }
-
-        return true;
-    }
-
-    public float getPrice() {
-        return this.price;
-    }
-
-    public boolean setPrice(float newPrice) {
-        if (newPrice < 0) {
-            return false;
-        }
-
-        this.price = newPrice;
 
         return true;
     }

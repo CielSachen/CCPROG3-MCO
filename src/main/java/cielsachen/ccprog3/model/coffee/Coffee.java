@@ -13,6 +13,16 @@ public abstract class Coffee {
         this.basePrice = Coffee.DEFAULT_PRICE;
     }
 
+    public boolean setBasePrice(float newBasePrice) {
+        if (newBasePrice < 0) {
+            return false;
+        }
+
+        this.basePrice = newBasePrice;
+
+        return true;
+    }
+
     public float getPrice() {
         return this.basePrice;
     }
@@ -26,16 +36,6 @@ public abstract class Coffee {
             default:
                 return this.basePrice;
         }
-    }
-
-    public boolean setBasePrice(float newBasePrice) {
-        if (newBasePrice < 0) {
-            return false;
-        }
-
-        this.basePrice = newBasePrice;
-
-        return true;
     }
 
     public String toPriceString() {

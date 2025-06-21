@@ -7,20 +7,6 @@ public class SyrupAddOn {
 
     private float price;
 
-    public boolean add(int amount, StorageBin syrupStorageBin) {
-        if (!this.canAdd(amount, syrupStorageBin)) {
-            return false;
-        }
-
-        syrupStorageBin.decreaseCapacity(amount);
-
-        return true;
-    }
-
-    public boolean canAdd(int amount, StorageBin syrupStorageBin) {
-        return syrupStorageBin.getCapacity() >= amount;
-    }
-
     public float getPrice() {
         return this.price;
     }
@@ -33,6 +19,20 @@ public class SyrupAddOn {
         this.price = newPrice;
 
         return true;
+    }
+
+    public boolean add(int amount, StorageBin syrupStorageBin) {
+        if (!this.canAdd(amount, syrupStorageBin)) {
+            return false;
+        }
+
+        syrupStorageBin.decreaseCapacity(amount);
+
+        return true;
+    }
+
+    public boolean canAdd(int amount, StorageBin syrupStorageBin) {
+        return syrupStorageBin.getCapacity() >= amount;
     }
 
     public String toPriceString() {
