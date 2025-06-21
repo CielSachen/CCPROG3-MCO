@@ -59,18 +59,16 @@ public class JavaJeeps {
 
                     truckController.printTruckInfo(truck);
 
+                    System.out.println();
+
                     if (!coffeeController.isPricesSet()) {
+                        coffeeController.updatePrices();
+
+                        break;
+                    } else if (input.getBoolean("Do you want to update the prices (true/false)?")) {
                         System.out.println();
 
                         coffeeController.updatePrices();
-                    } else {
-                        System.out.println();
-
-                        if (input.getBoolean("Do you want to update the prices (true/false)?")) {
-                            System.out.println();
-
-                            coffeeController.updatePrices();
-                        }
                     }
 
                     break;
@@ -155,8 +153,6 @@ public class JavaJeeps {
 
                                                 System.out.println(
                                                         PrintColor.set(Input.INTEGER_ID_ERROR_MESSAGE, PrintColor.RED));
-
-                                                continue;
                                             }
                                         } catch (InputMismatchException exception) {
                                             scanner.nextLine();
