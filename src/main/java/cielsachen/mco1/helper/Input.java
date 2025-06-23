@@ -7,20 +7,10 @@ public class Input {
     public static final String INTEGER_ID_ERROR_MESSAGE = "Only input from one of the integer IDs!";
     public static final String CHARACTER_ID_ERROR_MESSAGE = "Only input from one of the character IDs!";
 
-    private static Input instance = null;
-
     private final Scanner scanner;
 
-    private Input(Scanner scanner) {
+    public Input(Scanner scanner) {
         this.scanner = scanner;
-    }
-
-    public static Input getInstance(Scanner scanner) {
-        if (Input.instance == null) {
-            Input.instance = new Input(scanner);
-        }
-
-        return Input.instance;
     }
 
     public boolean getBoolean(String prompt, boolean isNewLine) {

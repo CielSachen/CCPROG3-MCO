@@ -23,7 +23,7 @@ public class JavaJeeps {
         boolean isExiting = false;
 
         Scanner scanner = new Scanner(System.in);
-        Input input = Input.getInstance(scanner);
+        Input input = new Input(scanner);
 
         List<Transaction> transactions = new ArrayList<Transaction>();
         List<StorageBin> storageBins = new ArrayList<StorageBin>();
