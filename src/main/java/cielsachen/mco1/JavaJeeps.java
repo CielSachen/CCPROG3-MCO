@@ -78,7 +78,7 @@ public class JavaJeeps {
                     break;
                 }
                 case 'S': {
-                    if (trucks.size() == 0) {
+                    if (truckService.getTrucks().size() == 0) {
                         System.out.println();
 
                         System.out.println(
@@ -95,9 +95,9 @@ public class JavaJeeps {
 
                             System.out.println("Which truck would you like to view?");
 
-                            for (int index = 0; index < trucks.size(); index++) {
-                                System.out.println("  [" + (index + 1) + "] Located at: "
-                                        + PrintColor.set(trucks.get(index).getLocation(), PrintColor.BRIGHT_CYAN));
+                            for (Truck truck : truckService.getTrucks()) {
+                                System.out.println("  [" + truck.id + "] Located at: "
+                                        + PrintColor.set(truck.getLocation(), PrintColor.BRIGHT_CYAN));
                             }
 
                             System.out.println();
@@ -107,12 +107,12 @@ public class JavaJeeps {
 
                             System.out.print("  > ");
 
-                            int chosenTruckIndex = scanner.nextInt() - 1;
+                            int chosenTruckId = scanner.nextInt();
 
                             scanner.nextLine();
 
-                            if (chosenTruckIndex >= 0 && chosenTruckIndex < trucks.size()) {
-                                chosenTruck = trucks.get(chosenTruckIndex);
+                            if (chosenTruckId > 0 && chosenTruckId <= truckService.getTrucks().size()) {
+                                chosenTruck = truckService.getTruckById(chosenTruckId);
 
                                 break;
                             } else {
