@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import cielsachen.mco1.exception.InsufficientCapacityException;
 import cielsachen.mco1.helper.Input;
 import cielsachen.mco1.helper.PrintColor;
 import cielsachen.mco1.model.Ingredient;
@@ -349,10 +350,12 @@ public class CoffeeController {
 
             this.transactionService.addTransaction(new Transaction(chosenCoffee.name, chosenSize, totalCost, truck,
                     extraEspressoShotsCount, ingredients));
-        } catch (Exception exception) {
+        } catch (InsufficientCapacityException exception) {
             System.out.println();
 
-            System.out.println(exception.getMessage());
+            System.out.println(PrintColor.set("The truck does not have enough ", PrintColor.RED)
+                    + PrintColor.set(exception.ingredient.name, PrintColor.YELLOW)
+                    + PrintColor.set("to brew the coffee.", PrintColor.RED));
         }
     }
 

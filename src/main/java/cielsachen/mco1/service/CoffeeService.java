@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cielsachen.mco1.exception.InsufficientCapacityException;
 import cielsachen.mco1.model.Ingredient;
 import cielsachen.mco1.model.Product;
 import cielsachen.mco1.model.Truck;
@@ -66,41 +67,41 @@ public class CoffeeService {
 
     }
 
-    public boolean canAddSyrup(Truck truck, Ingredient syrup, int amount) throws Exception {
+    public boolean canAddSyrup(Truck truck, Ingredient syrup, int amount) throws InsufficientCapacityException {
         if (this.storageBinService.getTotalCapacityByTruck(truck, syrup) < 0.5) {
-            throw new Exception("The truck does not have enough syrup!");
+            throw new InsufficientCapacityException(syrup);
         }
 
         return true;
     }
 
-    public boolean canBrewCoffee(Truck truck, Coffee coffee, CoffeeSize size, EspressoRatio ratio) throws Exception {
+    public boolean canBrewCoffee(Truck truck, Coffee coffee, CoffeeSize size, EspressoRatio ratio)
+            throws InsufficientCapacityException {
         this.canBrewEspressoShots(truck, coffee.espressoRatio * size.capacity, ratio);
 
         double extraIngredientTotalCapacity = this.storageBinService.getTotalCapacityByTruck(truck,
                 coffee.extraIngredient);
 
-        if (coffee instanceof Americano) {
-            if (extraIngredientTotalCapacity < (ratio.waterDecimal * coffee.espressoRatio * size.capacity)
-                    + (coffee.extraIngredientRatio * size.capacity)) {
-                throw new Exception("The truck does not have enough water!");
-            }
-        } else if (extraIngredientTotalCapacity < coffee.extraIngredientRatio * size.capacity) {
-            throw new Exception("The truck does not have enough milk!");
+        if (coffee instanceof Americano
+                && extraIngredientTotalCapacity < (ratio.waterDecimal * coffee.espressoRatio * size.capacity)
+                        + (coffee.extraIngredientRatio * size.capacity)
+                || extraIngredientTotalCapacity < coffee.extraIngredientRatio * size.capacity) {
+            throw new InsufficientCapacityException(coffee.extraIngredient);
         } else if (this.storageBinService.getTotalCapacityByTruck(truck, size.cup) == 0) {
-            throw new Exception("The truck does not have enough cups!");
+            throw new InsufficientCapacityException(size.cup);
         }
 
         return true;
     }
 
-    public boolean canBrewEspressoShots(Truck truck, double amount, EspressoRatio ratio) throws Exception {
+    public boolean canBrewEspressoShots(Truck truck, double amount, EspressoRatio ratio)
+            throws InsufficientCapacityException {
         if (this.storageBinService.getTotalCapacityByTruck(truck,
                 Ingredient.COFFEE_BEANS) < UnitConversion.fluidOuncesToGrams(ratio.coffeeBeanDecimal) * amount) {
-            throw new Exception("The truck does not have enough coffee beans!");
+            throw new InsufficientCapacityException(Ingredient.COFFEE_BEANS);
         } else if (this.storageBinService.getTotalCapacityByTruck(truck, Ingredient.WATER) < ratio.waterDecimal
                 * amount) {
-            throw new Exception("The truck does not have enough water!");
+            throw new InsufficientCapacityException(Ingredient.WATER);
         }
 
         return true;
