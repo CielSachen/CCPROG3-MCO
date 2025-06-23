@@ -82,9 +82,6 @@ public class StorageBinService {
     }
 
     public boolean truckHasSyrupAddOns(Truck truck) {
-        return storageBins.stream().anyMatch((storageBin) -> storageBin.ingredient.equals(Ingredient.HAZELNUT_SYRUP)
-                || storageBin.ingredient.equals(Ingredient.CHOCOLATE_SYRUP)
-                || storageBin.ingredient.equals(Ingredient.ALMOND_SYRUP)
-                || storageBin.ingredient.equals(Ingredient.SWEETENER));
+        return storageBins.stream().anyMatch((storageBin) -> storageBin.ingredient.isSpecial);
     }
 }
