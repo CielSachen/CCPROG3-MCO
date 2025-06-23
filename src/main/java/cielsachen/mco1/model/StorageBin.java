@@ -46,6 +46,7 @@ public class StorageBin {
     }
 
     public String toCapacityString() {
-        return this.capacity + " / " + this.ingredient.maximumCapacity + " " + this.ingredient.unitMeasure;
+        return String.format("%.2f / ", this.capacity) + (int) this.ingredient.maximumCapacity + " "
+                + this.ingredient.unitMeasure;
     }
 }

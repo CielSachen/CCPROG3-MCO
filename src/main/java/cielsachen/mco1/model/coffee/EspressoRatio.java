@@ -23,6 +23,7 @@ public enum EspressoRatio {
 
     @Override
     public String toString() {
-        return this.coffeeBean + " " + Ingredient.COFFEE_BEANS.name + " : " + this.water + " " + Ingredient.WATER.name;
+        return (int) this.coffeeBean + " " + Ingredient.COFFEE_BEANS.name + " : " + (int) this.water + " "
+                + Ingredient.WATER.name;
     }
 }
