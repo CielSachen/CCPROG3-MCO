@@ -2,7 +2,6 @@ package cielsachen.mco1.service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import cielsachen.mco1.model.Ingredient;
 import cielsachen.mco1.model.StorageBin;
@@ -23,19 +22,43 @@ public class StorageBinService {
         return Collections.unmodifiableList(this.storageBins);
     }
 
-    public Optional<StorageBin> getStorageBinByTruck(Truck truck, Ingredient ingredient) {
-        for (StorageBin storageBin : this.storageBins) {
-            if (storageBin.truck.equals(truck) && storageBin.ingredient.equals(ingredient)
-                    && storageBin.getCapacity() > 0) {
-                return Optional.of(storageBin);
-            }
+    public boolean decreaseCapacityByTruck(Truck truck, Ingredient ingredient, double amount) {
+        if (this.getTotalCapacityByTruck(truck, ingredient) < amount) {
+            return false;
         }
 
-        return Optional.empty();
+        List<StorageBin> ingredientStorageBins = this.getStorageBinsByTruck(truck, ingredient);
+
+        double remainingAmount = amount;
+
+        for (StorageBin storageBin : ingredientStorageBins) {
+            if (storageBin.getCapacity() >= remainingAmount) {
+                storageBin.decreaseCapacity(remainingAmount);
+
+                break;
+            }
+
+            remainingAmount -= storageBin.getCapacity();
+
+            storageBin.decreaseCapacity(storageBin.getCapacity());
+        }
+
+        return true;
+    }
+
+    public List<StorageBin> getStorageBinsByTruck(Truck truck, Ingredient ingredient) {
+        return this.storageBins.stream()
+                .filter((storageBin) -> storageBin.truck.equals(truck) && storageBin.ingredient.equals(ingredient))
+                .toList();
     }
 
     public List<StorageBin> getStorageBinsByTruck(Truck truck) {
         return this.storageBins.stream().filter((storageBin) -> storageBin.truck.equals(truck)).toList();
+    }
+
+    public double getTotalCapacityByTruck(Truck truck, Ingredient ingredient) {
+        return this.getStorageBinsByTruck(truck, ingredient).stream()
+                .mapToDouble((storageBin) -> storageBin.getCapacity()).sum();
     }
 
     public boolean truckHasIngredient(Truck truck, Ingredient... ingredients) {
