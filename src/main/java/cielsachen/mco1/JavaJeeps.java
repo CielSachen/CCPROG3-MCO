@@ -81,8 +81,7 @@ public class JavaJeeps {
                     if (truckService.getTrucks().size() == 0) {
                         System.out.println();
 
-                        System.out.println(
-                                PrintColor.set("You have not yet created any trucks!", PrintColor.RED));
+                        System.out.println(PrintColor.set("You have not yet created any trucks!", PrintColor.RED));
 
                         break;
                     }
@@ -192,9 +191,8 @@ public class JavaJeeps {
                                     default:
                                         System.out.println();
 
-                                        System.out
-                                                .println(PrintColor.set(Input.CHARACTER_ID_ERROR_MESSAGE,
-                                                        PrintColor.RED));
+                                        System.out.println(
+                                                PrintColor.set(Input.CHARACTER_ID_ERROR_MESSAGE, PrintColor.RED));
 
                                         continue;
                                 }
