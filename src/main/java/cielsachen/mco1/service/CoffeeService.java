@@ -46,8 +46,10 @@ public class CoffeeService {
 
         this.storageBinService.getStorageBinByTruck(truck, coffee.extraIngredient).get()
                 .decreaseCapacity(extraIngredientAmount);
+        this.storageBinService.getStorageBinByTruck(truck, size.cup).get().decreaseCapacity(1);
 
         transactionIngredients.add(new TransactionIngredient(coffee.extraIngredient, extraIngredientAmount));
+        transactionIngredients.add(new TransactionIngredient(size.cup, 1));
 
         return Collections.unmodifiableList(transactionIngredients);
     }
@@ -79,15 +81,19 @@ public class CoffeeService {
 
         Optional<StorageBin> extraIngredientStorageBin = this.storageBinService.getStorageBinByTruck(truck,
                 coffee.extraIngredient);
+        Optional<StorageBin> cupStorageBin = this.storageBinService.getStorageBinByTruck(truck,
+                size.cup);
 
         if (coffee instanceof Americano) {
-            if (extraIngredientStorageBin.get()
+            if (extraIngredientStorageBin.isEmpty() || extraIngredientStorageBin.get()
                     .getCapacity() < (ratio.waterDecimal * coffee.espressoRatio * size.capacity)
                             + (coffee.extraIngredientRatio * size.capacity)) {
                 throw new Exception("The truck does not have enough water!");
             }
         } else if (extraIngredientStorageBin.get().getCapacity() < coffee.extraIngredientRatio * size.capacity) {
             throw new Exception("The truck does not have enough milk!");
+        } else if (cupStorageBin.isEmpty() || cupStorageBin.get().getCapacity() == 0) {
+            throw new Exception("The truck does not have enough cups!");
         }
 
         return true;
