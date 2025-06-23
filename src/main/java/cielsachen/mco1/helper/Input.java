@@ -23,16 +23,20 @@ public class Input {
         return Input.instance;
     }
 
-    public boolean getBoolean(String prompt) {
+    public boolean getBoolean(String prompt, boolean isNewLine) {
         while (true) {
             try {
+                if (isNewLine) {
+                    System.out.println();
+                }
+
                 System.out.print(prompt + " ");
 
-                boolean response = this.scanner.nextBoolean();
+                boolean givenBoolean = this.scanner.nextBoolean();
 
                 this.scanner.nextLine();
 
-                return response;
+                return givenBoolean;
             } catch (InputMismatchException exception) {
                 this.scanner.nextLine();
 
@@ -40,29 +44,47 @@ public class Input {
 
                 System.out.println(PrintColor.set("Only input `true` or `false`!", PrintColor.RED));
 
-                System.out.println();
+                if (!isNewLine) {
+                    System.out.println();
+                }
             }
         }
     }
 
-    public char getCharacter() {
+    public boolean getBoolean(String prompt) {
+        return this.getBoolean(prompt, false);
+    }
+
+    public char getCharacter(boolean isNewLine) {
         try {
+            if (isNewLine) {
+                System.out.println();
+            }
+
             return Character.toUpperCase(this.scanner.nextLine().charAt(0));
         } catch (StringIndexOutOfBoundsException exception) {
             return ' ';
         }
     }
 
-    public float getFloat(String prompt) {
+    public char getCharacter() {
+        return this.getCharacter(false);
+    }
+
+    public float getFloat(String prompt, boolean isNewLine) {
         while (true) {
             try {
+                if (isNewLine) {
+                    System.out.println();
+                }
+
                 System.out.print(prompt + " ");
 
-                float response = this.scanner.nextFloat();
+                float givenFloat = this.scanner.nextFloat();
 
                 this.scanner.nextLine();
 
-                return response;
+                return givenFloat;
             } catch (InputMismatchException exception) {
                 this.scanner.nextLine();
 
@@ -70,21 +92,31 @@ public class Input {
 
                 System.out.println(PrintColor.set("Only input a floating point number!", PrintColor.RED));
 
-                System.out.println();
+                if (!isNewLine) {
+                    System.out.println();
+                }
             }
         }
     }
 
-    public int getInteger(String prompt) {
+    public float getFloat(String prompt) {
+        return this.getFloat(prompt, false);
+    }
+
+    public int getInteger(String prompt, boolean isNewLine) {
         while (true) {
             try {
+                if (isNewLine) {
+                    System.out.println();
+                }
+
                 System.out.print(prompt + " ");
 
-                int response = this.scanner.nextInt();
+                int givenInteger = this.scanner.nextInt();
 
                 this.scanner.nextLine();
 
-                return response;
+                return givenInteger;
             } catch (InputMismatchException exception) {
                 this.scanner.nextLine();
 
@@ -92,8 +124,14 @@ public class Input {
 
                 System.out.println(PrintColor.set("Only input an integer!", PrintColor.RED));
 
-                System.out.println();
+                if (!isNewLine) {
+                    System.out.println();
+                }
             }
         }
+    }
+
+    public int getInteger(String prompt) {
+        return this.getInteger(prompt, false);
     }
 }

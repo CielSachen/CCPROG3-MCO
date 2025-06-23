@@ -54,10 +54,9 @@ public class CoffeeController {
                     + PrintColor.set(coffee.name + "s", PrintColor.YELLOW) + " should have?"));
         }
 
-        System.out.println();
-
         this.service.espresso.setPrice(this.input.getFloat(
-                "What price should " + PrintColor.set("extra espresso shots", PrintColor.YELLOW) + " should have?"));
+                "What price should " + PrintColor.set("extra espresso shots", PrintColor.YELLOW) + " should have?",
+                true));
         this.service.syrup.setPrice(this.input.getFloat(
                 "What base price should " + PrintColor.set("syrup add-ons", PrintColor.YELLOW) + " should have?"));
     }
@@ -67,6 +66,8 @@ public class CoffeeController {
                 "----- + ----- + " + PrintColor.set("Order a Coffee", PrintColor.BRIGHT_YELLOW) + " + ----- + -----");
 
         List<Coffee> coffees = this.service.getCoffeesByTruck(truck);
+        int coffeeCount = coffees.size();
+
         Coffee chosenCoffee = null;
 
         while (true) {
@@ -75,7 +76,7 @@ public class CoffeeController {
 
                 System.out.println("Which coffee would you like to order?");
 
-                for (int index = 0; index < coffees.size(); index++) {
+                for (int index = 0; index < coffeeCount; index++) {
                     Coffee coffee = coffees.get(index);
 
                     System.out.println("  [" + (index + 1) + "] " + coffee.name);
@@ -88,19 +89,19 @@ public class CoffeeController {
 
                 System.out.print("  > ");
 
-                int chosenCoffeeIndex = scanner.nextInt() - 1;
+                int chosenCoffeeIndex = this.scanner.nextInt() - 1;
 
-                scanner.nextLine();
+                this.scanner.nextLine();
 
-                if (chosenCoffeeIndex >= 0 && chosenCoffeeIndex < coffees.size()) {
+                if (chosenCoffeeIndex >= 0 && chosenCoffeeIndex < coffeeCount) {
                     chosenCoffee = coffees.get(chosenCoffeeIndex);
 
                     break;
-                } else {
-                    System.out.println();
-
-                    System.out.println(PrintColor.set(Input.INTEGER_ID_ERROR_MESSAGE, PrintColor.RED));
                 }
+
+                System.out.println();
+
+                System.out.println(PrintColor.set(Input.INTEGER_ID_ERROR_MESSAGE, PrintColor.RED));
             } catch (InputMismatchException exception) {
                 if (input.getCharacter() == 'X') {
                     break;
@@ -118,50 +119,40 @@ public class CoffeeController {
 
         System.out.println();
 
-        CoffeeSize size = null;
+        CoffeeSize[] coffeeSizes = CoffeeSize.values();
+
+        CoffeeSize chosenSize = null;
 
         while (true) {
             try {
                 System.out.println();
 
                 System.out.println("What size of " + chosenCoffee.name + " would you like?");
-                System.out.println("  [S] Small ("
-                        + PrintColor.set(CoffeeSize.SMALL_CUP.toString(), PrintColor.BRIGHT_GREEN) + ")");
-                System.out.println("  [M] Medium ("
-                        + PrintColor.set(CoffeeSize.MEDIUM_CUP.toString(), PrintColor.BRIGHT_GREEN) + ")");
-                System.out.println("  [L] Large ("
-                        + PrintColor.set(CoffeeSize.LARGE_CUP.toString(), PrintColor.BRIGHT_GREEN) + ")");
-                System.out.println();
-                System.out.println("  [X] Return");
+
+                for (int index = 0; index < coffeeSizes.length; index++) {
+                    CoffeeSize size = coffeeSizes[index];
+
+                    System.out.println("  [" + (index + 1) + "] " + size.name + " ("
+                            + PrintColor.set(size.toString(), PrintColor.BRIGHT_GREEN) + ")");
+                }
 
                 System.out.println();
 
                 System.out.print("  > ");
 
-                char chosenSize = input.getCharacter();
+                int chosenSizeIndex = this.scanner.nextInt() - 1;
 
-                switch (chosenSize) {
-                    case 'S':
-                        size = CoffeeSize.SMALL_CUP;
+                this.scanner.nextLine();
 
-                        break;
-                    case 'M':
-                        size = CoffeeSize.MEDIUM_CUP;
+                if (chosenSizeIndex >= 0 && chosenSizeIndex < coffeeSizes.length) {
+                    chosenSize = coffeeSizes[chosenSizeIndex];
 
-                        break;
-                    case 'L':
-                        size = CoffeeSize.LARGE_CUP;
-
-                        break;
-                    default:
-                        System.out.println();
-
-                        System.out.println(PrintColor.set(Input.CHARACTER_ID_ERROR_MESSAGE, PrintColor.RED));
-
-                        continue;
+                    break;
                 }
 
-                break;
+                System.out.println();
+
+                System.out.println(PrintColor.set(Input.CHARACTER_ID_ERROR_MESSAGE, PrintColor.RED));
             } catch (InputMismatchException exception) {
                 this.scanner.nextLine();
 
@@ -171,7 +162,9 @@ public class CoffeeController {
             }
         }
 
-        EspressoRatio ratio = EspressoRatio.STANDARD;
+        EspressoRatio[] espressoRatios = EspressoRatio.values();
+
+        EspressoRatio chosenRatio = EspressoRatio.STANDARD;
 
         if (truck.isSpecial) {
             while (true) {
@@ -179,41 +172,31 @@ public class CoffeeController {
                     System.out.println();
 
                     System.out.println("What ratio of espresso would you like?");
-                    System.out.println("  [L] Light ("
-                            + PrintColor.set(EspressoRatio.LIGHT.toString(), PrintColor.BRIGHT_GREEN) + ")");
-                    System.out.println("  [S] Standard ("
-                            + PrintColor.set(EspressoRatio.STANDARD.toString(), PrintColor.BRIGHT_GREEN) + ")");
-                    System.out.println("  [R] Strong ("
-                            + PrintColor.set(EspressoRatio.STRONG.toString(), PrintColor.BRIGHT_GREEN) + ")");
-                    System.out.println();
-                    System.out.println("  [X] Return");
+
+                    for (int index = 0; index < espressoRatios.length; index++) {
+                        EspressoRatio ratio = espressoRatios[index];
+
+                        System.out.println("  [" + (index + 1) + "] " + ratio.name + " ("
+                                + PrintColor.set(ratio.toString(), PrintColor.BRIGHT_GREEN) + ")");
+                    }
 
                     System.out.println();
 
                     System.out.print("  > ");
 
-                    char chosenSize = input.getCharacter();
+                    int chosenRatioIndex = this.scanner.nextInt() - 1;
 
-                    switch (chosenSize) {
-                        case 'L':
-                            ratio = EspressoRatio.LIGHT;
+                    this.scanner.nextLine();
 
-                            break;
-                        case 'S':
-                            break;
-                        case 'R':
-                            ratio = EspressoRatio.STRONG;
+                    if (chosenRatioIndex >= 0 && chosenRatioIndex < espressoRatios.length) {
+                        chosenRatio = espressoRatios[chosenRatioIndex];
 
-                            break;
-                        default:
-                            System.out.println();
-
-                            System.out.println(PrintColor.set(Input.CHARACTER_ID_ERROR_MESSAGE, PrintColor.RED));
-
-                            continue;
+                        break;
                     }
 
-                    break;
+                    System.out.println();
+
+                    System.out.println(PrintColor.set(Input.CHARACTER_ID_ERROR_MESSAGE, PrintColor.RED));
                 } catch (InputMismatchException exception) {
                     this.scanner.nextLine();
 
@@ -225,38 +208,41 @@ public class CoffeeController {
         }
 
         try {
-            this.service.canBrewCoffee(truck, chosenCoffee, size, ratio);
+            this.service.canBrewCoffee(truck, chosenCoffee, chosenSize, chosenRatio);
 
             List<TransactionIngredient> transactionIngredients = new ArrayList<TransactionIngredient>(
-                    this.service.brewCoffee(truck, chosenCoffee, size, ratio));
+                    this.service.brewCoffee(truck, chosenCoffee, chosenSize, chosenRatio));
 
             int extraEspressoShotsAmount = 0;
             float additionalCost = 0;
 
             if (truck.isSpecial) {
-                System.out.println();
-
                 boolean isAddingEspressoShots = this.input.getBoolean("Would you like to add extra shots of espresso "
-                        + PrintColor.set("(true/false)", PrintColor.RED) + "?");
+                        + PrintColor.set("(true/false)", PrintColor.RED) + "?", true);
 
                 if (isAddingEspressoShots) {
                     extraEspressoShotsAmount = this.input.getInteger("How many extra shots should be added?");
 
                     try {
-                        this.service.canBrewEspressoShots(truck, extraEspressoShotsAmount, ratio);
+                        this.service.canBrewEspressoShots(truck, extraEspressoShotsAmount, chosenRatio);
 
-                        transactionIngredients.addAll(this.service.brewEspressoShots(truck,
-                                extraEspressoShotsAmount, ratio));
+                        transactionIngredients
+                                .addAll(this.service.brewEspressoShots(truck, extraEspressoShotsAmount, chosenRatio));
 
                         additionalCost += this.service.espresso.getPrice() * extraEspressoShotsAmount;
-
-                        System.out.println();
                     } catch (Exception exception) {
+                        System.out.println();
+
                         System.out.println(exception.getMessage());
                     }
+
+                    System.out.println();
                 }
 
                 boolean isAddingSyrups = true;
+
+                List<Ingredient> syrups = Ingredient.specialValues();
+                int syrupCount = syrups.size();
 
                 while (isAddingSyrups) {
                     isAddingSyrups = this.input.getBoolean("Would you like to add pumps of syrup "
@@ -271,57 +257,31 @@ public class CoffeeController {
 
                                 System.out.println("Which syrup would you like to add?");
 
-                                if (this.storageBinService.truckHasIngredient(truck, Ingredient.HAZELNUT_SYRUP)) {
-                                    System.out.println("  [1] " + Ingredient.HAZELNUT_SYRUP.name);
-                                }
+                                for (int index = 0; index < syrupCount; index++) {
+                                    Ingredient ingredient = syrups.get(index);
 
-                                if (this.storageBinService.truckHasIngredient(truck, Ingredient.CHOCOLATE_SYRUP)) {
-                                    System.out.println("  [2] " + Ingredient.CHOCOLATE_SYRUP.name);
-                                }
-
-                                if (this.storageBinService.truckHasIngredient(truck, Ingredient.ALMOND_SYRUP)) {
-                                    System.out.println("  [3] " + Ingredient.ALMOND_SYRUP.name);
-                                }
-
-                                if (this.storageBinService.truckHasIngredient(truck, Ingredient.SWEETENER)) {
-                                    System.out.println("  [4] " + Ingredient.SWEETENER.name);
+                                    if (this.storageBinService.truckHasIngredient(truck, ingredient)) {
+                                        System.out.println("  [" + (index + 1) + "] " + ingredient.name);
+                                    }
                                 }
 
                                 System.out.println();
 
                                 System.out.print("  > ");
 
-                                int chosenSyrupId = scanner.nextInt();
+                                int chosenSyrupIndex = this.scanner.nextInt() - 1;
 
-                                scanner.nextLine();
+                                this.scanner.nextLine();
 
-                                switch (chosenSyrupId) {
-                                    case 1:
-                                        chosenSyrup = Ingredient.HAZELNUT_SYRUP;
+                                if (chosenSyrupIndex >= 0 && chosenSyrupIndex < syrupCount) {
+                                    chosenSyrup = syrups.get(chosenSyrupIndex);
 
-                                        break;
-                                    case 2:
-                                        chosenSyrup = Ingredient.CHOCOLATE_SYRUP;
-
-                                        break;
-                                    case 3:
-                                        chosenSyrup = Ingredient.ALMOND_SYRUP;
-
-                                        break;
-                                    case 4:
-                                        chosenSyrup = Ingredient.SWEETENER;
-
-                                        break;
-                                    default:
-                                        System.out.println();
-
-                                        System.out.println(
-                                                PrintColor.set(Input.INTEGER_ID_ERROR_MESSAGE, PrintColor.RED));
-
-                                        continue;
+                                    break;
                                 }
 
-                                break;
+                                System.out.println();
+
+                                System.out.println(PrintColor.set(Input.INTEGER_ID_ERROR_MESSAGE, PrintColor.RED));
                             } catch (InputMismatchException exception) {
                                 this.scanner.nextLine();
 
@@ -331,9 +291,7 @@ public class CoffeeController {
                             }
                         }
 
-                        System.out.println();
-
-                        int amount = this.input.getInteger("How many pumps should be added?");
+                        int amount = this.input.getInteger("How many pumps should be added?", true);
 
                         try {
                             this.service.canAddSyrup(truck, chosenSyrup, amount);
@@ -342,6 +300,8 @@ public class CoffeeController {
 
                             additionalCost += this.service.syrup.getPrice() * amount;
                         } catch (Exception exception) {
+                            System.out.println();
+
                             System.out.println(exception.getMessage());
                         }
 
@@ -352,10 +312,10 @@ public class CoffeeController {
 
             System.out.println();
 
-            System.out.println(">>> Preparing a " + PrintColor.set(size.name, PrintColor.YELLOW) + " of "
+            System.out.println(">>> Preparing a " + PrintColor.set(chosenSize.name, PrintColor.YELLOW) + " of "
                     + PrintColor.set(chosenCoffee.name, PrintColor.YELLOW) + " ("
-                    + PrintColor.set(size.toString(), PrintColor.BRIGHT_GREEN) + ")");
-            System.out.println(">>> Brewing " + PrintColor.set(ratio.name + " Espresso", PrintColor.YELLOW));
+                    + PrintColor.set(chosenSize.toString(), PrintColor.BRIGHT_GREEN) + ")");
+            System.out.println(">>> Brewing " + PrintColor.set(chosenRatio.name + " Espresso", PrintColor.YELLOW));
 
             for (TransactionIngredient transactionIngredient : transactionIngredients) {
                 System.out
@@ -372,13 +332,15 @@ public class CoffeeController {
 
             float totalCost = chosenCoffee.getPrice() + additionalCost;
 
-            System.out.println("The " + PrintColor.set(size.name, PrintColor.YELLOW) + " of "
+            System.out.println("The " + PrintColor.set(chosenSize.name, PrintColor.YELLOW) + " of "
                     + PrintColor.set(chosenCoffee.name, PrintColor.YELLOW) + " will cost "
                     + PrintColor.set(totalCost + " PHP", PrintColor.BRIGHT_GREEN) + ".");
 
-            this.transactionService.addTransaction(new Transaction(chosenCoffee.name, size, totalCost, truck,
+            this.transactionService.addTransaction(new Transaction(chosenCoffee.name, chosenSize, totalCost, truck,
                     extraEspressoShotsAmount, transactionIngredients));
         } catch (Exception exception) {
+            System.out.println();
+
             System.out.println(exception.getMessage());
         }
     }

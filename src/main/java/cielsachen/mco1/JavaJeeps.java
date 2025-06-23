@@ -68,10 +68,8 @@ public class JavaJeeps {
 
                     truckController.printTruckInfo(truck);
 
-                    System.out.println();
-
                     if (!coffeeController.isPricesSet() || input.getBoolean("Do you want to update the prices "
-                            + PrintColor.set("(true/false)", PrintColor.RED) + "?")) {
+                            + PrintColor.set("(true/false)", PrintColor.RED) + "?", true)) {
                         coffeeController.updatePrices();
                     }
 

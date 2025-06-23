@@ -30,11 +30,11 @@ public class TruckController {
         System.out.println("----- + ----- + " + PrintColor.set("Creating New Truck", PrintColor.BRIGHT_YELLOW)
                 + " + ----- + -----");
 
-        System.out.println();
-
         String location;
 
         while (true) {
+            System.out.println();
+
             System.out.print("Where will this truck be located? ");
 
             location = this.scanner.nextLine();
@@ -43,8 +43,6 @@ public class TruckController {
                 System.out.println();
 
                 System.out.println(PrintColor.set("A truck already exists on this location!", PrintColor.RED));
-
-                System.out.println();
 
                 continue;
             }
@@ -65,18 +63,18 @@ public class TruckController {
         System.out.println("----- + ----- + " + PrintColor.set("Setting Truck Storage Bins", PrintColor.BRIGHT_YELLOW)
                 + " + ----- + -----");
 
+        List<Ingredient> regularIngredients = Ingredient.regularValues();
+        List<Ingredient> specialIngredients = Ingredient.specialValues();
+
         for (int storageBinId = 1; storageBinId <= (isSpecial ? StorageBin.SPECIAL_TRUCK_AMOUNT
                 : StorageBin.STANDARD_TRUCK_AMOUNT); storageBinId++) {
             while (true) {
                 try {
                     System.out.println();
 
-                    List<StorageBin> storageBins = this.storageBinService.getStorageBinsByTruck(truck);
-
-                    for (int index = 0; index < storageBins.size(); index++) {
-                        System.out.println(
-                                PrintColor.set("Bin #" + (index + 1) + " = " + storageBins.get(index).ingredient.name,
-                                        PrintColor.BRIGHT_GREEN));
+                    for (StorageBin storageBin : this.storageBinService.getStorageBinsByTruck(truck)) {
+                        System.out.println(PrintColor.set("Bin #" + storageBin.id + " = " + storageBin.ingredient.name,
+                                PrintColor.BRIGHT_GREEN));
                     }
 
                     System.out.println("Bin #" + storageBinId + " =");
@@ -85,93 +83,32 @@ public class TruckController {
 
                     System.out.println("What item should this storage bin contain?");
 
-                    if (storageBinId <= StorageBin.STANDARD_TRUCK_AMOUNT) {
-                        System.out.println("  [1] " + Ingredient.SMALL_CUP.name + "s");
-                        System.out.println("  [2] " + Ingredient.MEDIUM_CUP.name + "s");
-                        System.out.println("  [3] " + Ingredient.LARGE_CUP.name + "s");
-                        System.out.println("  [4] " + Ingredient.COFFEE_BEANS.name);
-                        System.out.println("  [5] " + Ingredient.MILK.name);
-                        System.out.println("  [6] " + Ingredient.WATER.name);
-                    } else {
-                        System.out.println("  [1] " + Ingredient.HAZELNUT_SYRUP.name);
-                        System.out.println("  [2] " + Ingredient.CHOCOLATE_SYRUP.name);
-                        System.out.println("  [3] " + Ingredient.ALMOND_SYRUP.name);
-                        System.out.println("  [4] " + Ingredient.SWEETENER.name);
+                    List<Ingredient> ingredients = storageBinId <= StorageBin.STANDARD_TRUCK_AMOUNT ? regularIngredients
+                            : specialIngredients;
+                    int ingredientCount = ingredients.size();
+
+                    for (int index = 0; index < ingredientCount; index++) {
+                        System.out.println("  [" + (index + 1) + "] " + ingredients.get(index).name);
                     }
 
                     System.out.println();
 
                     System.out.print("  > ");
 
-                    int chosenItemId = this.scanner.nextInt();
+                    int chosenIngredientIndex = this.scanner.nextInt() - 1;
 
                     this.scanner.nextLine();
 
-                    Ingredient ingredient;
+                    if (chosenIngredientIndex >= 0 && chosenIngredientIndex < ingredientCount) {
+                        this.storageBinService.addStorageBin(new StorageBin(storageBinId, truck,
+                                ingredients.get(chosenIngredientIndex)));
 
-                    if (storageBinId <= StorageBin.STANDARD_TRUCK_AMOUNT) {
-                        switch (chosenItemId) {
-                            case 1:
-                                ingredient = Ingredient.SMALL_CUP;
-
-                                break;
-                            case 2:
-                                ingredient = Ingredient.MEDIUM_CUP;
-
-                                break;
-                            case 3:
-                                ingredient = Ingredient.LARGE_CUP;
-
-                                break;
-                            case 4:
-                                ingredient = Ingredient.COFFEE_BEANS;
-
-                                break;
-                            case 5:
-                                ingredient = Ingredient.MILK;
-
-                                break;
-                            case 6:
-                                ingredient = Ingredient.WATER;
-
-                                break;
-                            default:
-                                System.out.println();
-
-                                System.out.println(PrintColor.set(Input.INTEGER_ID_ERROR_MESSAGE, PrintColor.RED));
-
-                                continue;
-                        }
-                    } else {
-                        switch (chosenItemId) {
-                            case 1:
-                                ingredient = Ingredient.HAZELNUT_SYRUP;
-
-                                break;
-                            case 2:
-                                ingredient = Ingredient.CHOCOLATE_SYRUP;
-
-                                break;
-                            case 3:
-                                ingredient = Ingredient.ALMOND_SYRUP;
-
-                                break;
-                            case 4:
-                                ingredient = Ingredient.SWEETENER;
-
-                                break;
-                            default:
-                                System.out.println();
-
-                                System.out.println(PrintColor.set(Input.INTEGER_ID_ERROR_MESSAGE, PrintColor.RED));
-
-                                continue;
-                        }
+                        break;
                     }
 
-                    this.storageBinService.addStorageBin(new StorageBin(storageBinId, truck, ingredient));
+                    System.out.println();
 
-                    break;
+                    System.out.println(PrintColor.set(Input.INTEGER_ID_ERROR_MESSAGE, PrintColor.RED));
                 } catch (InputMismatchException exception) {
                     this.scanner.nextLine();
 
@@ -208,12 +145,13 @@ public class TruckController {
         for (int index = 0; index < storageBins.size(); index++) {
             StorageBin storageBin = storageBins.get(index);
 
-            System.out.println("  Bin " + index + " = "
-                    + PrintColor.set(storageBin.ingredient.name, PrintColor.BRIGHT_CYAN) + " ("
-                    + PrintColor.set(
-                            storageBin.toCapacityString() + " / " + storageBin.ingredient.toMaximumCapacityString(),
-                            storageBin.isCriticalCapacity() ? PrintColor.RED : PrintColor.BRIGHT_GREEN)
-                    + ")");
+            System.out
+                    .println(
+                            "  Bin " + index + " = "
+                                    + PrintColor.set(storageBin.ingredient.name, PrintColor.BRIGHT_CYAN) + " ("
+                                    + PrintColor.set(storageBin.toCapacityString(),
+                                            storageBin.isCriticalCapacity() ? PrintColor.RED : PrintColor.BRIGHT_GREEN)
+                                    + ")");
         }
     }
 }

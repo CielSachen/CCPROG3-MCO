@@ -1,9 +1,12 @@
 package cielsachen.mco1.model;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum Ingredient {
-    SMALL_CUP("Small Cup", 80, "pcs"),
-    MEDIUM_CUP("Medium Cup", 64, "pcs"),
-    LARGE_CUP("Large Cup", 40, "pcs"),
+    SMALL_CUP("Small Cups", 80, "pcs"),
+    MEDIUM_CUP("Medium Cups", 64, "pcs"),
+    LARGE_CUP("Large Cups", 40, "pcs"),
     COFFEE_BEANS("Coffee Beans", 1008, "g"),
     MILK("Milk", 640, "fl oz"),
     WATER("Water", 640, "fl oz"),
@@ -29,8 +32,12 @@ public enum Ingredient {
         this(name, false, maximumCapacity, unitMeasure);
     }
 
-    public String toMaximumCapacityString() {
-        return this.maximumCapacity + " " + this.unitMeasure;
+    public static List<Ingredient> regularValues() {
+        return Arrays.stream(Ingredient.values()).filter((ingredient) -> !ingredient.isSpecial).toList();
+    }
+
+    public static List<Ingredient> specialValues() {
+        return Arrays.stream(Ingredient.values()).filter((ingredient) -> ingredient.isSpecial).toList();
     }
 
     @Override
