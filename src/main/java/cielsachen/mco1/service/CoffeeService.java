@@ -3,6 +3,7 @@ package cielsachen.mco1.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import cielsachen.mco1.model.Ingredient;
 import cielsachen.mco1.model.Product;
@@ -32,7 +33,7 @@ public class CoffeeService {
     }
 
     public TransactionIngredient addSyrup(Truck truck, Ingredient syrup, int amount) {
-        this.storageBinService.getStorageBinByTruck(truck, syrup).decreaseCapacity(amount * 0.5);
+        this.storageBinService.getStorageBinByTruck(truck, syrup).get().decreaseCapacity(amount * 0.5);
 
         return new TransactionIngredient(syrup, amount * 0.5);
     }
@@ -43,7 +44,7 @@ public class CoffeeService {
         List<TransactionIngredient> transactionIngredients = new ArrayList<TransactionIngredient>(
                 this.brewEspressoShots(truck, coffee.espressoRatio * size.capacity, ratio));
 
-        this.storageBinService.getStorageBinByTruck(truck, coffee.extraIngredient)
+        this.storageBinService.getStorageBinByTruck(truck, coffee.extraIngredient).get()
                 .decreaseCapacity(extraIngredientAmount);
 
         transactionIngredients.add(new TransactionIngredient(coffee.extraIngredient, extraIngredientAmount));
@@ -55,17 +56,18 @@ public class CoffeeService {
         double coffeeBeansAmount = UnitConversion.fluidOuncesToGrams(ratio.coffeeBeanDecimal) * amount;
         double waterAmount = ratio.waterDecimal * amount;
 
-        this.storageBinService.getStorageBinByTruck(truck, Ingredient.COFFEE_BEANS).decreaseCapacity(coffeeBeansAmount);
-        this.storageBinService.getStorageBinByTruck(truck, Ingredient.WATER).decreaseCapacity(waterAmount);
+        this.storageBinService.getStorageBinByTruck(truck, Ingredient.COFFEE_BEANS).get()
+                .decreaseCapacity(coffeeBeansAmount);
+        this.storageBinService.getStorageBinByTruck(truck, Ingredient.WATER).get().decreaseCapacity(waterAmount);
 
         return List.of(new TransactionIngredient(Ingredient.COFFEE_BEANS, coffeeBeansAmount),
                 new TransactionIngredient(Ingredient.WATER, waterAmount));
     }
 
     public boolean canAddSyrup(Truck truck, Ingredient syrup, int amount) throws Exception {
-        StorageBin syrupStorageBin = this.storageBinService.getStorageBinByTruck(truck, syrup);
+        Optional<StorageBin> syrupStorageBin = this.storageBinService.getStorageBinByTruck(truck, syrup);
 
-        if (syrupStorageBin == null || syrupStorageBin.getCapacity() < 0.5) {
+        if (syrupStorageBin.isEmpty() || syrupStorageBin.get().getCapacity() < 0.5) {
             throw new Exception("The truck does not have enough syrup!");
         }
 
@@ -75,15 +77,16 @@ public class CoffeeService {
     public boolean canBrewCoffee(Truck truck, Coffee coffee, CoffeeSize size, EspressoRatio ratio) throws Exception {
         this.canBrewEspressoShots(truck, coffee.espressoRatio * size.capacity, ratio);
 
-        StorageBin extraIngredientStorageBin = this.storageBinService.getStorageBinByTruck(truck,
+        Optional<StorageBin> extraIngredientStorageBin = this.storageBinService.getStorageBinByTruck(truck,
                 coffee.extraIngredient);
 
         if (coffee instanceof Americano) {
-            if (extraIngredientStorageBin.getCapacity() < (ratio.waterDecimal * coffee.espressoRatio * size.capacity)
-                    + (coffee.extraIngredientRatio * size.capacity)) {
+            if (extraIngredientStorageBin.get()
+                    .getCapacity() < (ratio.waterDecimal * coffee.espressoRatio * size.capacity)
+                            + (coffee.extraIngredientRatio * size.capacity)) {
                 throw new Exception("The truck does not have enough water!");
             }
-        } else if (extraIngredientStorageBin.getCapacity() < coffee.extraIngredientRatio * size.capacity) {
+        } else if (extraIngredientStorageBin.get().getCapacity() < coffee.extraIngredientRatio * size.capacity) {
             throw new Exception("The truck does not have enough milk!");
         }
 
@@ -91,13 +94,14 @@ public class CoffeeService {
     }
 
     public boolean canBrewEspressoShots(Truck truck, double amount, EspressoRatio ratio) throws Exception {
-        StorageBin coffeeBeansStorageBin = this.storageBinService.getStorageBinByTruck(truck, Ingredient.COFFEE_BEANS);
-        StorageBin waterStorageBin = this.storageBinService.getStorageBinByTruck(truck, Ingredient.WATER);
+        Optional<StorageBin> coffeeBeansStorageBin = this.storageBinService.getStorageBinByTruck(truck,
+                Ingredient.COFFEE_BEANS);
+        Optional<StorageBin> waterStorageBin = this.storageBinService.getStorageBinByTruck(truck, Ingredient.WATER);
 
-        if (coffeeBeansStorageBin == null || coffeeBeansStorageBin
+        if (coffeeBeansStorageBin.isEmpty() || coffeeBeansStorageBin.get()
                 .getCapacity() < UnitConversion.fluidOuncesToGrams(ratio.coffeeBeanDecimal) * amount) {
             throw new Exception("The truck does not have enough coffee beans!");
-        } else if (waterStorageBin == null || waterStorageBin.getCapacity() < ratio.waterDecimal * amount) {
+        } else if (waterStorageBin.isEmpty() || waterStorageBin.get().getCapacity() < ratio.waterDecimal * amount) {
             throw new Exception("The truck does not have enough water!");
         }
 

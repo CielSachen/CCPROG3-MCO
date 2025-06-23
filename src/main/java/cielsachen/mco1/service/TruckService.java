@@ -2,6 +2,7 @@ package cielsachen.mco1.service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import cielsachen.mco1.model.Truck;
 
@@ -26,14 +27,14 @@ public class TruckService {
         return Collections.unmodifiableList(this.trucks);
     }
 
-    public Truck getTruckById(int id) {
+    public Optional<Truck> getTruckById(int id) {
         for (Truck truck : this.trucks) {
             if (truck.id == id) {
-                return truck;
+                return Optional.of(truck);
             }
         }
 
-        return null;
+        return Optional.empty();
     }
 
     public boolean isOccupiedLocation(String location) {

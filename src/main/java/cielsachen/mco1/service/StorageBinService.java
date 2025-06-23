@@ -2,6 +2,7 @@ package cielsachen.mco1.service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import cielsachen.mco1.model.Ingredient;
 import cielsachen.mco1.model.StorageBin;
@@ -22,15 +23,15 @@ public class StorageBinService {
         return Collections.unmodifiableList(this.storageBins);
     }
 
-    public StorageBin getStorageBinByTruck(Truck truck, Ingredient ingredient) {
+    public Optional<StorageBin> getStorageBinByTruck(Truck truck, Ingredient ingredient) {
         for (StorageBin storageBin : this.storageBins) {
             if (storageBin.truck.equals(truck) && storageBin.ingredient.equals(ingredient)
                     && storageBin.getCapacity() > 0) {
-                return storageBin;
+                return Optional.of(storageBin);
             }
         }
 
-        return null;
+        return Optional.empty();
     }
 
     public List<StorageBin> getStorageBinsByTruck(Truck truck) {

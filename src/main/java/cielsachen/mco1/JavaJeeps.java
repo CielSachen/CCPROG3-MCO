@@ -111,7 +111,7 @@ public class JavaJeeps {
                             scanner.nextLine();
 
                             if (chosenTruckId > 0 && chosenTruckId <= truckService.getTrucks().size()) {
-                                chosenTruck = truckService.getTruckById(chosenTruckId);
+                                chosenTruck = truckService.getTruckById(chosenTruckId).get();
 
                                 break;
                             } else {
