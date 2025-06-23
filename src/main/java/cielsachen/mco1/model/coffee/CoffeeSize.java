@@ -10,8 +10,8 @@ public enum CoffeeSize {
     public final String unitMeasure = "fl oz";
 
     private CoffeeSize(String name, int capacity) {
-        this.name = name;
         this.capacity = capacity;
+        this.name = name;
     }
 
     @Override
