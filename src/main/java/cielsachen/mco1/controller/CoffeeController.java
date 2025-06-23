@@ -50,8 +50,20 @@ public class CoffeeController {
         System.out.println();
 
         for (Coffee coffee : this.service.getCoffees()) {
-            coffee.setPrice(this.input.getFloat("What base price should "
-                    + PrintColor.set(coffee.name + "s", PrintColor.YELLOW) + " should have?"));
+            while (true) {
+                boolean isPriceSet = coffee.setPrice(this.input.getFloat("What base price should "
+                        + PrintColor.set(coffee.name + "s", PrintColor.YELLOW) + " should have?"));
+
+                if (isPriceSet) {
+                    break;
+                }
+
+                System.out.println();
+
+                System.out.println(PrintColor.set("Only input a valid price (>= 0)!", PrintColor.RED));
+
+                System.out.println();
+            }
         }
 
         this.service.espresso.setPrice(this.input.getFloat(
