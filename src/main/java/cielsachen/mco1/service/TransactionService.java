@@ -3,8 +3,8 @@ package cielsachen.mco1.service;
 import java.util.Collections;
 import java.util.List;
 
+import cielsachen.mco1.model.Transaction;
 import cielsachen.mco1.model.Truck;
-import cielsachen.mco1.model.transaction.Transaction;
 
 public class TransactionService {
     private final List<Transaction> transactions;

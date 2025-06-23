@@ -2,7 +2,9 @@ package cielsachen.mco1.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cielsachen.mco1.model.Ingredient;
 import cielsachen.mco1.model.Product;
@@ -13,7 +15,6 @@ import cielsachen.mco1.model.coffee.Coffee;
 import cielsachen.mco1.model.coffee.CoffeeSize;
 import cielsachen.mco1.model.coffee.EspressoRatio;
 import cielsachen.mco1.model.coffee.Latte;
-import cielsachen.mco1.model.transaction.TransactionIngredient;
 import cielsachen.mco1.util.UnitConversion;
 
 public class CoffeeService {
@@ -30,39 +31,38 @@ public class CoffeeService {
         this.storageBinService = storageBinService;
     }
 
-    public TransactionIngredient addSyrup(Truck truck, Ingredient syrup, int amount) {
+    public Map<Ingredient, Double> addSyrup(Truck truck, Ingredient syrup, int amount) {
         double syrupAmount = 0.5 * amount;
 
         this.storageBinService.decreaseCapacityByTruck(truck, syrup, syrupAmount);
 
-        return new TransactionIngredient(syrup, amount * syrupAmount);
+        return Map.of(syrup, amount * syrupAmount);
     }
 
-    public List<TransactionIngredient> brewCoffee(Truck truck, Coffee coffee, CoffeeSize size, EspressoRatio ratio) {
+    public Map<Ingredient, Double> brewCoffee(Truck truck, Coffee coffee, CoffeeSize size, EspressoRatio ratio) {
         double extraIngredientAmount = coffee.extraIngredientRatio * size.capacity;
-        int cupCount = 1;
+        double cupCount = 1;
 
-        List<TransactionIngredient> transactionIngredients = new ArrayList<TransactionIngredient>(
+        Map<Ingredient, Double> transactionIngredients = new HashMap<Ingredient, Double>(
                 this.brewEspressoShots(truck, coffee.espressoRatio * size.capacity, ratio));
 
         this.storageBinService.decreaseCapacityByTruck(truck, coffee.extraIngredient, extraIngredientAmount);
         this.storageBinService.decreaseCapacityByTruck(truck, size.cup, cupCount);
 
-        transactionIngredients.add(new TransactionIngredient(coffee.extraIngredient, extraIngredientAmount));
-        transactionIngredients.add(new TransactionIngredient(size.cup, cupCount));
+        transactionIngredients.put(coffee.extraIngredient, extraIngredientAmount);
+        transactionIngredients.put(size.cup, cupCount);
 
-        return Collections.unmodifiableList(transactionIngredients);
+        return Collections.unmodifiableMap(transactionIngredients);
     }
 
-    public List<TransactionIngredient> brewEspressoShots(Truck truck, double amount, EspressoRatio ratio) {
+    public Map<Ingredient, Double> brewEspressoShots(Truck truck, double amount, EspressoRatio ratio) {
         double coffeeBeanAmount = UnitConversion.fluidOuncesToGrams(ratio.coffeeBeanDecimal) * amount;
         double waterAmount = ratio.waterDecimal * amount;
 
         this.storageBinService.decreaseCapacityByTruck(truck, Ingredient.COFFEE_BEANS, coffeeBeanAmount);
         this.storageBinService.decreaseCapacityByTruck(truck, Ingredient.WATER, waterAmount);
 
-        return List.of(new TransactionIngredient(Ingredient.COFFEE_BEANS, coffeeBeanAmount),
-                new TransactionIngredient(Ingredient.WATER, waterAmount));
+        return Map.of(Ingredient.COFFEE_BEANS, coffeeBeanAmount, Ingredient.WATER, waterAmount);
 
     }
 

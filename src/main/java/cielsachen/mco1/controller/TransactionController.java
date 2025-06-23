@@ -1,11 +1,12 @@
 package cielsachen.mco1.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import cielsachen.mco1.helper.PrintColor;
+import cielsachen.mco1.model.Ingredient;
+import cielsachen.mco1.model.Transaction;
 import cielsachen.mco1.model.Truck;
-import cielsachen.mco1.model.transaction.Transaction;
-import cielsachen.mco1.model.transaction.TransactionIngredient;
 import cielsachen.mco1.service.TransactionService;
 
 public class TransactionController {
@@ -34,13 +35,12 @@ public class TransactionController {
             System.out.println("  Coffee: " + PrintColor.set(transaction.coffeeName, PrintColor.BRIGHT_CYAN));
             System.out.println("  Ingredients:");
 
-            for (TransactionIngredient transactionIngredient : transaction.getIngredients()) {
-                System.out
-                        .println("    " + transactionIngredient.ingredient.name + ": "
-                                + PrintColor.set(
-                                        String.format("%.2f", transactionIngredient.getAmount()) + " "
-                                                + transactionIngredient.ingredient.unitMeasure,
-                                        PrintColor.BRIGHT_CYAN));
+            for (Map.Entry<Ingredient, Double> entry : transaction.getIngredients().entrySet()) {
+                Ingredient ingredient = entry.getKey();
+
+                System.out.println("    " + ingredient.name + ": "
+                        + PrintColor.set(String.format("%.2f", entry.getValue()) + " " + ingredient.unitMeasure,
+                                PrintColor.BRIGHT_CYAN));
             }
 
             System.out.println("  Cost: " + PrintColor.set(transaction.toCostString(), PrintColor.BRIGHT_GREEN));

@@ -1,19 +1,19 @@
 package cielsachen.mco1.controller;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import cielsachen.mco1.helper.Input;
 import cielsachen.mco1.helper.PrintColor;
 import cielsachen.mco1.model.Ingredient;
+import cielsachen.mco1.model.Transaction;
 import cielsachen.mco1.model.Truck;
 import cielsachen.mco1.model.coffee.Coffee;
 import cielsachen.mco1.model.coffee.CoffeeSize;
 import cielsachen.mco1.model.coffee.EspressoRatio;
-import cielsachen.mco1.model.transaction.Transaction;
-import cielsachen.mco1.model.transaction.TransactionIngredient;
 import cielsachen.mco1.service.CoffeeService;
 import cielsachen.mco1.service.StorageBinService;
 import cielsachen.mco1.service.TransactionService;
@@ -222,7 +222,7 @@ public class CoffeeController {
         try {
             this.service.canBrewCoffee(truck, chosenCoffee, chosenSize, chosenRatio);
 
-            List<TransactionIngredient> transactionIngredients = new ArrayList<TransactionIngredient>(
+            Map<Ingredient, Double> ingredients = new HashMap<Ingredient, Double>(
                     this.service.brewCoffee(truck, chosenCoffee, chosenSize, chosenRatio));
 
             int extraEspressoShotsCount = 0;
@@ -238,8 +238,7 @@ public class CoffeeController {
                     try {
                         this.service.canBrewEspressoShots(truck, extraEspressoShotsCount, chosenRatio);
 
-                        transactionIngredients
-                                .addAll(this.service.brewEspressoShots(truck, extraEspressoShotsCount, chosenRatio));
+                        ingredients.putAll(this.service.brewEspressoShots(truck, extraEspressoShotsCount, chosenRatio));
 
                         additionalCost += this.service.espresso.getPrice() * extraEspressoShotsCount;
                     } catch (Exception exception) {
@@ -308,7 +307,7 @@ public class CoffeeController {
                         try {
                             this.service.canAddSyrup(truck, chosenSyrup, amount);
 
-                            transactionIngredients.add(this.service.addSyrup(truck, chosenSyrup, amount));
+                            ingredients.putAll(this.service.addSyrup(truck, chosenSyrup, amount));
 
                             additionalCost += this.service.syrup.getPrice() * amount;
                         } catch (Exception exception) {
@@ -329,13 +328,13 @@ public class CoffeeController {
                     + PrintColor.set(chosenSize.toString(), PrintColor.BRIGHT_GREEN) + ")");
             System.out.println(">>> Brewing " + PrintColor.set(chosenRatio.name + " Espresso", PrintColor.YELLOW));
 
-            for (TransactionIngredient transactionIngredient : transactionIngredients) {
-                System.out
-                        .println(">>> Adding "
-                                + PrintColor.set(transactionIngredient.ingredient.name, PrintColor.BRIGHT_CYAN) + " ("
-                                + PrintColor.set(String.format("%.2f", transactionIngredient.getAmount()) + " "
-                                        + transactionIngredient.ingredient.unitMeasure, PrintColor.BRIGHT_GREEN)
-                                + ")...");
+            for (Map.Entry<Ingredient, Double> entry : ingredients.entrySet()) {
+                Ingredient ingredient = entry.getKey();
+
+                System.out.println(">>> Adding " + PrintColor.set(ingredient.name, PrintColor.BRIGHT_CYAN) + " ("
+                        + PrintColor.set(String.format("%.2f", entry.getValue()) + " " + ingredient.unitMeasure,
+                                PrintColor.BRIGHT_GREEN)
+                        + ")...");
             }
 
             System.out.println(">>> The " + chosenCoffee.name + " is done!");
@@ -349,7 +348,7 @@ public class CoffeeController {
                     + PrintColor.set(totalCost + " PHP", PrintColor.BRIGHT_GREEN) + ".");
 
             this.transactionService.addTransaction(new Transaction(chosenCoffee.name, chosenSize, totalCost, truck,
-                    extraEspressoShotsCount, transactionIngredients));
+                    extraEspressoShotsCount, ingredients));
         } catch (Exception exception) {
             System.out.println();
 
