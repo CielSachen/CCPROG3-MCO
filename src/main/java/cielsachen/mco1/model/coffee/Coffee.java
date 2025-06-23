@@ -32,7 +32,7 @@ public abstract class Coffee extends Product {
 
     @Override
     public String toPriceString() {
-        return "S " + this.getPrice(CoffeeSize.SMALL_CUP) + " PHP / M " + this.price + " PHP / L "
+        return "(S) " + this.getPrice(CoffeeSize.SMALL_CUP) + " PHP / (M) " + this.price + " PHP / (L) "
                 + this.getPrice(CoffeeSize.LARGE_CUP) + " PHP";
     }
 
