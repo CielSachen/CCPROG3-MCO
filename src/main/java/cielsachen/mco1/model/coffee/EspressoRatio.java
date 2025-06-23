@@ -1,5 +1,7 @@
 package cielsachen.mco1.model.coffee;
 
+import cielsachen.mco1.model.Ingredient;
+
 public enum EspressoRatio {
     LIGHT("Light", 1, 20),
     STANDARD("Standard", 1, 18),
@@ -21,6 +23,6 @@ public enum EspressoRatio {
 
     @Override
     public String toString() {
-        return this.coffeeBean + " / " + this.water;
+        return this.coffeeBean + " " + Ingredient.COFFEE_BEANS.name + " : " + this.water + " " + Ingredient.WATER.name;
     }
 }
