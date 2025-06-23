@@ -66,8 +66,8 @@ public class TruckController {
         List<Ingredient> regularIngredients = Ingredient.regularValues();
         List<Ingredient> specialIngredients = Ingredient.specialValues();
 
-        for (int storageBinId = 1; storageBinId <= (isSpecial ? StorageBin.SPECIAL_TRUCK_AMOUNT
-                : StorageBin.STANDARD_TRUCK_AMOUNT); storageBinId++) {
+        for (int storageBinId = 1; storageBinId <= (isSpecial ? StorageBin.SPECIAL_TRUCK_COUNT
+                : StorageBin.STANDARD_TRUCK_COUNT); storageBinId++) {
             while (true) {
                 try {
                     System.out.println();
@@ -83,7 +83,7 @@ public class TruckController {
 
                     System.out.println("What item should this storage bin contain?");
 
-                    List<Ingredient> ingredients = storageBinId <= StorageBin.STANDARD_TRUCK_AMOUNT ? regularIngredients
+                    List<Ingredient> ingredients = storageBinId <= StorageBin.STANDARD_TRUCK_COUNT ? regularIngredients
                             : specialIngredients;
                     int ingredientCount = ingredients.size();
 

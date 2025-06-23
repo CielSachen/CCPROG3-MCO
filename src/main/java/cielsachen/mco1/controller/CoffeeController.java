@@ -225,7 +225,7 @@ public class CoffeeController {
             List<TransactionIngredient> transactionIngredients = new ArrayList<TransactionIngredient>(
                     this.service.brewCoffee(truck, chosenCoffee, chosenSize, chosenRatio));
 
-            int extraEspressoShotsAmount = 0;
+            int extraEspressoShotsCount = 0;
             float additionalCost = 0;
 
             if (truck.isSpecial) {
@@ -233,15 +233,15 @@ public class CoffeeController {
                         + PrintColor.set("(true/false)", PrintColor.RED) + "?", true);
 
                 if (isAddingEspressoShots) {
-                    extraEspressoShotsAmount = this.input.getInteger("How many extra shots should be added?");
+                    extraEspressoShotsCount = this.input.getInteger("How many extra shots should be added?");
 
                     try {
-                        this.service.canBrewEspressoShots(truck, extraEspressoShotsAmount, chosenRatio);
+                        this.service.canBrewEspressoShots(truck, extraEspressoShotsCount, chosenRatio);
 
                         transactionIngredients
-                                .addAll(this.service.brewEspressoShots(truck, extraEspressoShotsAmount, chosenRatio));
+                                .addAll(this.service.brewEspressoShots(truck, extraEspressoShotsCount, chosenRatio));
 
-                        additionalCost += this.service.espresso.getPrice() * extraEspressoShotsAmount;
+                        additionalCost += this.service.espresso.getPrice() * extraEspressoShotsCount;
                     } catch (Exception exception) {
                         System.out.println();
 
@@ -349,7 +349,7 @@ public class CoffeeController {
                     + PrintColor.set(totalCost + " PHP", PrintColor.BRIGHT_GREEN) + ".");
 
             this.transactionService.addTransaction(new Transaction(chosenCoffee.name, chosenSize, totalCost, truck,
-                    extraEspressoShotsAmount, transactionIngredients));
+                    extraEspressoShotsCount, transactionIngredients));
         } catch (Exception exception) {
             System.out.println();
 

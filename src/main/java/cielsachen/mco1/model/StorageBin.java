@@ -1,8 +1,8 @@
 package cielsachen.mco1.model;
 
 public class StorageBin {
-    public static final int STANDARD_TRUCK_AMOUNT = 8;
-    public static final int SPECIAL_TRUCK_AMOUNT = 10;
+    public static final int STANDARD_TRUCK_COUNT = 8;
+    public static final int SPECIAL_TRUCK_COUNT = 10;
 
     public final int id;
     public final Ingredient ingredient;
