@@ -139,14 +139,10 @@ public class TruckController {
 
         System.out.println("Storage Bins:");
 
-        List<StorageBin> storageBins = this.storageBinService.getStorageBinsByTruck(truck);
-
-        for (int index = 0; index < storageBins.size(); index++) {
-            StorageBin storageBin = storageBins.get(index);
-
+        for (StorageBin storageBin : this.storageBinService.getStorageBinsByTruck(truck)) {
             System.out
                     .println(
-                            "  Bin " + index + " = "
+                            "  Bin " + storageBin.id + " = "
                                     + PrintColor.set(storageBin.ingredient.name, PrintColor.BRIGHT_CYAN) + " ("
                                     + PrintColor.set(storageBin.toCapacityString(),
                                             storageBin.isCriticalCapacity() ? PrintColor.RED : PrintColor.BRIGHT_GREEN)

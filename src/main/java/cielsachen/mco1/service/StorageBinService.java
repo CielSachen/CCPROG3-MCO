@@ -27,11 +27,9 @@ public class StorageBinService {
             return false;
         }
 
-        List<StorageBin> ingredientStorageBins = this.getStorageBinsByTruck(truck, ingredient);
-
         double remainingAmount = amount;
 
-        for (StorageBin storageBin : ingredientStorageBins) {
+        for (StorageBin storageBin : this.getStorageBinsByTruck(truck, ingredient)) {
             if (storageBin.getCapacity() >= remainingAmount) {
                 storageBin.decreaseCapacity(remainingAmount);
 
