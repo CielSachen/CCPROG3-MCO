@@ -116,7 +116,7 @@ public class CoffeeController {
 
                 ExceptionMessage.INVALID_INTEGER_CHOICE.print();
             } catch (InputMismatchException exception) {
-                if (input.getCharacter() == 'X') {
+                if (this.input.getCharacter() == 'X') {
                     break;
                 }
 

@@ -196,7 +196,7 @@ public class TruckController {
 
                 ExceptionMessage.INVALID_INTEGER_CHOICE.print();
             } catch (InputMismatchException exception) {
-                if (input.getCharacter() == 'X') {
+                if (this.input.getCharacter() == 'X') {
                     break;
                 }
 
@@ -240,7 +240,7 @@ public class TruckController {
 
                 System.out.print("  > ");
 
-                char chosenOptionId = input.getCharacter();
+                char chosenOptionId = this.input.getCharacter();
 
                 switch (chosenOptionId) {
                     case 'R':
