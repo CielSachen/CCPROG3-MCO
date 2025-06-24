@@ -46,7 +46,7 @@ public class StorageBinService {
 
     public List<StorageBin> getStorageBinsByTruck(Truck truck, Ingredient ingredient) {
         return this.storageBins.stream()
-                .filter((storageBin) -> storageBin.truck.equals(truck) && storageBin.ingredient.equals(ingredient))
+                .filter((storageBin) -> storageBin.truck.equals(truck) && storageBin.getIngredient().equals(ingredient))
                 .toList();
     }
 
@@ -64,7 +64,7 @@ public class StorageBinService {
 
         for (Ingredient ingredient : ingredients) {
             for (StorageBin storageBin : this.storageBins) {
-                if (storageBin.ingredient.equals(ingredient)) {
+                if (storageBin.getIngredient().equals(ingredient)) {
                     hasIngredient = true;
 
                     break;
@@ -80,6 +80,6 @@ public class StorageBinService {
     }
 
     public boolean truckHasSyrupAddOns(Truck truck) {
-        return storageBins.stream().anyMatch((storageBin) -> storageBin.ingredient.isSpecial);
+        return storageBins.stream().anyMatch((storageBin) -> storageBin.getIngredient().isSpecial);
     }
 }

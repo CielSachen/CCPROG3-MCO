@@ -5,10 +5,10 @@ public class StorageBin {
     public static final int SPECIAL_TRUCK_COUNT = 10;
 
     public final int id;
-    public final Ingredient ingredient;
     public final Truck truck;
 
     private double capacity = 0;
+    private Ingredient ingredient;
 
     public StorageBin(int id, Truck truck, Ingredient ingredient) {
         this.capacity = ingredient.maximumCapacity;
@@ -19,6 +19,14 @@ public class StorageBin {
 
     public double getCapacity() {
         return this.capacity;
+    }
+
+    public Ingredient getIngredient() {
+        return this.ingredient;
+    }
+
+    public void setIngredient(Ingredient newIngredient) {
+        this.ingredient = newIngredient;
     }
 
     public boolean decreaseCapacity(double deductibleCapacity) {
