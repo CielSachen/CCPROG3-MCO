@@ -288,7 +288,9 @@ public class CoffeeController {
                                 if (chosenSyrupIndex >= 0 && chosenSyrupIndex < syrupCount) {
                                     chosenSyrup = syrups.get(chosenSyrupIndex);
 
-                                    break;
+                                    if (this.storageBinService.truckHasIngredient(truck, chosenSyrup)) {
+                                        break;
+                                    }
                                 }
 
                                 System.out.println();
