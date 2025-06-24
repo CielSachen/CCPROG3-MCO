@@ -20,8 +20,8 @@ import cielsachen.mco1.service.StorageBinService;
 import cielsachen.mco1.service.TransactionService;
 import cielsachen.mco1.service.TruckService;
 
-public class JavaJeeps {
-    public static void main(String[] arguments) {
+public class Simulator {
+    public void launch() {
         boolean isExiting = false;
 
         Scanner scanner = new Scanner(System.in);
@@ -42,7 +42,7 @@ public class JavaJeeps {
         TruckController truckController = new TruckController(truckService, storageBinService, scanner, input);
 
         while (!isExiting) {
-            Output.printTitle("JavaJeeps: MCO1");
+            Output.printTitle("Coffee Truck Simulator: MCO1");
 
             System.out.println();
 
