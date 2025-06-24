@@ -124,6 +124,10 @@ public class TruckController {
 
         System.out.println(PrintColor.set("Created a new coffee truck!", PrintColor.BRIGHT_GREEN));
 
+        System.out.println();
+
+        System.out.println(PrintColor.set("Deployed the coffee truck to" + location + "!", PrintColor.BRIGHT_GREEN));
+
         return truck;
     }
 
