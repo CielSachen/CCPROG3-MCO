@@ -4,9 +4,6 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Input {
-    public static final String INTEGER_ID_ERROR_MESSAGE = "Only input from one of the integer IDs!";
-    public static final String CHARACTER_ID_ERROR_MESSAGE = "Only input from one of the character IDs!";
-
     private final Scanner scanner;
 
     public Input(Scanner scanner) {
@@ -32,7 +29,7 @@ public class Input {
 
                 System.out.println();
 
-                System.out.println(PrintColor.set("Only input `true` or `false`!", PrintColor.RED));
+                ExceptionMessage.INVALID_BOOLEAN_INPUT.print();
 
                 if (!isNewLine) {
                     System.out.println();
@@ -80,7 +77,7 @@ public class Input {
 
                 System.out.println();
 
-                System.out.println(PrintColor.set("Only input a floating point number!", PrintColor.RED));
+                ExceptionMessage.INVALID_FLOAT_INPUT.print();
 
                 if (!isNewLine) {
                     System.out.println();
@@ -112,7 +109,7 @@ public class Input {
 
                 System.out.println();
 
-                System.out.println(PrintColor.set("Only input an integer!", PrintColor.RED));
+                ExceptionMessage.INVALID_INTEGER_INPUT.print();
 
                 if (!isNewLine) {
                     System.out.println();

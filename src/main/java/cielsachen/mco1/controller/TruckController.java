@@ -4,6 +4,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import cielsachen.mco1.helper.ExceptionMessage;
 import cielsachen.mco1.helper.Input;
 import cielsachen.mco1.helper.PrintColor;
 import cielsachen.mco1.model.Ingredient;
@@ -42,7 +43,7 @@ public class TruckController {
             if (this.service.isOccupiedLocation(location)) {
                 System.out.println();
 
-                System.out.println(PrintColor.set("A truck already exists on this location!", PrintColor.RED));
+                ExceptionMessage.printCustom("A truck already exists on this location!");
 
                 continue;
             }
@@ -108,13 +109,13 @@ public class TruckController {
 
                     System.out.println();
 
-                    System.out.println(PrintColor.set(Input.INTEGER_ID_ERROR_MESSAGE, PrintColor.RED));
+                    ExceptionMessage.INVALID_INTEGER_CHOICE.print();
                 } catch (InputMismatchException exception) {
                     this.scanner.nextLine();
 
                     System.out.println();
 
-                    System.out.println(PrintColor.set(Input.INTEGER_ID_ERROR_MESSAGE, PrintColor.RED));
+                    ExceptionMessage.INVALID_INTEGER_CHOICE.print();
                 }
             }
         }

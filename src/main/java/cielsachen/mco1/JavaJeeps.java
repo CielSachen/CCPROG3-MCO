@@ -8,6 +8,7 @@ import java.util.Scanner;
 import cielsachen.mco1.controller.CoffeeController;
 import cielsachen.mco1.controller.TransactionController;
 import cielsachen.mco1.controller.TruckController;
+import cielsachen.mco1.helper.ExceptionMessage;
 import cielsachen.mco1.helper.Input;
 import cielsachen.mco1.helper.PrintColor;
 import cielsachen.mco1.model.StorageBin;
@@ -79,7 +80,7 @@ public class JavaJeeps {
                     if (truckService.getTrucks().size() == 0) {
                         System.out.println();
 
-                        System.out.println(PrintColor.set("You have not yet created any trucks!", PrintColor.RED));
+                        ExceptionMessage.printCustom("You have not yet created any trucks!");
 
                         break;
                     }
@@ -115,7 +116,7 @@ public class JavaJeeps {
                             } else {
                                 System.out.println();
 
-                                System.out.println(PrintColor.set(Input.INTEGER_ID_ERROR_MESSAGE, PrintColor.RED));
+                                ExceptionMessage.INVALID_INTEGER_CHOICE.print();
                             }
                         } catch (InputMismatchException exception) {
                             if (input.getCharacter() == 'X') {
@@ -124,7 +125,7 @@ public class JavaJeeps {
 
                             System.out.println();
 
-                            System.out.println(PrintColor.set(Input.INTEGER_ID_ERROR_MESSAGE, PrintColor.RED));
+                            ExceptionMessage.INVALID_INTEGER_CHOICE.print();
                         }
                     }
 
@@ -151,9 +152,8 @@ public class JavaJeeps {
                                         System.out.println();
 
                                         if (!coffeeController.isCapableOfBrewing(chosenTruck)) {
-                                            System.out.println(PrintColor.set(
-                                                    "This coffee truck does not have the ingredients needed to brew coffee.",
-                                                    PrintColor.RED));
+                                            ExceptionMessage.printCustom(
+                                                    "This coffee truck does not have the ingredients needed to brew coffee.");
                                         }
 
                                         coffeeController.prepareCoffee(chosenTruck);
@@ -181,7 +181,7 @@ public class JavaJeeps {
                                     case 'R':
                                         System.out.println();
 
-                                        System.out.println(PrintColor.set("CURRENTLY UNIMPLEMENTED", PrintColor.RED));
+                                        ExceptionMessage.printCustom("CURRENTLY UNIMPLEMENTED");
 
                                         break;
                                     case 'X':
@@ -189,8 +189,7 @@ public class JavaJeeps {
                                     default:
                                         System.out.println();
 
-                                        System.out.println(
-                                                PrintColor.set(Input.CHARACTER_ID_ERROR_MESSAGE, PrintColor.RED));
+                                        ExceptionMessage.INVALID_CHARACTER_CHOICE.print();
 
                                         continue;
                                 }
@@ -201,7 +200,7 @@ public class JavaJeeps {
 
                                 System.out.println();
 
-                                System.out.println(PrintColor.set(Input.CHARACTER_ID_ERROR_MESSAGE, PrintColor.RED));
+                                ExceptionMessage.INVALID_CHARACTER_CHOICE.print();
                             }
                         }
                     }
@@ -211,7 +210,7 @@ public class JavaJeeps {
                 case 'D':
                     System.out.println();
 
-                    System.out.println(PrintColor.set("CURRENTLY UNIMPLEMENTED", PrintColor.RED));
+                    ExceptionMessage.printCustom("CURRENTLY UNIMPLEMENTED");
 
                     break;
                 case 'X':
@@ -221,7 +220,7 @@ public class JavaJeeps {
                 default:
                     System.out.println();
 
-                    System.out.println(PrintColor.set(Input.CHARACTER_ID_ERROR_MESSAGE, PrintColor.RED));
+                    ExceptionMessage.INVALID_CHARACTER_CHOICE.print();
 
                     break;
             }

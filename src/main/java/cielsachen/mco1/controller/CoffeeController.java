@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import cielsachen.mco1.exception.InsufficientCapacityException;
+import cielsachen.mco1.helper.ExceptionMessage;
 import cielsachen.mco1.helper.Input;
 import cielsachen.mco1.helper.PrintColor;
 import cielsachen.mco1.model.Ingredient;
@@ -61,7 +62,7 @@ public class CoffeeController {
 
                 System.out.println();
 
-                System.out.println(PrintColor.set("Only input a valid price (>= 0)!", PrintColor.RED));
+                ExceptionMessage.printCustom("Only input a valid price (>= 0)!");
 
                 System.out.println();
             }
@@ -114,7 +115,7 @@ public class CoffeeController {
 
                 System.out.println();
 
-                System.out.println(PrintColor.set(Input.INTEGER_ID_ERROR_MESSAGE, PrintColor.RED));
+                ExceptionMessage.INVALID_INTEGER_CHOICE.print();
             } catch (InputMismatchException exception) {
                 if (input.getCharacter() == 'X') {
                     break;
@@ -122,7 +123,7 @@ public class CoffeeController {
 
                 System.out.println();
 
-                System.out.println(PrintColor.set(Input.INTEGER_ID_ERROR_MESSAGE, PrintColor.RED));
+                ExceptionMessage.INVALID_INTEGER_CHOICE.print();
             }
         }
 
@@ -165,13 +166,13 @@ public class CoffeeController {
 
                 System.out.println();
 
-                System.out.println(PrintColor.set(Input.CHARACTER_ID_ERROR_MESSAGE, PrintColor.RED));
+                ExceptionMessage.INVALID_CHARACTER_CHOICE.print();
             } catch (InputMismatchException exception) {
                 this.scanner.nextLine();
 
                 System.out.println();
 
-                System.out.println(PrintColor.set(Input.CHARACTER_ID_ERROR_MESSAGE, PrintColor.RED));
+                ExceptionMessage.INVALID_CHARACTER_CHOICE.print();
             }
         }
 
@@ -209,13 +210,13 @@ public class CoffeeController {
 
                     System.out.println();
 
-                    System.out.println(PrintColor.set(Input.CHARACTER_ID_ERROR_MESSAGE, PrintColor.RED));
+                    ExceptionMessage.INVALID_CHARACTER_CHOICE.print();
                 } catch (InputMismatchException exception) {
                     this.scanner.nextLine();
 
                     System.out.println();
 
-                    System.out.println(PrintColor.set(Input.CHARACTER_ID_ERROR_MESSAGE, PrintColor.RED));
+                    ExceptionMessage.INVALID_CHARACTER_CHOICE.print();
                 }
             }
         }
@@ -293,13 +294,13 @@ public class CoffeeController {
 
                                 System.out.println();
 
-                                System.out.println(PrintColor.set(Input.INTEGER_ID_ERROR_MESSAGE, PrintColor.RED));
+                                ExceptionMessage.INVALID_INTEGER_CHOICE.print();
                             } catch (InputMismatchException exception) {
                                 this.scanner.nextLine();
 
                                 System.out.println();
 
-                                System.out.println(PrintColor.set(Input.INTEGER_ID_ERROR_MESSAGE, PrintColor.RED));
+                                ExceptionMessage.INVALID_INTEGER_CHOICE.print();
                             }
                         }
 
