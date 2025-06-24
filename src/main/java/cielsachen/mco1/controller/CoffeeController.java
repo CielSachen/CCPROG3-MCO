@@ -9,6 +9,7 @@ import java.util.Scanner;
 import cielsachen.mco1.exception.InsufficientCapacityException;
 import cielsachen.mco1.helper.ExceptionMessage;
 import cielsachen.mco1.helper.Input;
+import cielsachen.mco1.helper.Output;
 import cielsachen.mco1.helper.PrintColor;
 import cielsachen.mco1.model.Ingredient;
 import cielsachen.mco1.model.Transaction;
@@ -46,8 +47,7 @@ public class CoffeeController {
     }
 
     public void updatePrices() {
-        System.out.println("----- + ----- + " + PrintColor.set("Changing Coffee Prices", PrintColor.BRIGHT_YELLOW)
-                + " + ----- + -----");
+        Output.printHeader2("Change the Coffee Prices");
 
         System.out.println();
 
@@ -76,8 +76,7 @@ public class CoffeeController {
     }
 
     public void prepareCoffee(Truck truck) {
-        System.out.println(
-                "----- + ----- + " + PrintColor.set("Order a Coffee", PrintColor.BRIGHT_YELLOW) + " + ----- + -----");
+        Output.printHeader2("Order a Coffee");
 
         List<Coffee> coffees = this.service.getCoffeesByTruck(truck);
         int coffeeCount = coffees.size();
@@ -361,8 +360,7 @@ public class CoffeeController {
     }
 
     public void printPrices(Truck truck) {
-        System.out.println("---------- + " + PrintColor.set("Coffee and Add-On Prices", PrintColor.BRIGHT_YELLOW)
-                + " + ----------");
+        Output.printHeader3("Coffee and Add-On Prices");
 
         System.out.println();
 

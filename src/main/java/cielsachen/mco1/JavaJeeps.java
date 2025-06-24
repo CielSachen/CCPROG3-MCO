@@ -10,6 +10,7 @@ import cielsachen.mco1.controller.TransactionController;
 import cielsachen.mco1.controller.TruckController;
 import cielsachen.mco1.helper.ExceptionMessage;
 import cielsachen.mco1.helper.Input;
+import cielsachen.mco1.helper.Output;
 import cielsachen.mco1.helper.PrintColor;
 import cielsachen.mco1.model.StorageBin;
 import cielsachen.mco1.model.Transaction;
@@ -41,8 +42,7 @@ public class JavaJeeps {
         TruckController truckController = new TruckController(truckService, storageBinService, scanner, input);
 
         while (!isExiting) {
-            System.out.println("---------- + ---------- + " + PrintColor.set("JavaJeeps", PrintColor.BRIGHT_YELLOW)
-                    + " + ---------- + ----------");
+            Output.printTitle("JavaJeeps: MCO1");
 
             System.out.println();
 

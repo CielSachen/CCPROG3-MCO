@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import cielsachen.mco1.helper.ExceptionMessage;
 import cielsachen.mco1.helper.Input;
+import cielsachen.mco1.helper.Output;
 import cielsachen.mco1.helper.PrintColor;
 import cielsachen.mco1.model.Ingredient;
 import cielsachen.mco1.model.StorageBin;
@@ -28,8 +29,7 @@ public class TruckController {
     }
 
     public Truck createTruck() {
-        System.out.println("----- + ----- + " + PrintColor.set("Creating New Truck", PrintColor.BRIGHT_YELLOW)
-                + " + ----- + -----");
+        Output.printHeader2("Create a New Truck");
 
         String location;
 
@@ -128,8 +128,7 @@ public class TruckController {
     }
 
     public void printTruckInfo(Truck truck) {
-        System.out.println("---------- + "
-                + PrintColor.set("Truck " + truck.id + " Info Summary", PrintColor.BRIGHT_YELLOW) + " + ----------");
+        Output.printHeader1("Truck " + truck.id + " Info Summary");
 
         System.out.println();
 

@@ -3,6 +3,7 @@ package cielsachen.mco1.controller;
 import java.util.List;
 import java.util.Map;
 
+import cielsachen.mco1.helper.Output;
 import cielsachen.mco1.helper.PrintColor;
 import cielsachen.mco1.model.Ingredient;
 import cielsachen.mco1.model.Transaction;
@@ -21,8 +22,7 @@ public class TransactionController {
     }
 
     public void printTransactions(Truck truck) {
-        System.out
-                .println("---------- + " + PrintColor.set("Transactions", PrintColor.BRIGHT_YELLOW) + " + ----------");
+        Output.printHeader3("Transactions");
 
         List<Transaction> transactions = this.service.getTransactionsByTruck(truck);
 
