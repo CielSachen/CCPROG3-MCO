@@ -283,7 +283,7 @@ public class TruckController {
                                     if (!storageBin.equals(chosenStorageBin)) {
                                         System.out.println(PrintColor.set(
                                                 "Bin #" + storageBin.id + " = " + storageBin.getIngredient().name,
-                                                PrintColor.BRIGHT_GREEN));
+                                                PrintColor.BRIGHT_CYAN));
                                     }
                                 }
 

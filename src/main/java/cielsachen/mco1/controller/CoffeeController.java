@@ -146,7 +146,7 @@ public class CoffeeController {
                     CoffeeSize size = coffeeSizes[index];
 
                     System.out.println("  [" + (index + 1) + "] " + size.name + " ("
-                            + PrintColor.set(size.toString(), PrintColor.BRIGHT_GREEN) + ")");
+                            + PrintColor.set(size.toString(), PrintColor.BRIGHT_CYAN) + ")");
                 }
 
                 System.out.println();
@@ -190,7 +190,7 @@ public class CoffeeController {
                         EspressoRatio ratio = espressoRatios[index];
 
                         System.out.println("  [" + (index + 1) + "] " + ratio.name + " ("
-                                + PrintColor.set(ratio.toString(), PrintColor.BRIGHT_GREEN) + ")");
+                                + PrintColor.set(ratio.toString(), PrintColor.BRIGHT_CYAN) + ")");
                     }
 
                     System.out.println();
@@ -335,7 +335,7 @@ public class CoffeeController {
 
             System.out.println(">>> Preparing a " + PrintColor.set(chosenSize.name, PrintColor.YELLOW) + " of "
                     + PrintColor.set(chosenCoffee.name, PrintColor.YELLOW) + " ("
-                    + PrintColor.set(chosenSize.toString(), PrintColor.BRIGHT_GREEN) + ")");
+                    + PrintColor.set(chosenSize.toString(), PrintColor.BRIGHT_CYAN) + ")");
             System.out.println(">>> Brewing " + PrintColor.set(chosenRatio.name + " Espresso", PrintColor.YELLOW));
 
             for (Map.Entry<Ingredient, Double> entry : ingredients.entrySet()) {
@@ -343,7 +343,7 @@ public class CoffeeController {
 
                 System.out.println(">>> Adding " + PrintColor.set(ingredient.name, PrintColor.BRIGHT_CYAN) + " ("
                         + PrintColor.set(String.format("%.2f", entry.getValue()) + " " + ingredient.unitMeasure,
-                                PrintColor.BRIGHT_GREEN)
+                                PrintColor.BRIGHT_CYAN)
                         + ")...");
             }
 
