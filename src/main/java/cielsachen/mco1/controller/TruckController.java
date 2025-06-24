@@ -127,6 +127,242 @@ public class TruckController {
         return truck;
     }
 
+    public void relocateTruck(Truck truck) {
+        String newLocation;
+
+        while (true) {
+            System.out.print("Where will this truck be relocated to? ");
+
+            newLocation = this.scanner.nextLine();
+
+            System.out.println();
+
+            if (this.service.isOccupiedLocation(newLocation)) {
+                ExceptionMessage.printCustom("A truck already exists on this location!");
+
+                System.out.println();
+
+                continue;
+            }
+
+            break;
+        }
+
+        truck.setLocation(newLocation);
+
+        System.out
+                .println(PrintColor.set("Relocated the coffee truck to " + newLocation + "!", PrintColor.BRIGHT_GREEN));
+    }
+
+    public void restockStorageBins(Truck truck) {
+        Output.printHeader2("Update Storage Bins");
+
+        List<StorageBin> storageBins = this.storageBinService.getStorageBinsByTruck(truck);
+
+        StorageBin chosenStorageBin = null;
+
+        while (true) {
+            try {
+                System.out.println();
+
+                System.out.println("Which storage bin would you like to update?");
+
+                for (StorageBin storageBin : storageBins) {
+                    System.out
+                            .println("  [" + storageBin.id + "] " + storageBin.getIngredient().name + " ("
+                                    + PrintColor.set(storageBin.toCapacityString(),
+                                            storageBin.isCriticalCapacity() ? PrintColor.RED : PrintColor.BRIGHT_GREEN)
+                                    + ")");
+                }
+
+                System.out.println();
+                System.out.println("  [X] Return");
+
+                System.out.println();
+
+                System.out.print("  > ");
+
+                int chosenStorageBinId = this.scanner.nextInt();
+
+                this.scanner.nextLine();
+
+                if (chosenStorageBinId >= 0 && chosenStorageBinId < storageBins.size()) {
+                    chosenStorageBin = this.storageBinService.getStorageBinsById(chosenStorageBinId, truck).get();
+
+                    break;
+                }
+
+                System.out.println();
+
+                ExceptionMessage.INVALID_INTEGER_CHOICE.print();
+            } catch (InputMismatchException exception) {
+                if (input.getCharacter() == 'X') {
+                    break;
+                }
+
+                System.out.println();
+
+                ExceptionMessage.INVALID_INTEGER_CHOICE.print();
+            }
+        }
+
+        if (chosenStorageBin == null) {
+            return;
+        }
+
+        Output.printHeader2("Update Bin " + chosenStorageBin.id);
+
+        double currentCapacity = chosenStorageBin.getCapacity();
+        Ingredient currentIngredient = chosenStorageBin.getIngredient();
+        double missingCapacity = currentIngredient.maximumCapacity - currentCapacity;
+
+        while (true) {
+            try {
+                System.out.println();
+
+                System.out.println("What would you like to do to the storage bin?");
+
+                if (currentCapacity < currentIngredient.maximumCapacity) {
+                    System.out.println("  [R] Restock ("
+                            + PrintColor.set(String.format("+ %.2f", missingCapacity), PrintColor.BRIGHT_GREEN) + ")");
+                }
+
+                if (currentCapacity > 0) {
+                    System.out.println("  [E] Empty ("
+                            + PrintColor.set(String.format("- %.2f", currentCapacity), PrintColor.RED) + ")");
+                }
+
+                System.out.println("  [C] Change Ingredients");
+                System.out.println();
+                System.out.println("  [X] Return");
+
+                System.out.println();
+
+                System.out.print("  > ");
+
+                char chosenOptionId = input.getCharacter();
+
+                switch (chosenOptionId) {
+                    case 'R':
+                        if (currentCapacity == currentIngredient.maximumCapacity) {
+                            ExceptionMessage.printCustom("The storage bin is already full!");
+
+                            break;
+                        }
+
+                        chosenStorageBin.increaseCapacity(missingCapacity);
+
+                        System.out.println(
+                                PrintColor.set("The storage bin has been restocked!", PrintColor.BRIGHT_GREEN));
+
+                        break;
+                    case 'E':
+                        if (currentCapacity == 0) {
+                            ExceptionMessage.printCustom("The storage bin is already empty!");
+
+                            break;
+                        }
+
+                        chosenStorageBin.decreaseCapacity(currentCapacity);
+
+                        System.out
+                                .println(PrintColor.set("The storage bin has been emptied!", PrintColor.BRIGHT_GREEN));
+
+                        break;
+                    case 'C': {
+                        List<Ingredient> ingredients = chosenStorageBin.id <= StorageBin.STANDARD_TRUCK_COUNT
+                                ? Ingredient.regularValues()
+                                : Ingredient.specialValues();
+                        int ingredientCount = ingredients.size();
+
+                        while (true) {
+                            try {
+                                System.out.println();
+
+                                for (StorageBin storageBin : this.storageBinService.getStorageBinsByTruck(truck)) {
+                                    if (!storageBin.equals(chosenStorageBin)) {
+                                        System.out.println(PrintColor.set(
+                                                "Bin #" + storageBin.id + " = " + storageBin.getIngredient().name,
+                                                PrintColor.BRIGHT_GREEN));
+                                    }
+                                }
+
+                                System.out.println();
+
+                                System.out.println(
+                                        "Bin #" + chosenStorageBin.id + " = " + currentIngredient.name);
+
+                                System.out.println();
+
+                                System.out.println("What item should this storage bin contain instead?");
+
+                                for (int index = 0; index < ingredientCount; index++) {
+                                    Ingredient ingredient = ingredients.get(index);
+
+                                    if (!ingredient.equals(currentIngredient)) {
+                                        System.out.println("  [" + (index + 1) + "] " + ingredient.name);
+                                    }
+                                }
+
+                                System.out.println();
+
+                                System.out.print("  > ");
+
+                                int chosenIngredientIndex = this.scanner.nextInt() - 1;
+
+                                this.scanner.nextLine();
+
+                                if (chosenIngredientIndex >= 0 && chosenIngredientIndex < ingredientCount) {
+                                    Ingredient chosenIngredient = ingredients.get(chosenIngredientIndex);
+
+                                    if (!chosenIngredient.equals(currentIngredient)) {
+                                        chosenStorageBin.setIngredient(chosenIngredient);
+
+                                        if (currentCapacity > 0) {
+                                            chosenStorageBin.decreaseCapacity(currentCapacity);
+                                        }
+
+                                        chosenStorageBin.increaseCapacity(chosenIngredient.maximumCapacity);
+
+                                        break;
+                                    }
+                                }
+
+                                System.out.println();
+
+                                ExceptionMessage.INVALID_INTEGER_CHOICE.print();
+                            } catch (InputMismatchException exception) {
+                                this.scanner.nextLine();
+
+                                System.out.println();
+
+                                ExceptionMessage.INVALID_INTEGER_CHOICE.print();
+                            }
+                        }
+
+                        break;
+                    }
+                    case 'X':
+                        break;
+                    default:
+                        System.out.println();
+
+                        ExceptionMessage.INVALID_CHARACTER_CHOICE.print();
+
+                        continue;
+                }
+
+                break;
+            } catch (InputMismatchException exception) {
+                scanner.nextLine();
+
+                System.out.println();
+
+                ExceptionMessage.INVALID_CHARACTER_CHOICE.print();
+            }
+        }
+    }
+
     public void printTrucksInfo() {
         Output.printHeader1("All Trucks Info Summary");
 

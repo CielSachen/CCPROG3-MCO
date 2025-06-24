@@ -39,7 +39,7 @@ public class JavaJeeps {
         TransactionController transactionController = new TransactionController(transactionService);
         CoffeeController coffeeController = new CoffeeController(coffeeService, storageBinService, transactionService,
                 scanner, input);
-        TruckController truckController = new TruckController(truckService, storageBinService,  scanner, input);
+        TruckController truckController = new TruckController(truckService, storageBinService, scanner, input);
 
         while (!isExiting) {
             Output.printTitle("JavaJeeps: MCO1");
@@ -140,7 +140,8 @@ public class JavaJeeps {
                             System.out.println("Which feature would you like to simulate?");
                             System.out.println("  [S] Sale and Preparation of the Coffee Drink");
                             System.out.println("  [V] View Truck Information");
-                            System.out.println("  [R] Restocking of Storage Bins and Maintenance");
+                            System.out.println("  [R] Restocking of Storage Bins");
+                            System.out.println("  [M] Maintenance");
                             System.out.println();
                             System.out.println("  [X] Return");
 
@@ -184,7 +185,25 @@ public class JavaJeeps {
                                 case 'R':
                                     System.out.println();
 
-                                    ExceptionMessage.printCustom("CURRENTLY UNIMPLEMENTED");
+                                    truckController.restockStorageBins(chosenTruck);
+
+                                    break;
+                                case 'M':
+                                    if (input
+                                            .getBoolean(
+                                                    "Do you want to relocate the truck (currently located at: "
+                                                            + PrintColor.set(chosenTruck.getLocation(),
+                                                                    PrintColor.BRIGHT_CYAN)
+                                                            + ") " + PrintColor.set("(true/false)", PrintColor.RED)
+                                                            + "?",
+                                                    true)) {
+                                        truckController.relocateTruck(chosenTruck);
+                                    }
+
+                                    if (input.getBoolean("Do you want to update the prices (of all trucks) "
+                                            + PrintColor.set("(true/false)", PrintColor.RED) + "?", true)) {
+                                        coffeeController.updatePrices();
+                                    }
 
                                     break;
                                 case 'X':
