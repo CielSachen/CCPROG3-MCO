@@ -129,79 +129,81 @@ public class JavaJeeps {
                         }
                     }
 
-                    if (chosenTruck != null) {
-                        while (true) {
-                            try {
-                                System.out.println();
+                    if (chosenTruck == null) {
+                        break;
+                    }
 
-                                System.out.println("Which feature would you like to simulate?");
-                                System.out.println("  [S] Sale and Preparation of the Coffee Drink");
-                                System.out.println("  [V] View Truck Information");
-                                System.out.println("  [R] Restocking of Storage Bins and Maintenance");
-                                System.out.println();
-                                System.out.println("  [X] Return");
+                    while (true) {
+                        try {
+                            System.out.println();
 
-                                System.out.println();
+                            System.out.println("Which feature would you like to simulate?");
+                            System.out.println("  [S] Sale and Preparation of the Coffee Drink");
+                            System.out.println("  [V] View Truck Information");
+                            System.out.println("  [R] Restocking of Storage Bins and Maintenance");
+                            System.out.println();
+                            System.out.println("  [X] Return");
 
-                                System.out.print("  > ");
+                            System.out.println();
 
-                                char chosenSubOptionId = input.getCharacter();
+                            System.out.print("  > ");
 
-                                switch (chosenSubOptionId) {
-                                    case 'S':
-                                        System.out.println();
+                            char chosenSubOptionId = input.getCharacter();
 
-                                        if (!coffeeController.isCapableOfBrewing(chosenTruck)) {
-                                            ExceptionMessage.printCustom(
-                                                    "This coffee truck does not have the ingredients needed to brew coffee.");
-                                        }
+                            switch (chosenSubOptionId) {
+                                case 'S':
+                                    System.out.println();
 
-                                        coffeeController.prepareCoffee(chosenTruck);
-
-                                        break;
-                                    case 'V': {
-                                        System.out.println();
-
-                                        truckController.printTruckInfo(chosenTruck);
-
-                                        if (coffeeController.isCapableOfBrewing(chosenTruck)) {
-                                            System.out.println();
-
-                                            coffeeController.printPrices(chosenTruck);
-                                        }
-
-                                        if (transactionController.hasTransactions(chosenTruck)) {
-                                            System.out.println();
-
-                                            transactionController.printTransactions(chosenTruck);
-                                        }
-
-                                        break;
+                                    if (!coffeeController.isCapableOfBrewing(chosenTruck)) {
+                                        ExceptionMessage.printCustom(
+                                                "This coffee truck does not have the ingredients needed to brew coffee.");
                                     }
-                                    case 'R':
+
+                                    coffeeController.prepareCoffee(chosenTruck);
+
+                                    break;
+                                case 'V': {
+                                    System.out.println();
+
+                                    truckController.printTruckInfo(chosenTruck);
+
+                                    if (coffeeController.isCapableOfBrewing(chosenTruck)) {
                                         System.out.println();
 
-                                        ExceptionMessage.printCustom("CURRENTLY UNIMPLEMENTED");
+                                        coffeeController.printPrices(chosenTruck);
+                                    }
 
-                                        break;
-                                    case 'X':
-                                        break;
-                                    default:
+                                    if (transactionController.hasTransactions(chosenTruck)) {
                                         System.out.println();
 
-                                        ExceptionMessage.INVALID_CHARACTER_CHOICE.print();
+                                        transactionController.printTransactions(chosenTruck);
+                                    }
 
-                                        continue;
+                                    break;
                                 }
+                                case 'R':
+                                    System.out.println();
 
-                                break;
-                            } catch (InputMismatchException exception) {
-                                scanner.nextLine();
+                                    ExceptionMessage.printCustom("CURRENTLY UNIMPLEMENTED");
 
-                                System.out.println();
+                                    break;
+                                case 'X':
+                                    break;
+                                default:
+                                    System.out.println();
 
-                                ExceptionMessage.INVALID_CHARACTER_CHOICE.print();
+                                    ExceptionMessage.INVALID_CHARACTER_CHOICE.print();
+
+                                    continue;
                             }
+
+                            break;
+                        } catch (InputMismatchException exception) {
+                            scanner.nextLine();
+
+                            System.out.println();
+
+                            ExceptionMessage.INVALID_CHARACTER_CHOICE.print();
                         }
                     }
 
