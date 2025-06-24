@@ -58,7 +58,7 @@ public class CoffeeService {
 
     public Map<Ingredient, Double> brewEspressoShots(Truck truck, double amount, EspressoRatio ratio) {
         double coffeeBeanAmount = UnitConversion.fluidOuncesToGrams(ratio.coffeeBeanDecimal) * amount;
-        double waterAmount = ratio.waterDecimal * amount;
+        double waterAmount = ratio.getWaterDecimal() * amount;
 
         this.storageBinService.decreaseCapacityByTruck(truck, Ingredient.COFFEE_BEANS, coffeeBeanAmount);
         this.storageBinService.decreaseCapacityByTruck(truck, Ingredient.WATER, waterAmount);
@@ -83,7 +83,7 @@ public class CoffeeService {
                 coffee.extraIngredient);
 
         if (coffee instanceof Americano
-                && extraIngredientTotalCapacity < (ratio.waterDecimal * coffee.espressoRatio * size.capacity)
+                && extraIngredientTotalCapacity < (ratio.getWaterDecimal() * coffee.espressoRatio * size.capacity)
                         + (coffee.extraIngredientRatio * size.capacity)
                 || extraIngredientTotalCapacity < coffee.extraIngredientRatio * size.capacity) {
             throw new InsufficientCapacityException(coffee.extraIngredient);
@@ -99,7 +99,7 @@ public class CoffeeService {
         if (this.storageBinService.getTotalCapacityByTruck(truck,
                 Ingredient.COFFEE_BEANS) < UnitConversion.fluidOuncesToGrams(ratio.coffeeBeanDecimal) * amount) {
             throw new InsufficientCapacityException(Ingredient.COFFEE_BEANS);
-        } else if (this.storageBinService.getTotalCapacityByTruck(truck, Ingredient.WATER) < ratio.waterDecimal
+        } else if (this.storageBinService.getTotalCapacityByTruck(truck, Ingredient.WATER) < ratio.getWaterDecimal()
                 * amount) {
             throw new InsufficientCapacityException(Ingredient.WATER);
         }

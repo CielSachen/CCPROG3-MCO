@@ -175,7 +175,7 @@ public class CoffeeController {
             }
         }
 
-        EspressoRatio[] espressoRatios = EspressoRatio.values();
+        EspressoRatio[] espressoRatios = truck.isSpecial ? EspressoRatio.values() : EspressoRatio.regularValues();
 
         EspressoRatio chosenRatio = EspressoRatio.STANDARD;
 
@@ -220,6 +220,11 @@ public class CoffeeController {
             }
         }
 
+        if (chosenRatio.equals(EspressoRatio.CUSTOM)) {
+            EspressoRatio.setCustomRatio(this.input.getInteger("What should the ratio of water to coffea beans be "
+                    + PrintColor.set("(1 : ?)", PrintColor.YELLOW) + "?", true));
+        }
+
         try {
             this.service.canBrewCoffee(truck, chosenCoffee, chosenSize, chosenRatio);
 
@@ -230,8 +235,10 @@ public class CoffeeController {
             float additionalCost = 0;
 
             if (truck.isSpecial) {
-                boolean isAddingEspressoShots = this.input.getBoolean("Would you like to add extra shots of espresso "
-                        + PrintColor.set("(true/false)", PrintColor.RED) + "?", true);
+                boolean isAddingEspressoShots = this.input.getBoolean(
+                        "Would you like to add extra shots of espresso "
+                                + PrintColor.set("(true/false)", PrintColor.RED) + "?",
+                        !chosenRatio.equals(EspressoRatio.CUSTOM));
 
                 if (isAddingEspressoShots) {
                     extraEspressoShotsCount = this.input.getInteger("How many extra shots should be added?");
