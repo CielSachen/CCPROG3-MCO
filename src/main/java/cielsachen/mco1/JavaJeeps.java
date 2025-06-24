@@ -39,7 +39,7 @@ public class JavaJeeps {
         TransactionController transactionController = new TransactionController(transactionService);
         CoffeeController coffeeController = new CoffeeController(coffeeService, storageBinService, transactionService,
                 scanner, input);
-        TruckController truckController = new TruckController(truckService, storageBinService, scanner, input);
+        TruckController truckController = new TruckController(truckService, storageBinService,  scanner, input);
 
         while (!isExiting) {
             Output.printTitle("JavaJeeps: MCO1");
@@ -212,7 +212,11 @@ public class JavaJeeps {
                 case 'D':
                     System.out.println();
 
-                    ExceptionMessage.printCustom("CURRENTLY UNIMPLEMENTED");
+                    truckController.printTrucksInfo();
+
+                    System.out.println();
+
+                    transactionController.printTransactions();
 
                     break;
                 case 'X':

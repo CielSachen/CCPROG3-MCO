@@ -73,8 +73,9 @@ public class TruckController {
                     System.out.println();
 
                     for (StorageBin storageBin : this.storageBinService.getStorageBinsByTruck(truck)) {
-                        System.out.println(PrintColor.set("Bin #" + storageBin.id + " = " + storageBin.ingredient.name,
-                                PrintColor.BRIGHT_GREEN));
+                        System.out.println(
+                                PrintColor.set("Bin #" + storageBin.id + " = " + storageBin.getIngredient().name,
+                                        PrintColor.BRIGHT_GREEN));
                     }
 
                     System.out.println("Bin #" + storageBinId + " =");
@@ -126,6 +127,28 @@ public class TruckController {
         return truck;
     }
 
+    public void printTrucksInfo() {
+        Output.printHeader1("All Trucks Info Summary");
+
+        System.out.println();
+
+        System.out.println("Number of Trucks Deployed: "
+                + PrintColor.set(Integer.toString(this.service.getTrucks().size()), PrintColor.BRIGHT_GREEN) + " ("
+                + PrintColor.set(this.service.getSpecialTrucks().size() + " Special", PrintColor.BRIGHT_YELLOW) + ")");
+
+        System.out.println();
+
+        System.out.println("Ingredients:");
+
+        for (Ingredient ingredient : Ingredient.values()) {
+            System.out.println("  " + ingredient.name + ": "
+                    + PrintColor.set(String.format("%.2f",
+                            this.storageBinService.getStorageBinsByIngredient(ingredient).stream()
+                                    .mapToDouble((storageBin) -> storageBin.getCapacity()).sum())
+                            + " " + ingredient.unitMeasure, PrintColor.BRIGHT_CYAN));
+        }
+    }
+
     public void printTruckInfo(Truck truck) {
         Output.printHeader1("Truck " + truck.id + " Info Summary");
 
@@ -143,7 +166,7 @@ public class TruckController {
             System.out
                     .println(
                             "  Bin " + storageBin.id + " = "
-                                    + PrintColor.set(storageBin.ingredient.name, PrintColor.BRIGHT_CYAN) + " ("
+                                    + PrintColor.set(storageBin.getIngredient().name, PrintColor.BRIGHT_CYAN) + " ("
                                     + PrintColor.set(storageBin.toCapacityString(),
                                             storageBin.isCriticalCapacity() ? PrintColor.RED : PrintColor.BRIGHT_GREEN)
                                     + ")");

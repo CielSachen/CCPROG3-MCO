@@ -23,6 +23,10 @@ public class TruckService {
         return true;
     }
 
+    public List<Truck> getSpecialTrucks() {
+        return this.trucks.stream().filter((truck) -> truck.isSpecial).toList();
+    }
+
     public List<Truck> getTrucks() {
         return Collections.unmodifiableList(this.trucks);
     }

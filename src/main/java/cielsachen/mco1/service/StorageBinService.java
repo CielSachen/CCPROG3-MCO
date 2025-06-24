@@ -22,6 +22,10 @@ public class StorageBinService {
         return Collections.unmodifiableList(this.storageBins);
     }
 
+    public List<StorageBin> getStorageBinsByIngredient(Ingredient ingredient) {
+        return this.storageBins.stream().filter((storageBin) -> storageBin.getIngredient().equals(ingredient)).toList();
+    }
+
     public boolean decreaseCapacityByTruck(Truck truck, Ingredient ingredient, double amount) {
         if (this.getTotalCapacityByTruck(truck, ingredient) < amount) {
             return false;

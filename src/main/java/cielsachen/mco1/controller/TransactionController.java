@@ -46,4 +46,32 @@ public class TransactionController {
             System.out.println("  Cost: " + PrintColor.set(transaction.toCostString(), PrintColor.BRIGHT_GREEN));
         }
     }
+
+    public void printTransactions() {
+        Output.printHeader3("Transactions");
+
+        List<Transaction> transactions = this.service.getTransactions();
+
+        for (int index = 0; index < transactions.size(); index++) {
+            System.out.println();
+
+            Transaction transaction = transactions.get(index);
+
+            System.out.println("Transaction " + (index + 1));
+            System.out.println(
+                    "  Truck ID: " + PrintColor.set(Integer.toString(transaction.truck.id), PrintColor.BRIGHT_CYAN));
+            System.out.println("  Coffee: " + PrintColor.set(transaction.coffeeName, PrintColor.BRIGHT_CYAN));
+            System.out.println("  Ingredients:");
+
+            for (Map.Entry<Ingredient, Double> entry : transaction.getIngredients().entrySet()) {
+                Ingredient ingredient = entry.getKey();
+
+                System.out.println("    " + ingredient.name + ": "
+                        + PrintColor.set(String.format("%.2f", entry.getValue()) + " " + ingredient.unitMeasure,
+                                PrintColor.BRIGHT_CYAN));
+            }
+
+            System.out.println("  Cost: " + PrintColor.set(transaction.toCostString(), PrintColor.BRIGHT_GREEN));
+        }
+    }
 }
