@@ -61,8 +61,7 @@ public class TruckController {
 
         System.out.println();
 
-        System.out.println("----- + ----- + " + PrintColor.set("Setting Truck Storage Bins", PrintColor.BRIGHT_YELLOW)
-                + " + ----- + -----");
+        Output.printHeader2("Set Storage Bin Ingredients");
 
         List<Ingredient> regularIngredients = Ingredient.regularValues();
         List<Ingredient> specialIngredients = Ingredient.specialValues();
