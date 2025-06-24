@@ -11,7 +11,7 @@
   "terminal.integrated.cwd": "${workspaceFolder}/src/main/java",
 
   /* Java Support */
-  "java.settings.url": "${workspaceFolder}/.vscode/settings.prefs",
+  "java.settings.url": ".vscode/settings.prefs",
   "java.format.settings.profile": "GoogleStyle",
 
   /* Prettier Extension */
