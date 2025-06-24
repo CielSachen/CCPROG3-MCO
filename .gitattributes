@@ -1,0 +1,13 @@
+# Checking-in and Checking-out
+*           text=auto
+*.java      text diff=java
+*.json      text
+*.pdf       diff=astextplain
+*.prefs     text
+*.txt       text
+.prettierrc text
+
+# Archive Creation
+.gitattributes export-ignore
+.gitignore     export-ignore
+.gitkeep       export-ignore

@@ -1,0 +1,30 @@
+{
+  /* Text Editor */
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.detectIndentation": false,
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "files.associations": { "settings.prefs": "java-properties" },
+  "files.insertFinalNewline": true,
+
+  /* Features */
+  "terminal.integrated.cwd": "${workspaceFolder}/src/main/java",
+
+  /* Java Support */
+  "java.settings.url": "${workspaceFolder}/.vscode/settings.prefs",
+  "java.format.settings.profile": "GoogleStyle",
+
+  /* Prettier Extension */
+  "prettier.configPath": "./.prettierrc",
+
+  /* Java Files Only Settings */
+  "[java]": {
+    /* Text Editor */
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "editor.defaultFormatter": "redhat.java",
+    "editor.tabSize": 4
+  }
+}
