@@ -20,14 +20,11 @@ public abstract class Coffee extends Product {
     }
 
     public float getPrice(CoffeeSize size) {
-        switch (size) {
-            case CoffeeSize.SMALL_CUP:
-                return this.price - this.price * Coffee.PRICE_SIZE_MODIFIER;
-            case CoffeeSize.LARGE_CUP:
-                return this.price + this.price * Coffee.PRICE_SIZE_MODIFIER;
-            default:
-                return this.price;
-        }
+        return switch (size) {
+            case CoffeeSize.SMALL_CUP -> this.price - this.price * Coffee.PRICE_SIZE_MODIFIER;
+            case CoffeeSize.LARGE_CUP -> this.price + this.price * Coffee.PRICE_SIZE_MODIFIER;
+            default -> this.price;
+        };
     }
 
     @Override
