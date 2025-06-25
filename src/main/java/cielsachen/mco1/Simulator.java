@@ -24,22 +24,22 @@ public class Simulator {
     public void launch() {
         boolean isExiting = false;
 
-        Scanner scanner = new Scanner(System.in);
-        Input input = new Input(scanner);
+        var scanner = new Scanner(System.in);
+        var input = new Input(scanner);
 
         List<Transaction> transactions = new ArrayList<Transaction>();
         List<StorageBin> storageBins = new ArrayList<StorageBin>();
         List<Truck> trucks = new ArrayList<Truck>();
 
-        TransactionService transactionService = new TransactionService(transactions);
-        StorageBinService storageBinService = new StorageBinService(storageBins);
-        CoffeeService coffeeService = new CoffeeService(storageBinService);
-        TruckService truckService = new TruckService(trucks);
+        var transactionService = new TransactionService(transactions);
+        var storageBinService = new StorageBinService(storageBins);
+        var coffeeService = new CoffeeService(storageBinService);
+        var truckService = new TruckService(trucks);
 
-        TransactionController transactionController = new TransactionController(transactionService);
-        CoffeeController coffeeController = new CoffeeController(coffeeService, storageBinService, transactionService,
-                scanner, input);
-        TruckController truckController = new TruckController(truckService, storageBinService, scanner, input);
+        var transactionController = new TransactionController(transactionService);
+        var coffeeController = new CoffeeController(coffeeService, storageBinService, transactionService, scanner,
+                input);
+        var truckController = new TruckController(truckService, storageBinService, scanner, input);
 
         while (!isExiting) {
             Output.printTitle("Coffee Truck Simulator: MCO1");
@@ -163,7 +163,7 @@ public class Simulator {
                                     coffeeController.prepareCoffee(chosenTruck);
 
                                     break;
-                                case 'V': {
+                                case 'V':
                                     System.out.println();
 
                                     truckController.printTruckInfo(chosenTruck);
@@ -181,7 +181,6 @@ public class Simulator {
                                     }
 
                                     break;
-                                }
                                 case 'R':
                                     System.out.println();
 

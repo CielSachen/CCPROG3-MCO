@@ -55,7 +55,7 @@ public class TruckController {
         boolean isSpecial = this.input.getBoolean(
                 "Is this truck a special coffee truck " + PrintColor.set("(true/false)", PrintColor.RED) + "?");
 
-        Truck truck = new Truck(id, location, isSpecial);
+        var truck = new Truck(id, location, isSpecial);
 
         this.service.addTruck(truck);
 
