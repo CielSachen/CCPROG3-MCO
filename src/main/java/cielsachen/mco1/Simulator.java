@@ -188,24 +188,27 @@ public class Simulator {
                                     truckController.restockStorageBins(chosenTruck);
 
                                     break;
-                                case 'M':
-                                    if (input
+                                case 'M': {
+                                    boolean isRelocating = input
                                             .getBoolean(
                                                     "Do you want to relocate the truck (currently located at: "
                                                             + PrintColor.set(chosenTruck.getLocation(),
                                                                     PrintColor.BRIGHT_CYAN)
                                                             + ") " + PrintColor.set("(true/false)", PrintColor.RED)
                                                             + "?",
-                                                    true)) {
+                                                    true);
+
+                                    if (isRelocating) {
                                         truckController.relocateTruck(chosenTruck);
                                     }
 
                                     if (input.getBoolean("Do you want to update the prices (of all trucks) "
-                                            + PrintColor.set("(true/false)", PrintColor.RED) + "?", true)) {
+                                            + PrintColor.set("(true/false)", PrintColor.RED) + "?", isRelocating)) {
                                         coffeeController.updatePrices();
                                     }
 
                                     break;
+                                }
                                 case 'X':
                                     break;
                                 default:
