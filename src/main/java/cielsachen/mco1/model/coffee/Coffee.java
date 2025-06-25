@@ -4,7 +4,7 @@ import cielsachen.mco1.model.Ingredient;
 import cielsachen.mco1.model.Product;
 
 public abstract class Coffee extends Product {
-    public static final float PRICE_SIZE_MODIFIER = 0.1f;
+    private static final float PRICE_SIZE_MODIFIER = 0.1f;
 
     public final Ingredient extraIngredient;
     public final String name;
