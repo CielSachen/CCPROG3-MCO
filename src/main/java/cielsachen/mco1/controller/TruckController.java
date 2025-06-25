@@ -256,7 +256,7 @@ public class TruckController {
 
                         Ingredient storageBinIngredient = chosenStorageBin.getIngredient();
 
-                        double additionalCapacity;
+                        float additionalCapacity;
 
                         while (true) {
                             additionalCapacity = this.input.getFloat(
@@ -273,7 +273,7 @@ public class TruckController {
 
                             System.out.println();
 
-                            ExceptionMessage.printCustom("The amount to restock must be a positive number!");
+                            ExceptionMessage.printCustom("Please only input a positive floating point number!");
                         }
 
                         System.out.println(
