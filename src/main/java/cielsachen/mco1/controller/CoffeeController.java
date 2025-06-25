@@ -390,7 +390,7 @@ public class CoffeeController {
                         + PrintColor.set(this.service.espresso.toPriceString(), PrintColor.BRIGHT_GREEN));
             }
 
-            if (this.storageBinService.truckHasSyrupAddOns(truck)) {
+            if (this.storageBinService.truckHasSyrups(truck)) {
                 System.out.println("  Syrup Add-Ons = "
                         + PrintColor.set(this.service.syrup.toPriceString(), PrintColor.BRIGHT_GREEN));
             }

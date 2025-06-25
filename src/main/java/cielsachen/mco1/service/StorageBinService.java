@@ -94,7 +94,7 @@ public class StorageBinService {
         return true;
     }
 
-    public boolean truckHasSyrupAddOns(Truck truck) {
+    public boolean truckHasSyrups(Truck truck) {
         return storageBins.stream().anyMatch((storageBin) -> storageBin.getIngredient().isSpecial);
     }
 }
