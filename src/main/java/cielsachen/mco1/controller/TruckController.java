@@ -214,11 +214,12 @@ public class TruckController {
             return;
         }
 
+        System.out.println();
+
         Output.printHeader2("Update Bin " + chosenStorageBin.id);
 
         double currentCapacity = chosenStorageBin.getCapacity();
         Ingredient currentIngredient = chosenStorageBin.getIngredient();
-        double missingCapacity = currentIngredient.maximumCapacity - currentCapacity;
 
         while (true) {
             try {
@@ -227,8 +228,7 @@ public class TruckController {
                 System.out.println("What would you like to do to the storage bin?");
 
                 if (currentCapacity < currentIngredient.maximumCapacity) {
-                    System.out.println("  [R] Restock ("
-                            + PrintColor.set(String.format("+ %.2f", missingCapacity), PrintColor.BRIGHT_GREEN) + ")");
+                    System.out.println("  [R] Restock (" + PrintColor.set("+(1+)", PrintColor.BRIGHT_GREEN) + ")");
                 }
 
                 if (currentCapacity > 0) {
@@ -254,7 +254,27 @@ public class TruckController {
                             break;
                         }
 
-                        chosenStorageBin.increaseCapacity(missingCapacity);
+                        Ingredient storageBinIngredient = chosenStorageBin.getIngredient();
+
+                        double additionalCapacity;
+
+                        while (true) {
+                            additionalCapacity = this.input.getFloat(
+                                    "How much (" + PrintColor.set(storageBinIngredient.unitMeasure, PrintColor.YELLOW)
+                                            + ") " + PrintColor.set(storageBinIngredient.name, PrintColor.YELLOW)
+                                            + " should be restocked? ",
+                                    true);
+
+                            if (additionalCapacity > 0) {
+                                chosenStorageBin.increaseCapacity(additionalCapacity);
+
+                                break;
+                            }
+
+                            System.out.println();
+
+                            ExceptionMessage.printCustom("The amount to restock must be a positive number!");
+                        }
 
                         System.out.println(
                                 PrintColor.set("The storage bin has been restocked!", PrintColor.BRIGHT_GREEN));

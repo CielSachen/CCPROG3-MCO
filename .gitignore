@@ -9,6 +9,9 @@
 
 # Documentation
 docs/
+node_modules/
+package.json
+pnpm-lock.yaml
 
 # Miscellaneous
 **/.DS_Store
