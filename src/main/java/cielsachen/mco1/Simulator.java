@@ -186,7 +186,7 @@ public class Simulator {
                                 case 'R':
                                     System.out.println();
 
-                                    truckController.restockStorageBins(chosenTruck);
+                                    truckController.updateStorageBins(chosenTruck);
 
                                     break;
                                 case 'M': {

@@ -182,232 +182,239 @@ public class TruckController {
      * 
      * @param truck The truck to update a storage bin of.
      */
-    public void restockStorageBins(Truck truck) {
-        Output.printHeader2("Update Storage Bins");
-
-        List<StorageBin> storageBins = this.storageBinService.getStorageBinsByTruck(truck);
-
-        StorageBin chosenStorageBin = null;
-
+    public void updateStorageBins(Truck truck) {
         while (true) {
-            try {
-                System.out.println();
+            Output.printHeader2("Update Storage Bins");
 
-                System.out.println("Which storage bin would you like to update?");
+            List<StorageBin> storageBins = this.storageBinService.getStorageBinsByTruck(truck);
 
-                for (StorageBin storageBin : storageBins) {
-                    System.out
-                            .println("  [" + storageBin.id + "] " + storageBin.getIngredient().name + " ("
-                                    + PrintColor.set(storageBin.toCapacityString(),
-                                            storageBin.isCriticalCapacity() ? PrintColor.RED : PrintColor.BRIGHT_GREEN)
-                                    + ")");
+            StorageBin chosenStorageBin = null;
+
+            while (true) {
+                try {
+                    System.out.println();
+
+                    System.out.println("Which storage bin would you like to update?");
+
+                    for (StorageBin storageBin : storageBins) {
+                        System.out
+                                .println("  [" + storageBin.id + "] " + storageBin.getIngredient().name + " ("
+                                        + PrintColor.set(storageBin.toCapacityString(),
+                                                storageBin.isCriticalCapacity() ? PrintColor.RED
+                                                        : PrintColor.BRIGHT_GREEN)
+                                        + ")");
+                    }
+
+                    System.out.println();
+                    System.out.println("  [X] Return");
+
+                    System.out.println();
+
+                    System.out.print("  > ");
+
+                    int chosenStorageBinId = this.scanner.nextInt();
+
+                    this.scanner.nextLine();
+
+                    if (chosenStorageBinId >= 0 && chosenStorageBinId < storageBins.size()) {
+                        chosenStorageBin = this.storageBinService.getStorageBinsById(chosenStorageBinId, truck).get();
+
+                        break;
+                    }
+
+                    System.out.println();
+
+                    ExceptionMessage.INVALID_INTEGER_CHOICE.print();
+                } catch (InputMismatchException exception) {
+                    if (this.input.getCharacter() == 'X') {
+                        break;
+                    }
+
+                    System.out.println();
+
+                    ExceptionMessage.INVALID_INTEGER_CHOICE.print();
                 }
-
-                System.out.println();
-                System.out.println("  [X] Return");
-
-                System.out.println();
-
-                System.out.print("  > ");
-
-                int chosenStorageBinId = this.scanner.nextInt();
-
-                this.scanner.nextLine();
-
-                if (chosenStorageBinId >= 0 && chosenStorageBinId < storageBins.size()) {
-                    chosenStorageBin = this.storageBinService.getStorageBinsById(chosenStorageBinId, truck).get();
-
-                    break;
-                }
-
-                System.out.println();
-
-                ExceptionMessage.INVALID_INTEGER_CHOICE.print();
-            } catch (InputMismatchException exception) {
-                if (this.input.getCharacter() == 'X') {
-                    break;
-                }
-
-                System.out.println();
-
-                ExceptionMessage.INVALID_INTEGER_CHOICE.print();
             }
-        }
 
-        if (chosenStorageBin == null) {
-            return;
-        }
+            if (chosenStorageBin == null) {
+                return;
+            }
 
-        System.out.println();
+            System.out.println();
 
-        Output.printHeader2("Update Bin " + chosenStorageBin.id);
+            Output.printHeader2("Update Bin " + chosenStorageBin.id);
 
-        double currentCapacity = chosenStorageBin.getCapacity();
-        Ingredient currentIngredient = chosenStorageBin.getIngredient();
+            double currentCapacity = chosenStorageBin.getCapacity();
+            Ingredient currentIngredient = chosenStorageBin.getIngredient();
 
-        while (true) {
-            try {
-                System.out.println();
+            while (true) {
+                try {
+                    System.out.println();
 
-                System.out.println("What would you like to do to the storage bin?");
+                    System.out.println("What would you like to do to the storage bin?");
 
-                if (currentCapacity < currentIngredient.maximumCapacity) {
-                    System.out.println("  [R] Restock (" + PrintColor.set("+(1+)", PrintColor.BRIGHT_GREEN) + ")");
-                }
+                    if (currentCapacity < currentIngredient.maximumCapacity) {
+                        System.out.println("  [R] Restock (" + PrintColor.set("+(1+)", PrintColor.BRIGHT_GREEN) + ")");
+                    }
 
-                if (currentCapacity > 0) {
-                    System.out.println("  [E] Empty ("
-                            + PrintColor.set(String.format("- %.2f", currentCapacity), PrintColor.RED) + ")");
-                }
+                    if (currentCapacity > 0) {
+                        System.out.println("  [E] Empty ("
+                                + PrintColor.set(String.format("- %.2f", currentCapacity), PrintColor.RED) + ")");
+                    }
 
-                System.out.println("  [C] Change Ingredients");
-                System.out.println();
-                System.out.println("  [X] Return");
+                    System.out.println("  [C] Change Ingredients");
+                    System.out.println();
+                    System.out.println("  [X] Return");
 
-                System.out.println();
+                    System.out.println();
 
-                System.out.print("  > ");
+                    System.out.print("  > ");
 
-                char chosenOptionId = this.input.getCharacter();
+                    char chosenOptionId = this.input.getCharacter();
 
-                switch (chosenOptionId) {
-                    case 'R':
-                        if (currentCapacity == currentIngredient.maximumCapacity) {
-                            ExceptionMessage.printCustom("The storage bin is already full!");
-
-                            break;
-                        }
-
-                        Ingredient storageBinIngredient = chosenStorageBin.getIngredient();
-
-                        float additionalCapacity;
-
-                        while (true) {
-                            additionalCapacity = this.input.getFloat(
-                                    "How much (" + PrintColor.set(storageBinIngredient.unitMeasure, PrintColor.YELLOW)
-                                            + ") " + PrintColor.set(storageBinIngredient.name, PrintColor.YELLOW)
-                                            + " should be restocked? ",
-                                    true);
-
-                            if (additionalCapacity > 0) {
-                                chosenStorageBin.increaseCapacity(additionalCapacity);
+                    switch (chosenOptionId) {
+                        case 'R':
+                            if (currentCapacity == currentIngredient.maximumCapacity) {
+                                ExceptionMessage.printCustom("The storage bin is already full!");
 
                                 break;
                             }
 
-                            System.out.println();
+                            Ingredient storageBinIngredient = chosenStorageBin.getIngredient();
 
-                            ExceptionMessage.printCustom("Please only input a positive floating point number!");
-                        }
+                            float additionalCapacity;
 
-                        System.out.println(
-                                PrintColor.set("The storage bin has been restocked!", PrintColor.BRIGHT_GREEN));
+                            while (true) {
+                                additionalCapacity = this.input.getFloat(
+                                        "How much ("
+                                                + PrintColor.set(storageBinIngredient.unitMeasure, PrintColor.YELLOW)
+                                                + ") " + PrintColor.set(storageBinIngredient.name, PrintColor.YELLOW)
+                                                + " should be restocked? ",
+                                        true);
 
-                        break;
-                    case 'E':
-                        if (currentCapacity == 0) {
-                            ExceptionMessage.printCustom("The storage bin is already empty!");
+                                if (additionalCapacity > 0) {
+                                    chosenStorageBin.increaseCapacity(additionalCapacity);
+
+                                    break;
+                                }
+
+                                System.out.println();
+
+                                ExceptionMessage.printCustom("Please only input a positive floating point number!");
+                            }
+
+                            System.out.println(
+                                    PrintColor.set("The storage bin has been restocked!", PrintColor.BRIGHT_GREEN));
+
+                            break;
+                        case 'E':
+                            if (currentCapacity == 0) {
+                                ExceptionMessage.printCustom("The storage bin is already empty!");
+
+                                break;
+                            }
+
+                            chosenStorageBin.decreaseCapacity(currentCapacity);
+
+                            System.out
+                                    .println(PrintColor.set("The storage bin has been emptied!",
+                                            PrintColor.BRIGHT_GREEN));
+
+                            break;
+                        case 'C': {
+                            List<Ingredient> ingredients = chosenStorageBin.id <= StorageBin.STANDARD_TRUCK_COUNT
+                                    ? Ingredient.regularValues()
+                                    : Ingredient.specialValues();
+                            int ingredientCount = ingredients.size();
+
+                            while (true) {
+                                try {
+                                    System.out.println();
+
+                                    for (StorageBin storageBin : this.storageBinService.getStorageBinsByTruck(truck)) {
+                                        if (!storageBin.equals(chosenStorageBin)) {
+                                            System.out.println(PrintColor.set(
+                                                    "Bin #" + storageBin.id + " = " + storageBin.getIngredient().name,
+                                                    PrintColor.BRIGHT_CYAN));
+                                        }
+                                    }
+
+                                    System.out.println();
+
+                                    System.out.println(
+                                            "Bin #" + chosenStorageBin.id + " = " + currentIngredient.name);
+
+                                    System.out.println();
+
+                                    System.out.println("What item should this storage bin contain instead?");
+
+                                    for (int index = 0; index < ingredientCount; index++) {
+                                        Ingredient ingredient = ingredients.get(index);
+
+                                        if (!ingredient.equals(currentIngredient)) {
+                                            System.out.println("  [" + (index + 1) + "] " + ingredient.name);
+                                        }
+                                    }
+
+                                    System.out.println();
+
+                                    System.out.print("  > ");
+
+                                    int chosenIngredientIndex = this.scanner.nextInt() - 1;
+
+                                    this.scanner.nextLine();
+
+                                    if (chosenIngredientIndex >= 0 && chosenIngredientIndex < ingredientCount) {
+                                        Ingredient chosenIngredient = ingredients.get(chosenIngredientIndex);
+
+                                        if (!chosenIngredient.equals(currentIngredient)) {
+                                            chosenStorageBin.setIngredient(chosenIngredient);
+
+                                            if (currentCapacity > 0) {
+                                                chosenStorageBin.decreaseCapacity(currentCapacity);
+                                            }
+
+                                            chosenStorageBin.increaseCapacity(chosenIngredient.maximumCapacity);
+
+                                            break;
+                                        }
+                                    }
+
+                                    System.out.println();
+
+                                    ExceptionMessage.INVALID_INTEGER_CHOICE.print();
+                                } catch (InputMismatchException exception) {
+                                    this.scanner.nextLine();
+
+                                    System.out.println();
+
+                                    ExceptionMessage.INVALID_INTEGER_CHOICE.print();
+                                }
+                            }
 
                             break;
                         }
+                        case 'X':
+                            break;
+                        default:
+                            System.out.println();
 
-                        chosenStorageBin.decreaseCapacity(currentCapacity);
+                            ExceptionMessage.INVALID_CHARACTER_CHOICE.print();
 
-                        System.out
-                                .println(PrintColor.set("The storage bin has been emptied!", PrintColor.BRIGHT_GREEN));
-
-                        break;
-                    case 'C': {
-                        List<Ingredient> ingredients = chosenStorageBin.id <= StorageBin.STANDARD_TRUCK_COUNT
-                                ? Ingredient.regularValues()
-                                : Ingredient.specialValues();
-                        int ingredientCount = ingredients.size();
-
-                        while (true) {
-                            try {
-                                System.out.println();
-
-                                for (StorageBin storageBin : this.storageBinService.getStorageBinsByTruck(truck)) {
-                                    if (!storageBin.equals(chosenStorageBin)) {
-                                        System.out.println(PrintColor.set(
-                                                "Bin #" + storageBin.id + " = " + storageBin.getIngredient().name,
-                                                PrintColor.BRIGHT_CYAN));
-                                    }
-                                }
-
-                                System.out.println();
-
-                                System.out.println(
-                                        "Bin #" + chosenStorageBin.id + " = " + currentIngredient.name);
-
-                                System.out.println();
-
-                                System.out.println("What item should this storage bin contain instead?");
-
-                                for (int index = 0; index < ingredientCount; index++) {
-                                    Ingredient ingredient = ingredients.get(index);
-
-                                    if (!ingredient.equals(currentIngredient)) {
-                                        System.out.println("  [" + (index + 1) + "] " + ingredient.name);
-                                    }
-                                }
-
-                                System.out.println();
-
-                                System.out.print("  > ");
-
-                                int chosenIngredientIndex = this.scanner.nextInt() - 1;
-
-                                this.scanner.nextLine();
-
-                                if (chosenIngredientIndex >= 0 && chosenIngredientIndex < ingredientCount) {
-                                    Ingredient chosenIngredient = ingredients.get(chosenIngredientIndex);
-
-                                    if (!chosenIngredient.equals(currentIngredient)) {
-                                        chosenStorageBin.setIngredient(chosenIngredient);
-
-                                        if (currentCapacity > 0) {
-                                            chosenStorageBin.decreaseCapacity(currentCapacity);
-                                        }
-
-                                        chosenStorageBin.increaseCapacity(chosenIngredient.maximumCapacity);
-
-                                        break;
-                                    }
-                                }
-
-                                System.out.println();
-
-                                ExceptionMessage.INVALID_INTEGER_CHOICE.print();
-                            } catch (InputMismatchException exception) {
-                                this.scanner.nextLine();
-
-                                System.out.println();
-
-                                ExceptionMessage.INVALID_INTEGER_CHOICE.print();
-                            }
-                        }
-
-                        break;
+                            continue;
                     }
-                    case 'X':
-                        break;
-                    default:
-                        System.out.println();
 
-                        ExceptionMessage.INVALID_CHARACTER_CHOICE.print();
+                    break;
+                } catch (InputMismatchException exception) {
+                    scanner.nextLine();
 
-                        continue;
+                    System.out.println();
+
+                    ExceptionMessage.INVALID_CHARACTER_CHOICE.print();
                 }
-
-                break;
-            } catch (InputMismatchException exception) {
-                scanner.nextLine();
-
-                System.out.println();
-
-                ExceptionMessage.INVALID_CHARACTER_CHOICE.print();
             }
+
+            System.out.println();
         }
     }
 
