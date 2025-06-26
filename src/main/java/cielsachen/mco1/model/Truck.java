@@ -10,7 +10,7 @@ public class Truck {
     private String location;
 
     /**
-     * Constructs a new {@code Truck} object instance.
+     * Creates a new {@code Truck} object instance.
      * 
      * @param id        The ID of the truck.
      * @param location  The location of the truck.

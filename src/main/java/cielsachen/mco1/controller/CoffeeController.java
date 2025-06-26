@@ -31,7 +31,7 @@ public class CoffeeController {
     private final TransactionService transactionService;
 
     /**
-     * Constructs a new {@code CoffeeController} object instance.
+     * Creates a new {@code CoffeeController} object instance.
      * 
      * @param service            The coffee service to use.
      * @param storageBinService  The storage bin service to use.

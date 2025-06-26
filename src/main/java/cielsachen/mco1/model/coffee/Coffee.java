@@ -19,7 +19,7 @@ public abstract class Coffee extends Product {
     public final double extraIngredientRatio;
 
     /**
-     * Constructs a new {@code Coffee} object instance.
+     * Creates a new {@code Coffee} object instance.
      * 
      * @param name                 The name of the coffee.
      * @param extraIngredient      The extra ingredient needed to brew the coffee.

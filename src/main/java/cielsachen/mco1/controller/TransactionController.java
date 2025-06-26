@@ -15,7 +15,7 @@ public class TransactionController {
     private final TransactionService service;
 
     /**
-     * Constructs a new {@code TransactionController} object instance.
+     * Creates a new {@code TransactionController} object instance.
      * 
      * @param service The transaction service to use.
      */

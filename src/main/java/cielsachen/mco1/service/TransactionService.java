@@ -14,7 +14,7 @@ public class TransactionService {
     private final List<Transaction> transactions;
 
     /**
-     * Constructs a new {@code TransactionService} object instance.
+     * Creates a new {@code TransactionService} object instance.
      * 
      * @param transactions The list of transactions to use.
      */

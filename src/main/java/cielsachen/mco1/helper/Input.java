@@ -8,7 +8,7 @@ public class Input {
     private final Scanner scanner;
 
     /**
-     * Constructs a new {@code Input} object instance.
+     * Creates a new {@code Input} object instance.
      * 
      * @param scanner The scanner to use.
      */

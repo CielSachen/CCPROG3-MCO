@@ -22,7 +22,7 @@ public class Transaction {
     private final Map<Ingredient, Double> ingredients;
 
     /**
-     * Constructs a new {@code Transaction} object instance.
+     * Creates a new {@code Transaction} object instance.
      * 
      * @param coffeeName             The name of the purchased coffee.
      * @param coffeeSize             The size of the purchased coffee.

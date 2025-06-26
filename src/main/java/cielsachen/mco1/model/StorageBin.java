@@ -16,7 +16,7 @@ public class StorageBin {
     private Ingredient ingredient;
 
     /**
-     * Constructs a new {@code StorageBin} object instance.
+     * Creates a new {@code StorageBin} object instance.
      * 
      * @param id         The ID of the storage bin.
      * @param truck      The truck that the storage bin belongs to.

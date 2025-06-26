@@ -37,7 +37,7 @@ public class CoffeeService {
     private final StorageBinService storageBinService;
 
     /**
-     * Constructs a new {@code CoffeeService} object instance.
+     * Creates a new {@code CoffeeService} object instance.
      * 
      * @param storageBinService The storage bin service to use.
      */

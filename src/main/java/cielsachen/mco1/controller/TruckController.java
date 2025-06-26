@@ -23,7 +23,7 @@ public class TruckController {
     private final StorageBinService storageBinService;
 
     /**
-     * Constructs a new {@code TruckController} object instance.
+     * Creates a new {@code TruckController} object instance.
      * 
      * @param service           The truck service to use.
      * @param storageBinService The storage bin service to use.

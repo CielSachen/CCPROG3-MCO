@@ -13,7 +13,7 @@ public class TruckService {
     private final List<Truck> trucks;
 
     /**
-     * Constructs a new {@code TruckService} object instance.
+     * Creates a new {@code TruckService} object instance.
      * 
      * @param trucks The list of trucks to use.
      */
