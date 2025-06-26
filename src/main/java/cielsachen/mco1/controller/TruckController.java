@@ -14,6 +14,7 @@ import cielsachen.mco1.model.Truck;
 import cielsachen.mco1.service.StorageBinService;
 import cielsachen.mco1.service.TruckService;
 
+/** Represents a controller for interacting with trucks. */
 public class TruckController {
     private final Input input;
     private final Scanner scanner;
@@ -21,6 +22,14 @@ public class TruckController {
     private final TruckService service;
     private final StorageBinService storageBinService;
 
+    /**
+     * Constructs a new {@code TruckController} object instance.
+     * 
+     * @param service           The truck service to use.
+     * @param storageBinService The storage bin service to use.
+     * @param scanner           The console input scanner to use.
+     * @param input             The CLI input helper to use.
+     */
     public TruckController(TruckService service, StorageBinService storageBinService, Scanner scanner, Input input) {
         this.input = input;
         this.scanner = scanner;
@@ -28,6 +37,11 @@ public class TruckController {
         this.storageBinService = storageBinService;
     }
 
+    /**
+     * Creates a new truck.
+     * 
+     * @return A new truck.
+     */
     public Truck createTruck() {
         Output.printHeader2("Create a New Truck");
 
@@ -131,6 +145,11 @@ public class TruckController {
         return truck;
     }
 
+    /**
+     * Moves the truck to a new unoccupied location.
+     * 
+     * @param truck The truck to relocate.
+     */
     public void relocateTruck(Truck truck) {
         String newLocation;
 
@@ -158,6 +177,11 @@ public class TruckController {
                 .println(PrintColor.set("Relocated the coffee truck to " + newLocation + "!", PrintColor.BRIGHT_GREEN));
     }
 
+    /**
+     * Restocks, empties, or changes the ingredient of a truck's storage bin.
+     * 
+     * @param truck The truck to update a storage bin of.
+     */
     public void restockStorageBins(Truck truck) {
         Output.printHeader2("Update Storage Bins");
 
@@ -387,6 +411,7 @@ public class TruckController {
         }
     }
 
+    /** Prints the information summary of all deployed trucks. */
     public void printTrucksInfo() {
         Output.printHeader1("All Trucks Info Summary");
 
@@ -409,6 +434,11 @@ public class TruckController {
         }
     }
 
+    /**
+     * Prints the information summary of a truck.
+     * 
+     * @param truck The truck to print get the info from.
+     */
     public void printTruckInfo(Truck truck) {
         Output.printHeader1("Truck " + truck.id + " Info Summary");
 

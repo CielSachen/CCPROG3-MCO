@@ -21,6 +21,7 @@ import cielsachen.mco1.service.CoffeeService;
 import cielsachen.mco1.service.StorageBinService;
 import cielsachen.mco1.service.TransactionService;
 
+/** Represents a controller for interacting with coffees. */
 public class CoffeeController {
     private final Input input;
     private final Scanner scanner;
@@ -29,6 +30,15 @@ public class CoffeeController {
     private final StorageBinService storageBinService;
     private final TransactionService transactionService;
 
+    /**
+     * Constructs a new {@code CoffeeController} object instance.
+     * 
+     * @param service            The coffee service to use.
+     * @param storageBinService  The storage bin service to use.
+     * @param transactionService The transaction service to use.
+     * @param scanner            The console input scanner to use.
+     * @param input              The CLI input helper to use.
+     */
     public CoffeeController(CoffeeService service, StorageBinService storageBinService,
             TransactionService transactionService, Scanner scanner, Input input) {
         this.input = input;
@@ -38,14 +48,28 @@ public class CoffeeController {
         this.transactionService = transactionService;
     }
 
+    /**
+     * Checks if the truck can brew any coffee. This wraps the {@link CoffeeService#isCapableOfBrewing
+     * isCapableOfBrewing()} method.
+     * 
+     * @param truck The truck to check.
+     * @return Whether the truck can brew any coffee.
+     */
     public boolean isCapableOfBrewing(Truck truck) {
         return this.service.isCapableOfBrewing(truck);
     }
 
+    /**
+     * Checks if the prices of the coffees and add-ons have been set. This wraps {@link CoffeeService#isPricesSet
+     * isPricesSet()} the method.
+     * 
+     * @return Whether the prices of the coffees and add-ons are not the default.
+     */
     public boolean isPricesSet() {
         return this.service.isPricesSet();
     }
 
+    /** Changes the prices of all coffees and add-ons. */
     public void updatePrices() {
         Output.printHeader2("Change the Coffee Prices");
 
@@ -75,6 +99,12 @@ public class CoffeeController {
                 "What base price should " + PrintColor.set("syrup add-ons", PrintColor.YELLOW) + " should have?"));
     }
 
+    /**
+     * Prepares a coffee in a truck. This will decrease the capacities of relevant storage bins and create a new
+     * transaction.
+     * 
+     * @param truck The truck to prepare the coffee in.
+     */
     public void prepareCoffee(Truck truck) {
         Output.printHeader2("Order a Coffee");
 
@@ -368,6 +398,11 @@ public class CoffeeController {
         }
     }
 
+    /**
+     * Prints the prices of all coffees and add-ons.
+     * 
+     * @param truck The truck to print the prices of.
+     */
     public void printPrices(Truck truck) {
         Output.printHeader3("Coffee and Add-On Prices");
 

@@ -10,17 +10,35 @@ import cielsachen.mco1.model.Transaction;
 import cielsachen.mco1.model.Truck;
 import cielsachen.mco1.service.TransactionService;
 
+/** Represents a controller for interacting with transactions. */
 public class TransactionController {
     private final TransactionService service;
 
+    /**
+     * Constructs a new {@code TransactionController} object instance.
+     * 
+     * @param service The transaction service to use.
+     */
     public TransactionController(TransactionService service) {
         this.service = service;
     }
 
+    /**
+     * Checks if a truck has any linked transactions. This wraps the {@link TransactionService#hasTransactions
+     * hasTransactions()} method.
+     * 
+     * @param truck The truck to check.
+     * @return Whether the truck has linked transactions.
+     */
     public boolean hasTransactions(Truck truck) {
         return this.service.hasTransactions(truck);
     }
 
+    /**
+     * Prints all of the transactions linked with a truck.
+     * 
+     * @param truck The truck to use.
+     */
     public void printTransactions(Truck truck) {
         Output.printHeader3("Transactions");
 
@@ -47,6 +65,7 @@ public class TransactionController {
         }
     }
 
+    /** Prints all transactions linked with all trucks. */
     public void printTransactions() {
         Output.printHeader3("Transactions");
 

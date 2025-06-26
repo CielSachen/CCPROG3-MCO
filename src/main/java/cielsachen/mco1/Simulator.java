@@ -20,7 +20,9 @@ import cielsachen.mco1.service.StorageBinService;
 import cielsachen.mco1.service.TransactionService;
 import cielsachen.mco1.service.TruckService;
 
+/** Represents the simulator program. */
 public class Simulator {
+    /** Launches the simulator. */
     public void launch() {
         boolean isExiting = false;
 
