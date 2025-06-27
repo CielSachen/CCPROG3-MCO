@@ -284,8 +284,6 @@ public class CoffeeController {
 
                         System.out.println(exception.getMessage());
                     }
-
-                    System.out.println();
                 }
 
                 boolean isAddingSyrups = true;
@@ -355,8 +353,6 @@ public class CoffeeController {
 
                             System.out.println(exception.getMessage());
                         }
-
-                        System.out.println();
                     }
                 }
             }
@@ -365,13 +361,15 @@ public class CoffeeController {
 
             System.out.println(">>> Preparing a " + PrintColor.set(chosenSize.name, PrintColor.YELLOW) + " of "
                     + PrintColor.set(chosenCoffee.name, PrintColor.YELLOW) + " ("
-                    + PrintColor.set(chosenSize.toString(), PrintColor.BRIGHT_CYAN) + ")");
+                    + PrintColor.set(chosenSize.toString(), PrintColor.BRIGHT_CYAN) + ") with "
+                    + PrintColor.set(Integer.toString(extraEspressoShotsCount), PrintColor.BRIGHT_CYAN)
+                    + PrintColor.set(" extra shots of espresso...", PrintColor.YELLOW));
             System.out.println(">>> Brewing " + PrintColor.set(chosenRatio.name + " Espresso", PrintColor.YELLOW));
 
             for (Map.Entry<Ingredient, Double> entry : ingredients.entrySet()) {
                 Ingredient ingredient = entry.getKey();
 
-                System.out.println(">>> Adding " + PrintColor.set(ingredient.name, PrintColor.BRIGHT_CYAN) + " ("
+                System.out.println(">>> Adding " + PrintColor.set(ingredient.name, PrintColor.YELLOW) + " ("
                         + PrintColor.set(String.format("%.2f", entry.getValue()) + " " + ingredient.unitMeasure,
                                 PrintColor.BRIGHT_CYAN)
                         + ")...");
