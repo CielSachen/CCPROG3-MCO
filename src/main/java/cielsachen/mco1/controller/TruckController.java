@@ -293,7 +293,12 @@ public class TruckController {
                                         true);
 
                                 if (additionalCapacity > 0) {
-                                    chosenStorageBin.increaseCapacity(additionalCapacity);
+                                    if (currentCapacity + additionalCapacity > currentIngredient.maximumCapacity) {
+                                        chosenStorageBin.decreaseCapacity(currentCapacity);
+                                        chosenStorageBin.increaseCapacity(currentIngredient.maximumCapacity);
+                                    } else {
+                                        chosenStorageBin.increaseCapacity(additionalCapacity);
+                                    }
 
                                     break;
                                 }
