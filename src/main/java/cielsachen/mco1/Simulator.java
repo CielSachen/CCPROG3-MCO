@@ -205,6 +205,8 @@ public class Simulator {
 
                                     if (input.getBoolean("Do you want to update the prices (of all trucks) "
                                             + PrintColor.set("(true/false)", PrintColor.RED) + "?", isRelocating)) {
+                                        System.out.println();
+
                                         coffeeController.updatePrices();
                                     }
 
