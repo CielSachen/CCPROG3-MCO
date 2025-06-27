@@ -1,7 +1,7 @@
 package cielsachen.mco1.controller;
 
-import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -258,7 +258,7 @@ public class CoffeeController {
         try {
             this.service.canBrewCoffee(truck, chosenCoffee, chosenSize, chosenRatio);
 
-            Map<Ingredient, Double> ingredients = new HashMap<Ingredient, Double>(
+            Map<Ingredient, Double> ingredients = new LinkedHashMap<Ingredient, Double>(
                     this.service.brewCoffee(truck, chosenCoffee, chosenSize, chosenRatio));
 
             int extraEspressoShotsCount = 0;

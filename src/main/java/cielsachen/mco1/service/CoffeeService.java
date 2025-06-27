@@ -2,7 +2,7 @@ package cielsachen.mco1.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,7 +71,7 @@ public class CoffeeService {
         double extraIngredientAmount = coffee.extraIngredientRatio * size.capacity;
         double cupCount = 1;
 
-        Map<Ingredient, Double> transactionIngredients = new HashMap<Ingredient, Double>(
+        Map<Ingredient, Double> transactionIngredients = new LinkedHashMap<Ingredient, Double>(
                 this.brewEspressoShots(truck, coffee.espressoRatio * size.capacity, ratio));
 
         this.storageBinService.decreaseCapacityByTruck(truck, coffee.extraIngredient, extraIngredientAmount);
