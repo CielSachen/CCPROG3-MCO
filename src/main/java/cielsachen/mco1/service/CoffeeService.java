@@ -10,12 +10,9 @@ import cielsachen.mco1.exception.InsufficientCapacityException;
 import cielsachen.mco1.model.Ingredient;
 import cielsachen.mco1.model.Product;
 import cielsachen.mco1.model.Truck;
-import cielsachen.mco1.model.coffee.Americano;
-import cielsachen.mco1.model.coffee.Cappuccino;
 import cielsachen.mco1.model.coffee.Coffee;
 import cielsachen.mco1.model.coffee.CoffeeSize;
 import cielsachen.mco1.model.coffee.EspressoRatio;
-import cielsachen.mco1.model.coffee.Latte;
 import cielsachen.mco1.util.UnitConversion;
 
 /**
@@ -23,11 +20,11 @@ import cielsachen.mco1.util.UnitConversion;
  */
 public class CoffeeService {
     /** The brew able americano coffee. */
-    public final Americano americano = new Americano();
+    public final Coffee americano = new Coffee("Café Americano", Ingredient.WATER, 1.0 / 3.0, 2.0 / 3.0);
     /** The brew able cappuccino coffee. */
-    public final Cappuccino cappuccino = new Cappuccino();
+    public final Coffee cappuccino = new Coffee("Cappuccino", Ingredient.MILK, 1.0 / 3.0, 2.0 / 3.0);
     /** The brew able latte coffee. */
-    public final Latte latte = new Latte();
+    public final Coffee latte = new Coffee("Latte", Ingredient.MILK, 1.0 / 5.0, 4.0 / 5.0);
 
     /** The addable extra espresso shot. */
     public final Product espresso = new Product();
@@ -139,7 +136,7 @@ public class CoffeeService {
         double extraIngredientTotalCapacity = this.storageBinService.getTotalCapacityByTruck(truck,
                 coffee.extraIngredient);
 
-        if (coffee instanceof Americano
+        if (coffee.extraIngredient.equals(Ingredient.WATER)
                 && extraIngredientTotalCapacity < (ratio.getWaterDecimal() * coffee.espressoRatio * size.capacity)
                         + (coffee.extraIngredientRatio * size.capacity)
                 || extraIngredientTotalCapacity < coffee.extraIngredientRatio * size.capacity) {

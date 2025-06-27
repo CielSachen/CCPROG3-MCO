@@ -4,7 +4,7 @@ import cielsachen.mco1.model.Ingredient;
 import cielsachen.mco1.model.Product;
 
 /** Represents a brew able coffee. */
-public abstract class Coffee extends Product {
+public class Coffee extends Product {
     /** The modifier for the prices of other coffee sizes. */
     private static final float PRICE_SIZE_MODIFIER = 0.1f;
 
@@ -26,7 +26,7 @@ public abstract class Coffee extends Product {
      * @param espressoRatio        Ratio of espresso to use to brew the coffee.
      * @param extraIngredientRatio Ratio of the extra ingredient to use to brew the coffee.
      */
-    protected Coffee(String name, Ingredient extraIngredient, double espressoRatio, double extraIngredientRatio) {
+    public Coffee(String name, Ingredient extraIngredient, double espressoRatio, double extraIngredientRatio) {
         this.espressoRatio = espressoRatio;
         this.extraIngredient = extraIngredient;
         this.extraIngredientRatio = extraIngredientRatio;
