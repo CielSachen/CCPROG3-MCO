@@ -8,6 +8,10 @@ public class Product {
     /** The price of the product. */
     protected float price = Product.DEFAULT_PRICE;
 
+    /** Creates a new {@code Product} object instance. */
+    public Product() {
+    }
+
     /**
      * Gets the price of the product.
      * 

@@ -22,6 +22,10 @@ import cielsachen.mco1.service.TruckService;
 
 /** Represents the simulator program. */
 public class Simulator {
+    /** Creates a new {@code Simulator} object instance. */
+    public Simulator() {
+    }
+
     /** Launches the simulator. */
     public void launch() {
         boolean isExiting = false;
