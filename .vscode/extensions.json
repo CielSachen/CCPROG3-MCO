@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+    /* Language Support */
+    "vscjava.vscode-java-pack",
+
+    /* Intellicode */
+    "visualstudioexptteam.intellicode-api-usage-examples",
+    "visualstudioexptteam.vscodeintellicode",
+
+    /* Formatting and Linting */
+    "esbenp.prettier-vscode",
+
+    /* GitHub */
+    "github.vscode-pull-request-github"
+  ]
+}
