@@ -1,17 +1,13 @@
-# Visual Studio Code
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
-!.vscode/settings.prefs
+# Editor Settings
+.vscode/
 
-# Java
+# Java Bytecode
 **/*.class
-
-# Documentation
+# JavaDoc Output
 docs/
-node_modules/
-package.json
-pnpm-lock.yaml
+
+# Flattened Source Files
+dist/
 
 # Miscellaneous
 **/.DS_Store

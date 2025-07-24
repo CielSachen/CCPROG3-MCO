@@ -1,11 +1,13 @@
 # Checking-in and Checking-out
-*           text=auto
-*.java      text diff=java
-*.json      text
-*.pdf       diff=astextplain
-*.prefs     text
-*.txt       text
-.prettierrc text
+*             text=auto
+*.java        text diff=java
+*.json        text
+*.md          text diff=markdown
+*.pdf         diff=astextplain
+*.prefs       text
+*.ps1         text
+*.txt         text
+.editorconfig text
 
 # Archive Creation
 .gitattributes export-ignore
