@@ -22,7 +22,8 @@ import cielsachen.ccprog3.mco2.model.coffee.EspressoRatio;
 import cielsachen.ccprog3.mco2.service.CoffeeService;
 import cielsachen.ccprog3.mco2.service.StorageBinService;
 import cielsachen.ccprog3.mco2.service.TransactionService;
-import cielsachen.ccprog3.mco2.view.PriceConfigurationView;
+import cielsachen.ccprog3.mco2.view.component.Modal;
+import cielsachen.ccprog3.mco2.view.form.PriceConfigurationForm;
 
 /** Represents a controller for interacting with coffees. */
 public class CoffeeController {
@@ -72,25 +73,37 @@ public class CoffeeController {
         return this.service.isPricesSet();
     }
 
+    // TEMPORARILY PASS TRUCK
     /** Changes the prices of all coffees and add-ons. */
-    public void updatePrices() {
+    public void updatePrices(Truck truck) {
         Coffee[] coffees = this.service.getCoffees();
 
-        var priceConfigurationView = new PriceConfigurationView(coffees);
+        var priceConfigurationView = new PriceConfigurationForm(coffees);
 
         priceConfigurationView.submitButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent evt) {
+                List<Float> prices;
+
+                try {
+                    prices = priceConfigurationView.priceFields.stream()
+                            .map((field) -> Float.parseFloat(field.getText())).toList();
+                } catch (NumberFormatException e) {
+                    Modal.showError("All fields must be filled!", "Missing Fields");
+
+                    return;
+                }
+
                 int i;
 
                 for (i = 0; i < coffees.length; i++) {
-                    coffees[i].setPrice(Float.parseFloat(priceConfigurationView.priceFields.get(i).getText()));
+                    coffees[i].setPrice(prices.get(i));
                 }
 
-                CoffeeController.this.service.espresso
-                        .setPrice(Float.parseFloat(priceConfigurationView.priceFields.get(i).getText()));
-                CoffeeController.this.service.syrup
-                        .setPrice(Float.parseFloat(priceConfigurationView.priceFields.get(++i).getText()));
+                CoffeeController.this.service.espresso.setPrice(prices.get(i));
+                CoffeeController.this.service.syrup.setPrice(prices.get(++i));
+
+                CoffeeController.this.printPrices(truck);
             }
         });
     }

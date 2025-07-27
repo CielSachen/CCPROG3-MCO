@@ -1,4 +1,4 @@
-package cielsachen.ccprog3.mco2.view;
+package cielsachen.ccprog3.mco2.view.form;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -18,11 +18,11 @@ import javax.swing.text.PlainDocument;
 import cielsachen.ccprog3.mco2.model.coffee.Coffee;
 import cielsachen.ccprog3.mco2.validator.FloatDocumentFilter;
 
-public class PriceConfigurationView extends JFrame {
+public class PriceConfigurationForm extends JFrame {
     public final List<JTextField> priceFields = new ArrayList<JTextField>();
     public final JButton submitButton = new JButton("Submit");
 
-    public PriceConfigurationView(Coffee[] coffees) {
+    public PriceConfigurationForm(Coffee[] coffees) {
         super("Configure Coffee Prices");
 
         for (int i = 0; i < coffees.length + 2; i++) {
@@ -33,7 +33,7 @@ public class PriceConfigurationView extends JFrame {
             this.priceFields.add(priceField);
         }
 
-        super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        super.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         super.setLocationRelativeTo(null);
 
@@ -82,7 +82,11 @@ public class PriceConfigurationView extends JFrame {
         this.submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PriceConfigurationView.super.dispose();
+                if (PriceConfigurationForm.this.priceFields.stream().anyMatch((field) -> field.getText().isEmpty())) {
+                    return;
+                }
+
+                PriceConfigurationForm.super.dispose();
             }
         });
 

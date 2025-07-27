@@ -1,4 +1,4 @@
-package cielsachen.ccprog3.mco2.view;
+package cielsachen.ccprog3.mco2.view.form;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -12,12 +12,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-public class TruckCreationView extends JFrame {
+public class TruckCreationForm extends JFrame {
     public final JTextField locationField = new JTextField();
     public final JCheckBox isSpecialCheckBox = new JCheckBox("Make a Special Truck?");
     public final JButton submitButton = new JButton("Submit");
 
-    public TruckCreationView() {
+    public TruckCreationForm() {
         super("Create a New Truck");
 
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -54,7 +54,11 @@ public class TruckCreationView extends JFrame {
         this.submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TruckCreationView.super.dispose();
+                if (TruckCreationForm.this.locationField.getText().isEmpty()) {
+                    return;
+                }
+
+                TruckCreationForm.super.dispose();
             }
         });
 

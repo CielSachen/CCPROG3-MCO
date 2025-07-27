@@ -1,4 +1,4 @@
-package cielsachen.ccprog3.mco2.view;
+package cielsachen.ccprog3.mco2.view.form;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -18,11 +18,11 @@ import cielsachen.ccprog3.mco1.model.StorageBin;
 import cielsachen.ccprog3.mco2.model.Ingredient;
 import cielsachen.ccprog3.mco2.model.Truck;
 
-public class StorageBinAssignmentView extends JFrame {
+public class StorageBinAssignmentForm extends JFrame {
     public final List<JComboBox<Ingredient>> ingredientComboBoxes = new ArrayList<JComboBox<Ingredient>>();
     public final JButton submitButton = new JButton("Submit");
 
-    public StorageBinAssignmentView(Truck truck, boolean isUpdating) {
+    public StorageBinAssignmentForm(Truck truck, boolean isUpdating) {
         super("Update Storage Bins");
 
         for (int i = 0; i < (truck.isSpecial ? StorageBin.SPECIAL_TRUCK_COUNT
@@ -31,7 +31,7 @@ public class StorageBinAssignmentView extends JFrame {
                     i < StorageBin.STANDARD_TRUCK_COUNT ? Ingredient.regularValues() : Ingredient.specialValues())));
         }
 
-        super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        super.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         super.setLocationRelativeTo(null);
 
@@ -68,7 +68,7 @@ public class StorageBinAssignmentView extends JFrame {
         this.submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                StorageBinAssignmentView.super.dispose();
+                StorageBinAssignmentForm.super.dispose();
             }
         });
 

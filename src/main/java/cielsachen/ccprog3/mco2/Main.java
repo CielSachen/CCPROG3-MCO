@@ -39,6 +39,6 @@ public class Main {
         var truckController = new TruckController(coffeeController, truckService, storageBinService, scanner, input);
         var menuController = new MenuController(truckController, coffeeController, transactionController);
 
-        menuController.displayMainMenu();
+        menuController.showMainMenu();
     }
 }

@@ -18,8 +18,9 @@ import cielsachen.ccprog3.mco2.model.StorageBin;
 import cielsachen.ccprog3.mco2.model.Truck;
 import cielsachen.ccprog3.mco2.service.StorageBinService;
 import cielsachen.ccprog3.mco2.service.TruckService;
-import cielsachen.ccprog3.mco2.view.StorageBinAssignmentView;
-import cielsachen.ccprog3.mco2.view.TruckCreationView;
+import cielsachen.ccprog3.mco2.view.component.Modal;
+import cielsachen.ccprog3.mco2.view.form.StorageBinAssignmentForm;
+import cielsachen.ccprog3.mco2.view.form.TruckCreationForm;
 
 /** Represents a controller for interacting with trucks. */
 public class TruckController {
@@ -56,41 +57,50 @@ public class TruckController {
      * @return A new truck.
      */
     public void createTruck() {
-        var creationView = new TruckCreationView();
+        var creationForm = new TruckCreationForm();
 
-        creationView.submitButton.addActionListener(new ActionListener() {
+        creationForm.submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String givenLocation = creationView.locationField.getText();
+                String givenLocation = creationForm.locationField.getText();
 
-                if (TruckController.this.service.isOccupiedLocation(givenLocation)) {
-                    JOptionPane.showMessageDialog(null, "A truck already exists on this location!", "Invalid Input",
-                            JOptionPane.ERROR_MESSAGE);
+                if (givenLocation.isEmpty()) {
+                    Modal.showError("A location must be specified!", "Missing Field");
+
+                    return;
+                } else if (TruckController.this.service.isOccupiedLocation(givenLocation)) {
+                    Modal.showError("A truck already exists on this location!", "Invalid Input");
 
                     return;
                 }
 
-                boolean isSpecial = creationView.isSpecialCheckBox.isSelected();
+                boolean isSpecial = creationForm.isSpecialCheckBox.isSelected();
 
                 Truck truck = new Truck(
                         TruckController.this.service.getTrucks().size() + 1, givenLocation, isSpecial);
 
                 TruckController.this.service.addTruck(truck);
 
-                var storageBinAssignmentView = new StorageBinAssignmentView(truck, false);
+                var storageBinAssignmentForm = new StorageBinAssignmentForm(truck, false);
 
-                storageBinAssignmentView.submitButton.addActionListener(new ActionListener() {
+                storageBinAssignmentForm.submitButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        for (int i = 0; i < storageBinAssignmentView.ingredientComboBoxes.size(); i++) {
-                            JComboBox<Ingredient> ingredientComboBox = storageBinAssignmentView.ingredientComboBoxes
+                        for (int i = 0; i < storageBinAssignmentForm.ingredientComboBoxes.size(); i++) {
+                            JComboBox<Ingredient> ingredientComboBox = storageBinAssignmentForm.ingredientComboBoxes
                                     .get(i);
 
                             TruckController.this.storageBinService.addStorageBin(new StorageBin(i + 1, truck,
                                     (Ingredient) ingredientComboBox.getSelectedItem()));
                         }
 
-                        coffeeController.updatePrices();
+                        if (!TruckController.this.coffeeController.isPricesSet()
+                                || Modal.showConfirmation("Do you want to update the prices?",
+                                        null) == JOptionPane.YES_OPTION) {
+                            TruckController.this.coffeeController.updatePrices(truck);
+                        }
+
+                        TruckController.this.printTruckInfo(truck);
                     }
                 });
             }

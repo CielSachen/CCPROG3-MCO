@@ -39,7 +39,7 @@ public class MenuController {
         });
     }
 
-    public void displayMainMenu() {
+    public void showMainMenu() {
         this.view.pack();
         this.view.setVisible(true);
     }
