@@ -49,8 +49,9 @@ $sourceDirNames | ForEach-Object -Process {
 
   Get-ChildItem -Path $outDirPath -Include $sourceFileExt -File -Recurse |
   ForEach-Object -Process {
-    Get-Content -Path $_.FullName | Where-Object { $_ -notmatch "cielsachen.ccprog3.${$currDirName}" } |
+    (Get-Content -Path $_.FullName) | Where-Object { $_ -notmatch "cielsachen.ccprog3.${$currDirName}" } |
     Set-Content -Path $_.FullName
+
 
     Write-Output -InputObject "  Updated: $($_.Name)"
   }
