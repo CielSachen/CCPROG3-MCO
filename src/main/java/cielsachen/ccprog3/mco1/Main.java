@@ -6,8 +6,12 @@ public class Main {
     public Main() {
     }
 
-    /** Executes the Java program. */
-    public static void main() {
+    /**
+     * Executes the Java program.
+     *
+     * @param arguments The CLI arguments.
+     */
+    public static void main(String[] arguments) {
         var simulator = new Simulator();
 
         simulator.launch();

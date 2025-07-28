@@ -19,8 +19,12 @@ import cielsachen.ccprog3.mco2.service.TruckService;
 
 /** Represents the entry point class for Java programs. */
 public class Main {
-    /** Executes the Java program. */
-    public static void main() {
+    /**
+     * Executes the Java program.
+     *
+     * @param arguments The CLI arguments.
+     */
+    public static void main(String[] arguments) {
         var scanner = new Scanner(System.in);
         var input = new Input(scanner);
 

@@ -14,7 +14,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import cielsachen.ccprog3.mco1.model.StorageBin;
+import cielsachen.ccprog3.mco2.model.StorageBin;
 import cielsachen.ccprog3.mco2.model.Ingredient;
 import cielsachen.ccprog3.mco2.model.Truck;
 
