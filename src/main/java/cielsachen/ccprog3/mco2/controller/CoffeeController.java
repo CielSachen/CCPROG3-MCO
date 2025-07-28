@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.swing.JFrame;
+
 import cielsachen.ccprog3.mco2.exception.InsufficientCapacityException;
 import cielsachen.ccprog3.mco2.helper.ExceptionMessage;
 import cielsachen.ccprog3.mco2.helper.Input;
@@ -75,10 +77,10 @@ public class CoffeeController {
 
     // TEMPORARILY PASS TRUCK
     /** Changes the prices of all coffees and add-ons. */
-    public void updatePrices(Truck truck) {
+    public void updatePrices(JFrame parentFrame, Truck truck) {
         Coffee[] coffees = this.service.getCoffees();
 
-        var priceConfigurationView = new PriceConfigurationForm(coffees);
+        var priceConfigurationView = new PriceConfigurationForm(parentFrame, coffees);
 
         priceConfigurationView.submitButton.addActionListener(new ActionListener() {
             @Override
@@ -101,7 +103,7 @@ public class CoffeeController {
                 }
 
                 CoffeeController.this.service.espresso.setPrice(prices.get(i));
-                CoffeeController.this.service.syrup.setPrice(prices.get(++i));
+                CoffeeController.this.service.syrup.setPrice(prices.get(i + 1));
 
                 CoffeeController.this.printPrices(truck);
             }

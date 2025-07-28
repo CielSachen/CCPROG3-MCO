@@ -6,10 +6,10 @@ import javax.swing.text.DocumentFilter;
 
 public class FloatDocumentFilter extends DocumentFilter {
     @Override
-    public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
+    public void insertString(FilterBypass fb, int offset, String str, AttributeSet attr)
             throws BadLocationException {
-        if (isFloat(string)) {
-            super.insertString(fb, offset, string, attr);
+        if (isFloat(str)) {
+            super.insertString(fb, offset, str, attr);
         }
     }
 
@@ -21,13 +21,13 @@ public class FloatDocumentFilter extends DocumentFilter {
         }
     }
 
-    private boolean isFloat(String string) {
-        if (string == null || string.isEmpty()) {
+    private boolean isFloat(String str) {
+        if (str == null || str.isEmpty()) {
             return true;
         }
 
         try {
-            Float.parseFloat(string);
+            Float.parseFloat(str);
 
             return true;
         } catch (NumberFormatException e) {

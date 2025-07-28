@@ -29,7 +29,6 @@ public class MainMenuView extends JFrame {
 
         var subtitleLabel = new JLabel("What Would You Like to Do?");
         subtitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        subtitleLabel.setVerticalAlignment(SwingConstants.CENTER);
         subtitleLabel.setFont(new Font("Arial", Font.BOLD, 25));
 
         constraints.gridx = constraints.gridy = 0;
@@ -40,23 +39,19 @@ public class MainMenuView extends JFrame {
         constraints.ipadx = constraints.ipady = 10;
         constraints.insets.top = constraints.insets.bottom = 5;
 
-        this.createTruckButton.setActionCommand("createTruck");
-
         constraints.gridy++;
 
         super.add(this.createTruckButton, constraints);
-
-        this.simulateButton.setActionCommand("simulate");
 
         constraints.gridy++;
 
         super.add(this.simulateButton, constraints);
 
-        this.dashboardButton.setActionCommand("displayDashboard");
-
         constraints.gridy++;
         constraints.insets.bottom = 20;
 
         super.add(this.dashboardButton, constraints);
+
+        super.pack();
     }
 }

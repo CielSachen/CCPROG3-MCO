@@ -22,7 +22,7 @@ public class PriceConfigurationForm extends JFrame {
     public final List<JTextField> priceFields = new ArrayList<JTextField>();
     public final JButton submitButton = new JButton("Submit");
 
-    public PriceConfigurationForm(Coffee[] coffees) {
+    public PriceConfigurationForm(JFrame parentFrame, Coffee[] coffees) {
         super("Configure Coffee Prices");
 
         for (int i = 0; i < coffees.length + 2; i++) {
@@ -35,27 +35,23 @@ public class PriceConfigurationForm extends JFrame {
 
         super.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-        super.setLocationRelativeTo(null);
+        super.setLocationRelativeTo(parentFrame);
 
         super.setLayout(new GridBagLayout());
 
         var constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.insets = new Insets(20, 20, 20, 20);
         constraints.gridx = 0;
         constraints.gridy = -1;
+        constraints.insets = new Insets(20, 20, 20, 20);
 
         int i;
 
         for (i = 0; i < coffees.length; i++) {
-            Coffee coffee = coffees[i];
-
-            var coffeeLabel = new JLabel(coffee.name);
-
             constraints.gridy++;
             constraints.insets.bottom = 2;
 
-            super.add(coffeeLabel, constraints);
+            super.add(new JLabel(coffees[i].name), constraints);
 
             constraints.gridy++;
             constraints.insets.top = constraints.insets.bottom;
@@ -64,15 +60,12 @@ public class PriceConfigurationForm extends JFrame {
             super.add(this.priceFields.get(i), constraints);
         }
 
-        var espressoShotLabel = new JLabel("Extra Espresso Shot");
-        var syrupLabel = new JLabel("Add-on Syrup");
-
-        int maxGridY = constraints.gridy + 2;
         constraints.gridx++;
+        int maxGridY = constraints.gridy + 2;
         constraints.gridy = 0;
 
-        this.addLabeledComponent(espressoShotLabel, this.priceFields.get(i), constraints);
-        this.addLabeledComponent(syrupLabel, this.priceFields.get(++i), constraints);
+        this.addLabeledComponent(new JLabel("Extra Espresso Shot"), this.priceFields.get(i), constraints);
+        this.addLabeledComponent(new JLabel("Add-on Syrup"), this.priceFields.get(i + 1), constraints);
 
         constraints.gridy = maxGridY + 1;
         constraints.insets.top = constraints.insets.bottom = 20;

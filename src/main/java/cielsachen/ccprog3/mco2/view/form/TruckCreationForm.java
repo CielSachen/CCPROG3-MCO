@@ -17,25 +17,21 @@ public class TruckCreationForm extends JFrame {
     public final JCheckBox isSpecialCheckBox = new JCheckBox("Make a Special Truck?");
     public final JButton submitButton = new JButton("Submit");
 
-    public TruckCreationForm() {
+    public TruckCreationForm(JFrame parentFrame) {
         super("Create a New Truck");
 
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        super.setLocationRelativeTo(null);
+        super.setLocationRelativeTo(parentFrame);
 
         super.setLayout(new GridBagLayout());
 
         var constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.insets = new Insets(20, 20, 20, 20);
         constraints.gridx = constraints.gridy = 0;
+        constraints.insets = new Insets(20, 20, 2, 20);
 
-        var locationFieldLabel = new JLabel("Where will this truck be located?");
-
-        constraints.insets.bottom = 2;
-
-        super.add(locationFieldLabel, constraints);
+        super.add(new JLabel("Where will this truck be located?"), constraints);
 
         constraints.gridy++;
         constraints.insets.top = constraints.insets.bottom;

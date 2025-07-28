@@ -40,8 +40,10 @@ public class Main {
         var transactionController = new TransactionController(transactionService);
         var coffeeController = new CoffeeController(coffeeService, storageBinService, transactionService, scanner,
                 input);
-        var truckController = new TruckController(coffeeController, truckService, storageBinService, scanner, input);
-        var menuController = new MenuController(truckController, coffeeController, transactionController);
+        var truckController = new TruckController(coffeeController, truckService, storageBinService, coffeeService,
+                scanner, input);
+        var menuController = new MenuController(truckController, coffeeController, truckService, storageBinService,
+                transactionService);
 
         menuController.showMainMenu();
     }

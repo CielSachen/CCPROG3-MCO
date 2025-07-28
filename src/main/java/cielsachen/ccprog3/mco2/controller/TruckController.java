@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import cielsachen.ccprog3.mco2.helper.ExceptionMessage;
@@ -16,8 +17,10 @@ import cielsachen.ccprog3.mco2.helper.PrintColor;
 import cielsachen.ccprog3.mco2.model.Ingredient;
 import cielsachen.ccprog3.mco2.model.StorageBin;
 import cielsachen.ccprog3.mco2.model.Truck;
+import cielsachen.ccprog3.mco2.service.CoffeeService;
 import cielsachen.ccprog3.mco2.service.StorageBinService;
 import cielsachen.ccprog3.mco2.service.TruckService;
+import cielsachen.ccprog3.mco2.view.TruckView;
 import cielsachen.ccprog3.mco2.view.component.Modal;
 import cielsachen.ccprog3.mco2.view.form.StorageBinAssignmentForm;
 import cielsachen.ccprog3.mco2.view.form.TruckCreationForm;
@@ -31,6 +34,7 @@ public class TruckController {
 
     private final TruckService service;
     private final StorageBinService storageBinService;
+    private final CoffeeService coffeeService;
 
     /**
      * Creates a new {@code TruckController} object instance.
@@ -40,12 +44,14 @@ public class TruckController {
      * @param storageBinService The storage bin service to use.
      */
     public TruckController(CoffeeController coffeeController, TruckService service, StorageBinService storageBinService,
+            CoffeeService coffeeService,
             Scanner scanner,
             Input input) {
         this.coffeeController = coffeeController;
 
         this.service = service;
         this.storageBinService = storageBinService;
+        this.coffeeService = coffeeService;
 
         this.scanner = scanner;
         this.input = input;
@@ -56,8 +62,8 @@ public class TruckController {
      *
      * @return A new truck.
      */
-    public void createTruck() {
-        var creationForm = new TruckCreationForm();
+    public void createTruck(JFrame parentFrame) {
+        var creationForm = new TruckCreationForm(parentFrame);
 
         creationForm.submitButton.addActionListener(new ActionListener() {
             @Override
@@ -76,12 +82,11 @@ public class TruckController {
 
                 boolean isSpecial = creationForm.isSpecialCheckBox.isSelected();
 
-                Truck truck = new Truck(
-                        TruckController.this.service.getTrucks().size() + 1, givenLocation, isSpecial);
+                Truck truck = new Truck(TruckController.this.service.getTrucks().size() + 1, givenLocation, isSpecial);
 
                 TruckController.this.service.addTruck(truck);
 
-                var storageBinAssignmentForm = new StorageBinAssignmentForm(truck, false);
+                var storageBinAssignmentForm = new StorageBinAssignmentForm(creationForm, truck, false);
 
                 storageBinAssignmentForm.submitButton.addActionListener(new ActionListener() {
                     @Override
@@ -90,17 +95,24 @@ public class TruckController {
                             JComboBox<Ingredient> ingredientComboBox = storageBinAssignmentForm.ingredientComboBoxes
                                     .get(i);
 
-                            TruckController.this.storageBinService.addStorageBin(new StorageBin(i + 1, truck,
-                                    (Ingredient) ingredientComboBox.getSelectedItem()));
+                            TruckController.this.storageBinService.addStorageBin(
+                                    new StorageBin(i + 1, truck, (Ingredient) ingredientComboBox.getSelectedItem()));
                         }
 
-                        if (!TruckController.this.coffeeController.isPricesSet()
-                                || Modal.showConfirmation("Do you want to update the prices?",
-                                        null) == JOptionPane.YES_OPTION) {
-                            TruckController.this.coffeeController.updatePrices(truck);
+                        boolean isFirstTruck = !TruckController.this.coffeeController.isPricesSet();
+
+                        if (isFirstTruck || Modal.showConfirmation("Do you want to update the prices?",
+                                "Update Prices") == JOptionPane.YES_OPTION) {
+                            TruckController.this.coffeeController.updatePrices(storageBinAssignmentForm, truck);
                         }
 
-                        TruckController.this.printTruckInfo(truck);
+                        new TruckView(
+                                parentFrame,
+                                truck,
+                                TruckController.this.storageBinService.getStorageBinsByTruck(truck),
+                                isFirstTruck ? null : TruckController.this.coffeeService.getCoffeesByTruck(truck),
+                                isFirstTruck ? null : TruckController.this.coffeeService.espresso.toPriceString(),
+                                isFirstTruck ? null : TruckController.this.coffeeService.syrup.toPriceString());
                     }
                 });
             }
@@ -382,58 +394,6 @@ public class TruckController {
             }
 
             System.out.println();
-        }
-    }
-
-    /** Prints the information summary of all deployed trucks. */
-    public void printTrucksInfo() {
-        Output.printHeader1("All Trucks Info Summary");
-
-        System.out.println();
-
-        System.out.println("Number of Trucks Deployed: "
-                + PrintColor.set(Integer.toString(this.service.getTrucks().size()), PrintColor.BRIGHT_GREEN) + " ("
-                + PrintColor.set(this.service.getSpecialTrucks().size() + " Special", PrintColor.BRIGHT_YELLOW) + ")");
-
-        System.out.println();
-
-        System.out.println("Ingredients:");
-
-        for (Ingredient ingredient : Ingredient.values()) {
-            System.out.println("  " + ingredient.name + ": "
-                    + PrintColor.set(String.format("%.2f",
-                            this.storageBinService.getStorageBinsByIngredient(ingredient).stream()
-                                    .mapToDouble((storageBin) -> storageBin.getCapacity()).sum())
-                            + " " + ingredient.unitMeasure, PrintColor.BRIGHT_CYAN));
-        }
-    }
-
-    /**
-     * Prints the information summary of a truck.
-     *
-     * @param truck The truck to print get the info from.
-     */
-    public void printTruckInfo(Truck truck) {
-        Output.printHeader1("Truck " + truck.id + " Info Summary");
-
-        System.out.println();
-
-        System.out.println("Special Truck: " + (truck.isSpecial ? PrintColor.set("Yes", PrintColor.BRIGHT_GREEN)
-                : PrintColor.set("No", PrintColor.RED)));
-        System.out.println("Location: " + PrintColor.set(truck.getLocation(), PrintColor.BRIGHT_CYAN));
-
-        System.out.println();
-
-        System.out.println("Storage Bins:");
-
-        for (StorageBin storageBin : this.storageBinService.getStorageBinsByTruck(truck)) {
-            System.out
-                    .println(
-                            "  Bin " + storageBin.id + " = "
-                                    + PrintColor.set(storageBin.getIngredient().name, PrintColor.BRIGHT_CYAN) + " ("
-                                    + PrintColor.set(storageBin.toCapacityString(),
-                                            storageBin.isCriticalCapacity() ? PrintColor.RED : PrintColor.BRIGHT_GREEN)
-                                    + ")");
         }
     }
 }

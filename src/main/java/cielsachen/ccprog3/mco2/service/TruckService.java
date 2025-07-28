@@ -14,7 +14,7 @@ public class TruckService {
 
     /**
      * Creates a new {@code TruckService} object instance.
-     * 
+     *
      * @param trucks The list of trucks to use.
      */
     public TruckService(List<Truck> trucks) {
@@ -23,7 +23,7 @@ public class TruckService {
 
     /**
      * Gets all trucks.
-     * 
+     *
      * @return The trucks.
      */
     public List<Truck> getTrucks() {
@@ -32,7 +32,7 @@ public class TruckService {
 
     /**
      * Adds a truck to the list if it's located in an unoccupied location.
-     * 
+     *
      * @param truck The truck to add.
      * @return Whether the truck was added to the list.
      */
@@ -48,7 +48,7 @@ public class TruckService {
 
     /**
      * Gets the special trucks.
-     * 
+     *
      * @return The special trucks.
      */
     public List<Truck> getSpecialTrucks() {
@@ -57,7 +57,7 @@ public class TruckService {
 
     /**
      * Gets the truck with a specific ID.
-     * 
+     *
      * @param id The ID of the truck to get.
      * @return The truck with the ID.
      */
@@ -73,7 +73,7 @@ public class TruckService {
 
     /**
      * Checks if a truck is already occupying a location.
-     * 
+     *
      * @param location The location to check.
      * @return Whether the location is occupied by a truck.
      */
