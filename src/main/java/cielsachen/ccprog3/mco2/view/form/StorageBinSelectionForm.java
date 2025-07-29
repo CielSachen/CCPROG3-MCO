@@ -5,7 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -14,17 +14,17 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import cielsachen.ccprog3.mco2.model.coffee.CoffeeSize;
+import cielsachen.ccprog3.mco2.model.StorageBin;
 import cielsachen.ccprog3.mco2.util.TableSize;
 
-public class CoffeeSizeSelectionForm extends JFrame {
-    public final JComboBox<CoffeeSize> coffeeSizeComboBox;
+public class StorageBinSelectionForm extends JFrame {
+    public final JComboBox<StorageBin> storageBinComboBox;
     public final JButton submitButton = new JButton("Submit");
 
-    public CoffeeSizeSelectionForm(JFrame parentFrame, CoffeeSize[] coffeeSizes) {
-        super("Coffee Size Selection");
+    public StorageBinSelectionForm(JFrame parentFrame, List<StorageBin> storageBins) {
+        super("Storage Bin Selection");
 
-        this.coffeeSizeComboBox = new JComboBox<CoffeeSize>(coffeeSizes);
+        this.storageBinComboBox = new JComboBox<StorageBin>(storageBins.toArray(StorageBin[]::new));
 
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -36,26 +36,26 @@ public class CoffeeSizeSelectionForm extends JFrame {
         constraints.gridx = constraints.gridy = 0;
         constraints.insets = new Insets(20, 20, 2, 20);
 
-        super.add(new JLabel("Please select the size of the coffee to brew…"), constraints);
+        super.add(new JLabel("Which storage bin would you like to update?"), constraints);
 
-        var coffeeSizesTablePane = new JScrollPane(new JTable(
-                Arrays.stream(coffeeSizes).map((cf) -> new String[] { cf.cup.name, cf.toString() })
+        var storageBinsTablePane = new JScrollPane(new JTable(
+                storageBins.stream().map((sb) -> new String[] { Integer.toString(sb.id), sb.getIngredient().name })
                         .toArray(String[][]::new),
-                new String[] { "Cup", "Capacity" }));
-        coffeeSizesTablePane.setPreferredSize(TableSize.SMALL.dimension);
+                new String[] { "ID", "Ingredient" }));
+        storageBinsTablePane.setPreferredSize(TableSize.SMALL.dimension);
 
         constraints.gridy++;
         constraints.weightx = constraints.weighty = 1;
         constraints.fill = GridBagConstraints.BOTH;
         constraints.insets.top = constraints.insets.bottom;
 
-        super.add(coffeeSizesTablePane, constraints);
+        super.add(storageBinsTablePane, constraints);
 
         constraints.gridy++;
         constraints.weighty = 0.5;
         constraints.insets.top = constraints.insets.bottom;
 
-        super.add(this.coffeeSizeComboBox, constraints);
+        super.add(this.storageBinComboBox, constraints);
 
         constraints.gridy++;
         constraints.weightx = constraints.weighty = 0;
@@ -68,7 +68,7 @@ public class CoffeeSizeSelectionForm extends JFrame {
         this.submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CoffeeSizeSelectionForm.super.dispose();
+                StorageBinSelectionForm.super.dispose();
             }
         });
 

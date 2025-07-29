@@ -15,7 +15,7 @@ public class TransactionService {
 
     /**
      * Creates a new {@code TransactionService} object instance.
-     * 
+     *
      * @param transactions The list of transactions to use.
      */
     public TransactionService(List<Transaction> transactions) {
@@ -24,7 +24,7 @@ public class TransactionService {
 
     /**
      * Gets all transactions linked to any trucks.
-     * 
+     *
      * @return The transactions.
      */
     public List<Transaction> getTransactions() {
@@ -33,7 +33,7 @@ public class TransactionService {
 
     /**
      * Adds a transaction to the list.
-     * 
+     *
      * @param transaction The transaction to add.
      */
     public void addTransaction(Transaction transaction) {
@@ -42,21 +42,11 @@ public class TransactionService {
 
     /**
      * Gets all transactions linked with a truck.
-     * 
+     *
      * @param truck The truck linked with the transactions to get.
      * @return The transactions linked with the truck.
      */
     public List<Transaction> getTransactionsByTruck(Truck truck) {
         return this.transactions.stream().filter((transaction) -> transaction.truck.equals(truck)).toList();
-    }
-
-    /**
-     * Checks if a truck has any linked transactions.
-     * 
-     * @param truck The truck to check.
-     * @return Whether the truck has linked transactions.
-     */
-    public boolean hasTransactions(Truck truck) {
-        return this.getTransactionsByTruck(truck).size() > 0;
     }
 }

@@ -2,7 +2,6 @@ package cielsachen.ccprog3.mco2.service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import cielsachen.ccprog3.mco2.model.Truck;
 
@@ -53,22 +52,6 @@ public class TruckService {
      */
     public List<Truck> getSpecialTrucks() {
         return this.trucks.stream().filter((truck) -> truck.isSpecial).toList();
-    }
-
-    /**
-     * Gets the truck with a specific ID.
-     *
-     * @param id The ID of the truck to get.
-     * @return The truck with the ID.
-     */
-    public Optional<Truck> getTruckById(int id) {
-        for (Truck truck : this.trucks) {
-            if (truck.id == id) {
-                return Optional.of(truck);
-            }
-        }
-
-        return Optional.empty();
     }
 
     /**

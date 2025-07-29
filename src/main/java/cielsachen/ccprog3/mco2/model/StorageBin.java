@@ -110,4 +110,9 @@ public class StorageBin {
         return String.format("%.2f / ", this.capacity) + (int) this.ingredient.maximumCapacity + " "
                 + this.ingredient.unitMeasure;
     }
+
+    @Override
+    public String toString() {
+        return Integer.toString(this.id);
+    }
 }

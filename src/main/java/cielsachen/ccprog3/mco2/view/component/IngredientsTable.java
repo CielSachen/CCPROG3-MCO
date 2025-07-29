@@ -1,21 +1,27 @@
 package cielsachen.ccprog3.mco2.view.component;
 
+import java.util.Map;
+
 import javax.swing.JTable;
 
 import cielsachen.ccprog3.mco2.model.Ingredient;
 import cielsachen.ccprog3.mco2.model.Transaction;
 
-public class IngredientTable extends JTable {
-    public IngredientTable(Transaction transaction) {
+public class IngredientsTable extends JTable {
+    public IngredientsTable(Map<Ingredient, Double> amountsByIngredient) {
         super(
-                transaction.getIngredients().entrySet().stream().map((entry) -> {
+                amountsByIngredient.entrySet().stream().map((entry) -> {
                     Ingredient ingredient = entry.getKey();
 
                     return new String[] {
                             ingredient.name,
-                            String.format("&.2f " + ingredient.unitMeasure, entry.getValue()),
+                            String.format("%.2f " + ingredient.unitMeasure, entry.getValue()),
                     };
                 }).toArray(String[][]::new),
                 new String[] { "Ingredient", "Amount" });
+    }
+
+    public IngredientsTable(Transaction transaction) {
+        this(transaction.getIngredients());
     }
 }

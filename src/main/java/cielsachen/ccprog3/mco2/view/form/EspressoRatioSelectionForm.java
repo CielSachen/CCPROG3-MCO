@@ -1,6 +1,5 @@
 package cielsachen.ccprog3.mco2.view.form;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -16,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import cielsachen.ccprog3.mco2.model.coffee.EspressoRatio;
+import cielsachen.ccprog3.mco2.util.TableSize;
 
 public class EspressoRatioSelectionForm extends JFrame {
     public final JComboBox<EspressoRatio> coffeeSizeComboBox;
@@ -38,18 +38,18 @@ public class EspressoRatioSelectionForm extends JFrame {
 
         super.add(new JLabel("Please select the size of the coffee to brew…"), constraints);
 
-        var espressoRatiosTablePanel = new JScrollPane(new JTable(
+        var espressoRatiosTablePane = new JScrollPane(new JTable(
                 Arrays.stream(espressoRatios).map((er) -> new String[] { er.name, er.toString() })
                         .toArray(String[][]::new),
                 new String[] { "Name", "Ratio" }));
-        espressoRatiosTablePanel.setPreferredSize(new Dimension(150, 91));
+        espressoRatiosTablePane.setPreferredSize(TableSize.SMALL.dimension);
 
         constraints.gridy++;
         constraints.weightx = constraints.weighty = 1.0;
         constraints.fill = GridBagConstraints.BOTH;
         constraints.insets.top = constraints.insets.bottom;
 
-        super.add(espressoRatiosTablePanel, constraints);
+        super.add(espressoRatiosTablePane, constraints);
 
         constraints.gridy++;
         constraints.weighty = 0.5;

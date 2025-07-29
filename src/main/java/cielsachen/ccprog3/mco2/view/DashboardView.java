@@ -1,5 +1,6 @@
 package cielsachen.ccprog3.mco2.view;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -8,6 +9,7 @@ import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
@@ -15,7 +17,8 @@ import javax.swing.SwingConstants;
 
 import cielsachen.ccprog3.mco2.model.Ingredient;
 import cielsachen.ccprog3.mco2.model.Transaction;
-import cielsachen.ccprog3.mco2.view.component.TransactionPanel;
+import cielsachen.ccprog3.mco2.util.TableSize;
+import cielsachen.ccprog3.mco2.view.component.IngredientsTable;
 
 public class DashboardView extends JFrame {
     public DashboardView(JFrame parentFrame, int truckCnt, int specialTruckCnt,
@@ -26,56 +29,92 @@ public class DashboardView extends JFrame {
 
         super.setLocationRelativeTo(parentFrame);
 
-        super.setLayout(new GridBagLayout());
+        var panel = new JPanel(new GridBagLayout());
 
         var constraints = new GridBagConstraints();
         constraints.gridx = constraints.gridy = 0;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(20, 20, 2, 20);
 
-        super.add(new JLabel("Deployed Trucks: " + truckCnt), constraints);
+        panel.add(new JLabel("Deployed Trucks: " + truckCnt), constraints);
 
         constraints.gridy++;
         constraints.insets.top = constraints.insets.bottom;
 
-        super.add(new JLabel("Special Trucks: " + specialTruckCnt), constraints);
+        panel.add(new JLabel("Special Trucks: " + specialTruckCnt), constraints);
 
         constraints.gridy++;
+        constraints.fill = GridBagConstraints.NONE;
         constraints.insets.top = 4;
 
-        super.add(new JLabel("Ingredients"), constraints);
+        panel.add(new JLabel("Ingredients"), constraints);
+
+        var ingredientsTablePane = new JScrollPane(new JTable(
+                capacitiesByIngredient.entrySet().stream().map((entry) -> {
+                    Ingredient ingredient = entry.getKey();
+
+                    return new String[] {
+                            ingredient.name,
+                            String.format("%.2f " + ingredient.unitMeasure, entry.getValue()) };
+                }).toArray(String[][]::new),
+                new String[] { "Ingredient", "Amount" }));
+        ingredientsTablePane.setPreferredSize(TableSize.MEDIUM.dimension);
 
         constraints.gridy++;
+        constraints.weightx = constraints.weighty = 1.0;
+        constraints.fill = GridBagConstraints.BOTH;
         constraints.insets.top = constraints.insets.bottom;
         constraints.insets.bottom = 20;
 
-        String[][] tableData = capacitiesByIngredient.entrySet().stream().map((entry) -> {
-            Ingredient ingredient = entry.getKey();
-
-            return new String[] {
-                    ingredient.name,
-                    String.format("%.2f " + ingredient.unitMeasure, entry.getValue()) };
-        }).toArray(String[][]::new);
-
-        super.add(new JScrollPane(new JTable(tableData, new String[] { "Ingredient", "Amount" })), constraints);
-
-        constraints.insets.bottom = constraints.insets.top;
+        panel.add(ingredientsTablePane, constraints);
 
         for (int i = 0; i < transactions.size(); i++) {
             constraints.gridy++;
+            constraints.insets.top = constraints.insets.bottom = 0;
 
-            super.add(new JSeparator(SwingConstants.HORIZONTAL), constraints);
+            panel.add(new JSeparator(SwingConstants.HORIZONTAL), constraints);
+
+            constraints.gridy++;
+            constraints.weightx = constraints.weighty = 0;
+            constraints.fill = GridBagConstraints.HORIZONTAL;
+            constraints.insets.top = 12;
+            constraints.insets.bottom = 2;
+
+            panel.add(new JLabel("Transaction #: " + (i + 1)), constraints);
+
+            Transaction transaction = transactions.get(i);
+
+            constraints.gridy++;
+            constraints.insets.top = constraints.insets.bottom;
+
+            panel.add(new JLabel("Truck ID: " + transaction.truck.id), constraints);
 
             constraints.gridy++;
 
-            if (i < transactions.size() - 1) {
-                constraints.insets.bottom = 20;
-            }
+            panel.add(new JLabel("Coffee: " + transaction.coffeeName), constraints);
 
-            super.add(new TransactionPanel(transactions.get(i)), constraints);
+            constraints.gridy++;
+            constraints.fill = GridBagConstraints.NONE;
+            constraints.insets.top = 4;
+
+            panel.add(new JLabel("Ingredients"), constraints);
+
+            ingredientsTablePane = new JScrollPane(new IngredientsTable(transaction));
+            ingredientsTablePane.setPreferredSize(TableSize.SMALL.dimension);
+
+            constraints.gridy++;
+            constraints.weightx = constraints.weighty = 1.0;
+            constraints.fill = GridBagConstraints.BOTH;
+            constraints.insets.top = constraints.insets.bottom;
+            constraints.insets.bottom = 20;
+
+            panel.add(ingredientsTablePane, constraints);
         }
 
+        super.add(new JScrollPane(panel));
+
         super.pack();
+        super.setMaximumSize(new Dimension(super.getSize().width, 660));
         super.setVisible(true);
     }
 }

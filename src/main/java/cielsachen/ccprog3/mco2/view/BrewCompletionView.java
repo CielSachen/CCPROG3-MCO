@@ -1,6 +1,5 @@
 package cielsachen.ccprog3.mco2.view;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -9,12 +8,13 @@ import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 
 import cielsachen.ccprog3.mco2.model.Ingredient;
 import cielsachen.ccprog3.mco2.model.coffee.Coffee;
 import cielsachen.ccprog3.mco2.model.coffee.CoffeeSize;
 import cielsachen.ccprog3.mco2.model.coffee.EspressoRatio;
+import cielsachen.ccprog3.mco2.util.TableSize;
+import cielsachen.ccprog3.mco2.view.component.IngredientsTable;
 
 public class BrewCompletionView extends JFrame {
     public BrewCompletionView(JFrame parentFrame, Coffee coffee, EspressoRatio ratio, CoffeeSize size,
@@ -55,16 +55,8 @@ public class BrewCompletionView extends JFrame {
 
         super.add(new JLabel("Ingredients Used"), constraints);
 
-        var ingredientsTablePanel = new JScrollPane(new JTable(
-                amountsByIngredient.entrySet().stream().map((entry) -> {
-                    Ingredient ingredient = entry.getKey();
-
-                    return new String[] {
-                            ingredient.name,
-                            String.format("%.2f " + ingredient.unitMeasure, entry.getValue()) };
-                }).toArray(String[][]::new),
-                new String[] { "Ingredient", "Amount" }));
-        ingredientsTablePanel.setPreferredSize(new Dimension(215, 112));
+        var ingredientsTablePane = new JScrollPane(new IngredientsTable(amountsByIngredient));
+        ingredientsTablePane.setPreferredSize(TableSize.SMALL.dimension);
 
         constraints.gridy++;
         constraints.weightx = constraints.weighty = 1.0;
@@ -72,7 +64,7 @@ public class BrewCompletionView extends JFrame {
         constraints.insets.top = constraints.insets.bottom;
         constraints.insets.bottom = 20;
 
-        super.add(ingredientsTablePanel, constraints);
+        super.add(ingredientsTablePane, constraints);
 
         super.pack();
         super.setVisible(true);

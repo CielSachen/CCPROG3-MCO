@@ -37,7 +37,7 @@ public class MenuController {
 
                 if (trucks.size() == 0) {
                     Modal.showErrorDialog(MenuController.this.view, "You have not yet created any trucks!",
-                            "No Trucks");
+                            "Truck Selection");
 
                     return;
                 }
@@ -55,7 +55,7 @@ public class MenuController {
                     @Override
                     public void actionPerformed(ActionEvent evt) {
                         if (!coffeeService.isCapableOfBrewing(selectedTruck)) {
-                            Modal.showErrorDialog(MenuController.this.view,
+                            Modal.showErrorDialog(simulationForm,
                                     "The selected truck doesn’t have the ingredients to brew coffee!",
                                     "Missing Ingredients");
 
@@ -71,12 +71,13 @@ public class MenuController {
                         new TruckView(simulationForm, selectedTruck,
                                 storageBinService.getStorageBinsByTruck(selectedTruck),
                                 coffeeService.getCoffeesByTruck(selectedTruck), coffeeService.espresso,
-                                coffeeService.syrup);
+                                coffeeService.syrup, transactionService.getTransactionsByTruck(selectedTruck));
                     }
                 });
                 simulationForm.restockButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent evt) {
+                        truckController.restockStorageBins(simulationForm, selectedTruck);
                     }
                 });
                 simulationForm.maintenanceButton.addActionListener(new ActionListener() {

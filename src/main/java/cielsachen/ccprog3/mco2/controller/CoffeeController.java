@@ -2,6 +2,7 @@ package cielsachen.ccprog3.mco2.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -101,13 +102,13 @@ public class CoffeeController {
                 var selectedSize = (CoffeeSize) coffeeSizeSelectionForm.coffeeSizeComboBox.getSelectedItem();
 
                 if (!truck.isSpecial) {
-                    CoffeeController.this.brewCoffee(coffeeSizeSelectionForm, truck, selectedCoffee, selectedSize,
+                    CoffeeController.this.brewCoffee(parentFrame, truck, selectedCoffee, selectedSize,
                             EspressoRatio.STANDARD);
 
                     return;
                 }
 
-                var espressoRatioSelectionForm = new EspressoRatioSelectionForm(coffeeSizeSelectionForm,
+                var espressoRatioSelectionForm = new EspressoRatioSelectionForm(parentFrame,
                         truck.isSpecial ? EspressoRatio.values() : EspressoRatio.regularValues());
 
                 espressoRatioSelectionForm.submitButton.addActionListener(new ActionListener() {
@@ -117,7 +118,7 @@ public class CoffeeController {
                                 .getSelectedItem();
 
                         if (selectedRatio.equals(EspressoRatio.CUSTOM)) {
-                            var espressoRatioForm = new EspressoRatioForm(espressoRatioSelectionForm);
+                            var espressoRatioForm = new EspressoRatioForm(parentFrame);
 
                             espressoRatioForm.submitButton.addActionListener(new ActionListener() {
                                 public void actionPerformed(ActionEvent evt) {
@@ -126,7 +127,7 @@ public class CoffeeController {
                                     try {
                                         waterRatio = Integer.parseInt(espressoRatioForm.waterRatioField.getText());
                                     } catch (NumberFormatException e) {
-                                        Modal.showErrorDialog(espressoRatioForm, "All fields must be filled!",
+                                        Modal.showErrorDialog(parentFrame, "All fields must be filled!",
                                                 "Missing Fields");
 
                                         return;
@@ -134,16 +135,16 @@ public class CoffeeController {
 
                                     EspressoRatio.setCustomRatio(waterRatio);
 
-                                    CoffeeController.this.brewCoffee(espressoRatioSelectionForm, truck, selectedCoffee,
-                                            selectedSize, selectedRatio);
+                                    CoffeeController.this.brewCoffee(parentFrame, truck, selectedCoffee, selectedSize,
+                                            selectedRatio);
                                 };
                             });
 
                             return;
                         }
 
-                        CoffeeController.this.brewCoffee(espressoRatioSelectionForm, truck, selectedCoffee,
-                                selectedSize, selectedRatio);
+                        CoffeeController.this.brewCoffee(parentFrame, truck, selectedCoffee, selectedSize,
+                                selectedRatio);
                     }
                 });
             }
@@ -222,7 +223,8 @@ public class CoffeeController {
         try {
             this.service.canBrewCoffee(truck, coffee, size, ratio);
 
-            Map<Ingredient, Double> amountsByIngredient = this.service.brewCoffee(truck, coffee, size, ratio);
+            Map<Ingredient, Double> amountsByIngredient = new LinkedHashMap<Ingredient, Double>(
+                    this.service.brewCoffee(truck, coffee, size, ratio));
 
             if (!truck.isSpecial) {
                 this.finishBrewing(parentFrame, truck, coffee, size, ratio, amountsByIngredient);
@@ -247,8 +249,7 @@ public class CoffeeController {
                     }
                 }
 
-                var espressoRatioSelectionForm = new EspressoRatioSelectionForm(parentFrame,
-                        EspressoRatio.values());
+                var espressoRatioSelectionForm = new EspressoRatioSelectionForm(parentFrame, EspressoRatio.values());
 
                 espressoRatioSelectionForm.submitButton.addActionListener(new ActionListener() {
                     @Override
@@ -257,7 +258,7 @@ public class CoffeeController {
                                 .getSelectedItem();
 
                         if (selectedRatio.equals(EspressoRatio.CUSTOM)) {
-                            var espressoRatioForm = new EspressoRatioForm(espressoRatioSelectionForm);
+                            var espressoRatioForm = new EspressoRatioForm(parentFrame);
 
                             espressoRatioForm.submitButton.addActionListener(new ActionListener() {
                                 public void actionPerformed(ActionEvent evt) {
@@ -266,7 +267,7 @@ public class CoffeeController {
                                     try {
                                         waterRatio = Integer.parseInt(espressoRatioForm.waterRatioField.getText());
                                     } catch (NumberFormatException e) {
-                                        Modal.showErrorDialog(espressoRatioForm, "All fields must be filled!",
+                                        Modal.showErrorDialog(parentFrame, "All fields must be filled!",
                                                 "Missing Fields");
 
                                         return;
@@ -277,8 +278,7 @@ public class CoffeeController {
                                     CoffeeController.this.addEspressoShots(parentFrame, truck, ratio,
                                             amountsByIngredient);
 
-                                    if (CoffeeController.this.storageBinService.getStorageBinsByTruck(truck).stream()
-                                            .anyMatch((sb) -> sb.getIngredient().isSpecial)) {
+                                    if (CoffeeController.this.storageBinService.truckHasSyrups(truck)) {
                                         CoffeeController.this.addSyrup(parentFrame, truck, amountsByIngredient);
                                     }
 
@@ -292,8 +292,7 @@ public class CoffeeController {
 
                         CoffeeController.this.addEspressoShots(parentFrame, truck, ratio, amountsByIngredient);
 
-                        if (CoffeeController.this.storageBinService.getStorageBinsByTruck(truck).stream()
-                                .anyMatch((sb) -> sb.getIngredient().isSpecial)) {
+                        if (CoffeeController.this.storageBinService.truckHasSyrups(truck)) {
                             CoffeeController.this.addSyrup(parentFrame, truck, amountsByIngredient);
                         }
 

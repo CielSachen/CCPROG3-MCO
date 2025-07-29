@@ -2,18 +2,13 @@ package cielsachen.ccprog3.mco2.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.InputMismatchException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import cielsachen.ccprog3.mco2.helper.ExceptionMessage;
-import cielsachen.ccprog3.mco2.helper.Input;
-import cielsachen.ccprog3.mco2.helper.Output;
-import cielsachen.ccprog3.mco2.helper.PrintColor;
 import cielsachen.ccprog3.mco2.model.Ingredient;
 import cielsachen.ccprog3.mco2.model.StorageBin;
 import cielsachen.ccprog3.mco2.model.Truck;
@@ -22,14 +17,14 @@ import cielsachen.ccprog3.mco2.service.StorageBinService;
 import cielsachen.ccprog3.mco2.service.TruckService;
 import cielsachen.ccprog3.mco2.view.TruckView;
 import cielsachen.ccprog3.mco2.view.component.Modal;
+import cielsachen.ccprog3.mco2.view.form.IngredientSelectionForm;
 import cielsachen.ccprog3.mco2.view.form.StorageBinAssignmentForm;
+import cielsachen.ccprog3.mco2.view.form.StorageBinRestockingForm;
+import cielsachen.ccprog3.mco2.view.form.StorageBinSelectionForm;
 import cielsachen.ccprog3.mco2.view.form.TruckCreationForm;
 
 /** Represents a controller for interacting with trucks. */
 public class TruckController {
-    private final Input input;
-    private final Scanner scanner;
-
     private final CoffeeController coffeeController;
 
     private final TruckService service;
@@ -44,17 +39,12 @@ public class TruckController {
      * @param storageBinService The storage bin service to use.
      */
     public TruckController(CoffeeController coffeeController, TruckService service, StorageBinService storageBinService,
-            CoffeeService coffeeService,
-            Scanner scanner,
-            Input input) {
+            CoffeeService coffeeService) {
         this.coffeeController = coffeeController;
 
         this.service = service;
         this.storageBinService = storageBinService;
         this.coffeeService = coffeeService;
-
-        this.scanner = scanner;
-        this.input = input;
     }
 
     /**
@@ -71,11 +61,11 @@ public class TruckController {
                 String givenLocation = creationForm.locationField.getText();
 
                 if (givenLocation.isEmpty()) {
-                    Modal.showErrorDialog(creationForm, "A location must be specified!", "Missing Field");
+                    Modal.showErrorDialog(parentFrame, "A location must be specified!", "Missing Field");
 
                     return;
                 } else if (TruckController.this.service.isOccupiedLocation(givenLocation)) {
-                    Modal.showErrorDialog(creationForm, "A truck already exists on this location!", "Invalid Input");
+                    Modal.showErrorDialog(parentFrame, "A truck already exists on this location!", "Invalid Input");
 
                     return;
                 }
@@ -101,8 +91,7 @@ public class TruckController {
 
                         boolean isFirstTruck = !TruckController.this.coffeeService.isPricesSet();
 
-                        if (isFirstTruck || Modal.showConfirmDialog(storageBinAssignmentForm,
-                                "Do you want to update the prices?",
+                        if (isFirstTruck || Modal.showConfirmDialog(parentFrame, "Do you want to update the prices?",
                                 "Update Prices") == JOptionPane.YES_OPTION) {
                             TruckController.this.coffeeController.updatePrices(storageBinAssignmentForm);
                         }
@@ -152,244 +141,112 @@ public class TruckController {
      *
      * @param truck The truck to update a storage bin of.
      */
-    public void updateStorageBins(Truck truck) {
-        while (true) {
-            Output.printHeader2("Update Storage Bins");
+    public void restockStorageBins(JFrame parentFrame, Truck truck) {
+        List<StorageBin> storageBins = new ArrayList<StorageBin>(this.storageBinService.getStorageBinsByTruck(truck));
 
-            List<StorageBin> storageBins = this.storageBinService.getStorageBinsByTruck(truck);
+        var storageBinSelectionForm = new StorageBinSelectionForm(parentFrame, storageBins);
 
-            StorageBin chosenStorageBin = null;
+        storageBinSelectionForm.submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                var selectedStorageBin = (StorageBin) storageBinSelectionForm.storageBinComboBox.getSelectedItem();
 
-            while (true) {
-                try {
-                    System.out.println();
+                var storageBinRestockingForm = new StorageBinRestockingForm(parentFrame);
 
-                    System.out.println("Which storage bin would you like to update?");
+                storageBinRestockingForm.restockButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent evt) {
+                        double currCapacity = selectedStorageBin.getCapacity();
+                        Ingredient currIngredient = selectedStorageBin.getIngredient();
 
-                    for (StorageBin storageBin : storageBins) {
-                        System.out
-                                .println("  [" + storageBin.id + "] " + storageBin.getIngredient().name + " ("
-                                        + PrintColor.set(storageBin.toCapacityString(),
-                                                storageBin.isCriticalCapacity() ? PrintColor.RED
-                                                        : PrintColor.BRIGHT_GREEN)
-                                        + ")");
-                    }
+                        if (currCapacity == currIngredient.maximumCapacity) {
+                            Modal.showErrorDialog(storageBinRestockingForm, "The storage bin is already full!",
+                                    "Storage Bin Restocking");
 
-                    System.out.println();
-                    System.out.println("  [X] Return");
-
-                    System.out.println();
-
-                    System.out.print("  > ");
-
-                    int chosenStorageBinId = this.scanner.nextInt();
-
-                    this.scanner.nextLine();
-
-                    if (chosenStorageBinId >= 0 && chosenStorageBinId < storageBins.size()) {
-                        chosenStorageBin = this.storageBinService.getStorageBinsById(chosenStorageBinId, truck).get();
-
-                        break;
-                    }
-
-                    System.out.println();
-
-                    ExceptionMessage.INVALID_INTEGER_CHOICE.print();
-                } catch (InputMismatchException e) {
-                    if (this.input.getCharacter() == 'X') {
-                        break;
-                    }
-
-                    System.out.println();
-
-                    ExceptionMessage.INVALID_INTEGER_CHOICE.print();
-                }
-            }
-
-            if (chosenStorageBin == null) {
-                return;
-            }
-
-            System.out.println();
-
-            Output.printHeader2("Update Bin " + chosenStorageBin.id);
-
-            double currentCapacity = chosenStorageBin.getCapacity();
-            Ingredient currentIngredient = chosenStorageBin.getIngredient();
-
-            while (true) {
-                try {
-                    System.out.println();
-
-                    System.out.println("What would you like to do to the storage bin?");
-
-                    if (currentCapacity < currentIngredient.maximumCapacity) {
-                        System.out.println("  [R] Restock (" + PrintColor.set("+(1+)", PrintColor.BRIGHT_GREEN) + ")");
-                    }
-
-                    if (currentCapacity > 0) {
-                        System.out.println("  [E] Empty ("
-                                + PrintColor.set(String.format("- %.2f", currentCapacity), PrintColor.RED) + ")");
-                    }
-
-                    System.out.println("  [C] Change Ingredients");
-                    System.out.println();
-                    System.out.println("  [X] Return");
-
-                    System.out.println();
-
-                    System.out.print("  > ");
-
-                    char chosenOptionId = this.input.getCharacter();
-
-                    switch (chosenOptionId) {
-                        case 'R':
-                            if (currentCapacity == currentIngredient.maximumCapacity) {
-                                ExceptionMessage.printCustom("The storage bin is already full!");
-
-                                break;
-                            }
-
-                            Ingredient storageBinIngredient = chosenStorageBin.getIngredient();
-
-                            float additionalCapacity;
-
-                            while (true) {
-                                additionalCapacity = this.input.getFloat(
-                                        "How much ("
-                                                + PrintColor.set(storageBinIngredient.unitMeasure, PrintColor.YELLOW)
-                                                + ") " + PrintColor.set(storageBinIngredient.name, PrintColor.YELLOW)
-                                                + " should be restocked? ",
-                                        true);
-
-                                if (additionalCapacity > 0) {
-                                    if (currentCapacity + additionalCapacity > currentIngredient.maximumCapacity) {
-                                        chosenStorageBin.decreaseCapacity(currentCapacity);
-                                        chosenStorageBin.increaseCapacity(currentIngredient.maximumCapacity);
-                                    } else {
-                                        chosenStorageBin.increaseCapacity(additionalCapacity);
-                                    }
-
-                                    break;
-                                }
-
-                                System.out.println();
-
-                                ExceptionMessage.printCustom("Please only input a positive floating point number!");
-                            }
-
-                            System.out.println(
-                                    PrintColor.set("The storage bin has been restocked!", PrintColor.BRIGHT_GREEN));
-
-                            break;
-                        case 'E':
-                            if (currentCapacity == 0) {
-                                ExceptionMessage.printCustom("The storage bin is already empty!");
-
-                                break;
-                            }
-
-                            chosenStorageBin.decreaseCapacity(currentCapacity);
-
-                            System.out
-                                    .println(PrintColor.set("The storage bin has been emptied!",
-                                            PrintColor.BRIGHT_GREEN));
-
-                            break;
-                        case 'C': {
-                            List<Ingredient> ingredients = chosenStorageBin.id <= StorageBin.STANDARD_TRUCK_COUNT
-                                    ? Ingredient.regularValues()
-                                    : Ingredient.specialValues();
-                            int ingredientCount = ingredients.size();
-
-                            while (true) {
-                                try {
-                                    System.out.println();
-
-                                    for (StorageBin storageBin : this.storageBinService.getStorageBinsByTruck(truck)) {
-                                        if (!storageBin.equals(chosenStorageBin)) {
-                                            System.out.println(PrintColor.set(
-                                                    "Bin #" + storageBin.id + " = " + storageBin.getIngredient().name,
-                                                    PrintColor.BRIGHT_CYAN));
-                                        }
-                                    }
-
-                                    System.out.println();
-
-                                    System.out.println(
-                                            "Bin #" + chosenStorageBin.id + " = " + currentIngredient.name);
-
-                                    System.out.println();
-
-                                    System.out.println("What item should this storage bin contain instead?");
-
-                                    for (int index = 0; index < ingredientCount; index++) {
-                                        Ingredient ingredient = ingredients.get(index);
-
-                                        if (!ingredient.equals(currentIngredient)) {
-                                            System.out.println("  [" + (index + 1) + "] " + ingredient.name);
-                                        }
-                                    }
-
-                                    System.out.println();
-
-                                    System.out.print("  > ");
-
-                                    int chosenIngredientIndex = this.scanner.nextInt() - 1;
-
-                                    this.scanner.nextLine();
-
-                                    if (chosenIngredientIndex >= 0 && chosenIngredientIndex < ingredientCount) {
-                                        Ingredient chosenIngredient = ingredients.get(chosenIngredientIndex);
-
-                                        if (!chosenIngredient.equals(currentIngredient)) {
-                                            chosenStorageBin.setIngredient(chosenIngredient);
-
-                                            if (currentCapacity > 0) {
-                                                chosenStorageBin.decreaseCapacity(currentCapacity);
-                                            }
-
-                                            chosenStorageBin.increaseCapacity(chosenIngredient.maximumCapacity);
-
-                                            break;
-                                        }
-                                    }
-
-                                    System.out.println();
-
-                                    ExceptionMessage.INVALID_INTEGER_CHOICE.print();
-                                } catch (InputMismatchException e) {
-                                    this.scanner.nextLine();
-
-                                    System.out.println();
-
-                                    ExceptionMessage.INVALID_INTEGER_CHOICE.print();
-                                }
-                            }
-
-                            break;
+                            return;
                         }
-                        case 'X':
-                            break;
-                        default:
-                            System.out.println();
 
-                            ExceptionMessage.INVALID_CHARACTER_CHOICE.print();
+                        double additionalCapacity = 0;
 
-                            continue;
+                        while (true) {
+                            String givenNum = Modal.showInputDialog(parentFrame,
+                                    "How much " + currIngredient.name + " should be restocked?", "Add-On Syrup");
+
+                            try {
+                                additionalCapacity = Double.parseDouble(givenNum);
+
+                                break;
+                            } catch (NumberFormatException e) {
+                                Modal.showErrorDialog(parentFrame, "Please only input a floating point number!",
+                                        "Invalid Input");
+                            }
+                        }
+
+                        if (additionalCapacity > 0) {
+                            if (currCapacity + additionalCapacity > currIngredient.maximumCapacity) {
+                                selectedStorageBin.decreaseCapacity(currCapacity);
+                                selectedStorageBin.increaseCapacity(currIngredient.maximumCapacity);
+                            } else {
+                                selectedStorageBin.increaseCapacity(additionalCapacity);
+                            }
+
+                            JOptionPane.showMessageDialog(storageBinRestockingForm,
+                                    "The storage bin has been restocked!", "Storage Bin Restocking",
+                                    JOptionPane.PLAIN_MESSAGE);
+                        }
                     }
+                });
+                storageBinRestockingForm.emptyButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent evt) {
+                        double currCapacity = selectedStorageBin.getCapacity();
 
-                    break;
-                } catch (InputMismatchException e) {
-                    scanner.nextLine();
+                        if (currCapacity == 0) {
+                            Modal.showErrorDialog(storageBinRestockingForm, "The storage bin is already empty!",
+                                    "Storage Bin Restocking");
 
-                    System.out.println();
+                            return;
+                        }
 
-                    ExceptionMessage.INVALID_CHARACTER_CHOICE.print();
-                }
+                        selectedStorageBin.decreaseCapacity(currCapacity);
+
+                        JOptionPane.showMessageDialog(storageBinRestockingForm, "The storage bin has been emptied!",
+                                "Storage Bin Restocking", JOptionPane.PLAIN_MESSAGE);
+                    }
+                });
+                storageBinRestockingForm.changeIngredientButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent evt) {
+                        List<Ingredient> ingredients = new ArrayList<Ingredient>(
+                                selectedStorageBin.id > StorageBin.STANDARD_TRUCK_COUNT ? Ingredient.specialValues()
+                                        : Ingredient.regularValues());
+
+                        storageBins.remove(selectedStorageBin);
+                        ingredients.remove(selectedStorageBin.getIngredient());
+
+                        var ingredientSelectionForm = new IngredientSelectionForm(parentFrame, storageBins,
+                                ingredients);
+
+                        ingredientSelectionForm.submitButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent evt) {
+                                double currCapacity = selectedStorageBin.getCapacity();
+
+                                if (currCapacity > 0) {
+                                    selectedStorageBin.decreaseCapacity(currCapacity);
+                                }
+
+                                var selectedIngredient = (Ingredient) ingredientSelectionForm.ingredientComboBox
+                                        .getSelectedItem();
+
+                                selectedStorageBin.setIngredient(selectedIngredient);
+
+                                selectedStorageBin.increaseCapacity(selectedIngredient.maximumCapacity);
+                            }
+                        });
+                    }
+                });
             }
-
-            System.out.println();
-        }
+        });
     }
 }

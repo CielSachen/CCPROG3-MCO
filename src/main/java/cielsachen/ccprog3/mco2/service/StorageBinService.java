@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import cielsachen.ccprog3.mco2.model.Ingredient;
 import cielsachen.ccprog3.mco2.model.StorageBin;
@@ -87,23 +86,6 @@ public class StorageBinService {
         }
 
         return capacitiesByIngredient;
-    }
-
-    /**
-     * Gets the storage bin belonging to a truck with a specific ID.
-     *
-     * @param id    The ID of the storage bin to get.
-     * @param truck The truck owning the storage bin.
-     * @return The storage bin with the ID.
-     */
-    public Optional<StorageBin> getStorageBinsById(int id, Truck truck) {
-        for (StorageBin storageBin : this.getStorageBinsByTruck(truck)) {
-            if (storageBin.id == id) {
-                return Optional.of(storageBin);
-            }
-        }
-
-        return Optional.empty();
     }
 
     /**
