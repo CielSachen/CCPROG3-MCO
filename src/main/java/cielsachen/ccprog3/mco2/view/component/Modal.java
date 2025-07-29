@@ -14,6 +14,10 @@ public final class Modal extends JOptionPane {
         JOptionPane.showMessageDialog(parentFrame, msg, title, JOptionPane.ERROR_MESSAGE);
     }
 
+    public static String showInputDialog(JFrame parentFrame, String msg, String title) {
+        return JOptionPane.showInputDialog(parentFrame, msg, title, JOptionPane.PLAIN_MESSAGE);
+    }
+
     @SuppressWarnings("unchecked")
     public static <T extends Object> T showSelectionDialog(JFrame parentFrame, String msg, String title,
             List<T> choices, T defaultChoice) {

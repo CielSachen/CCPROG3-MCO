@@ -125,31 +125,26 @@ public class TruckController {
      *
      * @param truck The truck to relocate.
      */
-    public void relocateTruck(Truck truck) {
+    public void relocateTruck(JFrame parentFrame, Truck truck) {
         String newLocation;
 
         while (true) {
-            System.out.print("Where will this truck be relocated to? ");
-
-            newLocation = this.scanner.nextLine();
+            newLocation = Modal.showInputDialog(parentFrame, "Where will this truck be relocated to?",
+                    "Truck Relocation");
 
             System.out.println();
 
-            if (this.service.isOccupiedLocation(newLocation)) {
-                ExceptionMessage.printCustom("A truck already exists on this location!");
-
-                System.out.println();
-
-                continue;
+            if (!this.service.isOccupiedLocation(newLocation)) {
+                break;
             }
 
-            break;
+            Modal.showErrorDialog(parentFrame, "A truck already exists on this location!", "Truck Relocation");
         }
 
         truck.setLocation(newLocation);
 
-        System.out
-                .println(PrintColor.set("Relocated the coffee truck to " + newLocation + "!", PrintColor.BRIGHT_GREEN));
+        JOptionPane.showMessageDialog(parentFrame, "Relocated the coffee truck to " + newLocation + "!",
+                "Truck Relocation", JOptionPane.PLAIN_MESSAGE);
     }
 
     /**

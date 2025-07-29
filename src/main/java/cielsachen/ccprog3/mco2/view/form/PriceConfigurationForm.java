@@ -23,7 +23,7 @@ public class PriceConfigurationForm extends JFrame {
     public final JButton submitButton = new JButton("Submit");
 
     public PriceConfigurationForm(JFrame parentFrame, Coffee[] coffees) {
-        super("Configure Coffee Prices");
+        super("Coffee Prices Configuration");
 
         for (int i = 0; i < coffees.length + 2; i++) {
             var priceField = new JTextField();

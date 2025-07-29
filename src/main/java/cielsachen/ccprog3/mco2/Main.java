@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import cielsachen.ccprog3.mco2.controller.CoffeeController;
 import cielsachen.ccprog3.mco2.controller.MenuController;
 import cielsachen.ccprog3.mco2.controller.TruckController;
@@ -24,6 +27,20 @@ public class Main {
      * @param arguments The CLI arguments.
      */
     public static void main(String[] arguments) {
+        try {
+            // Set cross-platform Java L&F (also called "Metal")
+            UIManager.setLookAndFeel(
+                    UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (UnsupportedLookAndFeelException e) {
+            // handle exception
+        } catch (ClassNotFoundException e) {
+            // handle exception
+        } catch (InstantiationException e) {
+            // handle exception
+        } catch (IllegalAccessException e) {
+            // handle exception
+        }
+
         var scanner = new Scanner(System.in);
         var input = new Input(scanner);
 
@@ -36,7 +53,7 @@ public class Main {
         var coffeeService = new CoffeeService(storageBinService);
         var truckService = new TruckService(trucks);
 
-        var coffeeController = new CoffeeController(coffeeService);
+        var coffeeController = new CoffeeController(coffeeService, storageBinService, transactionService);
         var truckController = new TruckController(coffeeController, truckService, storageBinService, coffeeService,
                 scanner, input);
         var menuController = new MenuController(

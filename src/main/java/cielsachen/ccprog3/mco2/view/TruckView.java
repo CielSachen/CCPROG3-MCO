@@ -80,7 +80,7 @@ public class TruckView extends JFrame {
             super.add(new JSeparator(SwingConstants.HORIZONTAL), constraints);
 
             constraints.gridy++;
-            constraints.weightx = constraints.weighty = 0.0;
+            constraints.weightx = constraints.weighty = 0;
             constraints.fill = GridBagConstraints.NONE;
             constraints.insets.top = 12;
             constraints.insets.bottom = 2;
@@ -98,7 +98,7 @@ public class TruckView extends JFrame {
             super.add(coffeePricesTablePanel, constraints);
 
             constraints.gridy++;
-            constraints.weightx = constraints.weighty = 0.0;
+            constraints.weightx = constraints.weighty = 0;
             constraints.fill = GridBagConstraints.NONE;
 
             super.add(new JLabel("Extra Espresso Shots: " + extraEspressoShot.toPriceString()), constraints);

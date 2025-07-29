@@ -42,7 +42,7 @@ public class EspressoRatioSelectionForm extends JFrame {
                 Arrays.stream(espressoRatios).map((er) -> new String[] { er.name, er.toString() })
                         .toArray(String[][]::new),
                 new String[] { "Name", "Ratio" }));
-        espressoRatiosTablePanel.setPreferredSize(new Dimension(150, 81));
+        espressoRatiosTablePanel.setPreferredSize(new Dimension(150, 91));
 
         constraints.gridy++;
         constraints.weightx = constraints.weighty = 1.0;
@@ -58,7 +58,7 @@ public class EspressoRatioSelectionForm extends JFrame {
         super.add(this.coffeeSizeComboBox, constraints);
 
         constraints.gridy++;
-        constraints.weightx = constraints.weighty = 0.0;
+        constraints.weightx = constraints.weighty = 0;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets.top = constraints.insets.bottom;
         constraints.insets.bottom = 20;
