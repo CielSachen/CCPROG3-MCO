@@ -23,7 +23,7 @@ public class Transaction {
 
     /**
      * Creates a new {@code Transaction} object instance.
-     * 
+     *
      * @param coffeeName             The name of the purchased coffee.
      * @param coffeeSize             The size of the purchased coffee.
      * @param cost                   The total cost of purchasing the coffee.
@@ -43,7 +43,7 @@ public class Transaction {
 
     /**
      * Gets the ingredients used to brew the coffee.
-     * 
+     *
      * @return The ingredients used to brew the coffee mapped to their amount.
      */
     public Map<Ingredient, Double> getIngredients() {
@@ -52,17 +52,16 @@ public class Transaction {
 
     /**
      * Gets the syrups added to the coffee.
-     * 
+     *
      * @return The syrups added to the coffee.
      */
     public List<Ingredient> getSyrups() {
-        return this.ingredients.entrySet().stream().filter((entry) -> entry.getKey().isSpecial)
-                .map((entry) -> entry.getKey()).toList();
+        return this.ingredients.entrySet().stream().filter((e) -> e.getKey().isSpecial).map((e) -> e.getKey()).toList();
     }
 
     /**
      * Converts the cost of the transaction into a localized string.
-     * 
+     *
      * @return A localized cost string.
      */
     public String toCostString() {

@@ -18,7 +18,7 @@ public class TruckCreationForm extends JFrame {
     public final JButton submitButton = new JButton("Submit");
 
     public TruckCreationForm(JFrame parentFrame) {
-        super("Create a New Truck");
+        super("Truck Creation");
 
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 

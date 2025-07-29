@@ -71,11 +71,11 @@ public class TruckController {
                 String givenLocation = creationForm.locationField.getText();
 
                 if (givenLocation.isEmpty()) {
-                    Modal.showError("A location must be specified!", "Missing Field");
+                    Modal.showErrorDialog(creationForm, "A location must be specified!", "Missing Field");
 
                     return;
                 } else if (TruckController.this.service.isOccupiedLocation(givenLocation)) {
-                    Modal.showError("A truck already exists on this location!", "Invalid Input");
+                    Modal.showErrorDialog(creationForm, "A truck already exists on this location!", "Invalid Input");
 
                     return;
                 }
@@ -101,7 +101,7 @@ public class TruckController {
 
                         boolean isFirstTruck = !TruckController.this.coffeeService.isPricesSet();
 
-                        if (isFirstTruck || Modal.showConfirmation(
+                        if (isFirstTruck || Modal.showConfirmDialog(storageBinAssignmentForm,
                                 "Do you want to update the prices?",
                                 "Update Prices") == JOptionPane.YES_OPTION) {
                             TruckController.this.coffeeController.updatePrices(storageBinAssignmentForm);

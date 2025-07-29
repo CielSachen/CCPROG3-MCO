@@ -1,7 +1,6 @@
 package cielsachen.ccprog3.mco2.controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.List;
 
 import cielsachen.ccprog3.mco2.model.Truck;
 import cielsachen.ccprog3.mco2.service.CoffeeService;
@@ -13,7 +12,6 @@ import cielsachen.ccprog3.mco2.view.MainMenuView;
 import cielsachen.ccprog3.mco2.view.TruckView;
 import cielsachen.ccprog3.mco2.view.component.Modal;
 import cielsachen.ccprog3.mco2.view.form.SimulationForm;
-import cielsachen.ccprog3.mco2.view.form.TruckSelectionForm;
 
 public class MenuController {
     private final MainMenuView view;
@@ -22,79 +20,56 @@ public class MenuController {
             StorageBinService storageBinService, CoffeeService coffeeService, TransactionService transactionService) {
         this.view = new MainMenuView();
 
-        this.view.createTruckButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                truckController.createTruck(MenuController.this.view);
-            }
-        });
-        this.view.simulateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                var truckSelectionForm = new TruckSelectionForm(MenuController.this.view, truckService.getTrucks());
+        this.view.createTruckButton.addActionListener((e) -> truckController.createTruck(MenuController.this.view));
+        this.view.simulateButton.addActionListener((evt) -> {
+            List<Truck> trucks = truckService.getTrucks();
 
-                truckSelectionForm.submitButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        Truck chosenTruck = truckSelectionForm.truckComboBox.getSelectedValue();
+            if (trucks.size() == 0) {
+                Modal.showErrorDialog(MenuController.this.view, "You have not yet created any trucks!", "No Trucks");
 
-                        var simulationForm = new SimulationForm(MenuController.this.view);
-
-                        simulationForm.coffeeSaleButton.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                if (!coffeeService.isCapableOfBrewing(chosenTruck)) {
-                                    Modal.showError(
-                                            "The selected truck doesn’t have the ingredients to brew coffee!",
-                                            "Missing Ingredients");
-
-                                    return;
-                                }
-
-                                coffeeController.prepareCoffee(simulationForm, chosenTruck);
-                            }
-                        });
-                        simulationForm.viewTruckButton.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                new TruckView(
-                                        simulationForm,
-                                        chosenTruck,
-                                        storageBinService.getStorageBinsByTruck(chosenTruck),
-                                        coffeeService.getCoffeesByTruck(chosenTruck),
-                                        coffeeService.espresso,
-                                        coffeeService.syrup);
-                            }
-                        });
-                        simulationForm.restockButton.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                // TODO Auto-generated method stub
-                            }
-                        });
-                        simulationForm.maintenanceButton.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                // TODO Auto-generated method stub
-                            }
-                        });
-                    }
-                });
+                return;
             }
 
-        });
-        this.view.dashboardButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+            Truck selectedTruck = Modal.showSelectionDialog(
+                    MenuController.this.view,
+                    "Please select a truck by its location…",
+                    "Truck Selection",
+                    trucks,
+                    trucks.getLast());
 
-                new DashboardView(
-                        MenuController.this.view,
-                        truckService.getTrucks().size(),
-                        truckService.getSpecialTrucks().size(),
-                        storageBinService.getIngredientCapacities(),
-                        transactionService.getTransactions());
-            }
+            var simulationForm = new SimulationForm(MenuController.this.view);
+
+            simulationForm.coffeeSaleButton.addActionListener((e) -> {
+                if (!coffeeService.isCapableOfBrewing(selectedTruck)) {
+                    Modal.showErrorDialog(MenuController.this.view,
+                            "The selected truck doesn’t have the ingredients to brew coffee!",
+                            "Missing Ingredients");
+
+                    return;
+                }
+
+                coffeeController.prepareCoffee(simulationForm, selectedTruck);
+            });
+            simulationForm.viewTruckButton.addActionListener((e) -> {
+                new TruckView(
+                        simulationForm,
+                        selectedTruck,
+                        storageBinService.getStorageBinsByTruck(selectedTruck),
+                        coffeeService.getCoffeesByTruck(selectedTruck),
+                        coffeeService.espresso,
+                        coffeeService.syrup);
+            });
+            simulationForm.restockButton.addActionListener((e) -> {
+            });
+            simulationForm.maintenanceButton.addActionListener((e) -> {
+            });
         });
+        this.view.dashboardButton.addActionListener((e) -> new DashboardView(
+                MenuController.this.view,
+                truckService.getTrucks().size(),
+                truckService.getSpecialTrucks().size(),
+                storageBinService.getIngredientCapacities(),
+                transactionService.getTransactions()));
     }
 
     public void showMainMenu() {

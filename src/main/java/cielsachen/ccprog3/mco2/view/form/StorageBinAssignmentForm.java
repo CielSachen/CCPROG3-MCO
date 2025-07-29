@@ -22,7 +22,7 @@ public class StorageBinAssignmentForm extends JFrame {
     public final JButton submitButton = new JButton("Submit");
 
     public StorageBinAssignmentForm(JFrame parentFrame, Truck truck, boolean isUpdating) {
-        super("Update Storage Bins");
+        super("Storage Bin Assignment");
 
         for (int i = 0; i < (truck.isSpecial ? StorageBin.SPECIAL_TRUCK_COUNT : StorageBin.STANDARD_TRUCK_COUNT); i++) {
             ingredientComboBoxes.add(new JComboBox<Ingredient>(i < StorageBin.STANDARD_TRUCK_COUNT

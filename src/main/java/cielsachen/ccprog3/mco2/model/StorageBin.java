@@ -17,7 +17,7 @@ public class StorageBin {
 
     /**
      * Creates a new {@code StorageBin} object instance.
-     * 
+     *
      * @param id         The ID of the storage bin.
      * @param truck      The truck that the storage bin belongs to.
      * @param ingredient The ingredient the storage bin contains.
@@ -31,7 +31,7 @@ public class StorageBin {
 
     /**
      * Gets the capacity of the storage bin.
-     * 
+     *
      * @return The capacity of the storage bin.
      */
     public double getCapacity() {
@@ -40,7 +40,7 @@ public class StorageBin {
 
     /**
      * Gets ingredient the storage bin contains.
-     * 
+     *
      * @return The ingredient the storage bin contains.
      */
     public Ingredient getIngredient() {
@@ -49,7 +49,7 @@ public class StorageBin {
 
     /**
      * Sets ingredient the storage bin will contain.
-     * 
+     *
      * @param newIngredient The new ingredient to use.
      */
     public void setIngredient(Ingredient newIngredient) {
@@ -60,7 +60,7 @@ public class StorageBin {
      * Decreases the capacity of the storage bin.
      * <p>
      * The capacity cannot be less than zero.
-     * 
+     *
      * @param deductibleCapacity The amount to decrease by.
      * @return Whether the capacity was decreased.
      */
@@ -78,7 +78,7 @@ public class StorageBin {
      * Increases the capacity of the storage bin.
      * <p>
      * The capacity cannot be greater than the ingredient's maximum.
-     * 
+     *
      * @param additionalCapacity The amount to increase by.
      * @return Whether the capacity was increased.
      */
@@ -94,7 +94,7 @@ public class StorageBin {
 
     /**
      * Checks if the capacity of the storage bin is at critical levels.
-     * 
+     *
      * @return Whether the capacity is less than a third of the maximum.
      */
     public boolean isCriticalCapacity() {
@@ -103,7 +103,7 @@ public class StorageBin {
 
     /**
      * Converts the capacities of the storage bin into a capacity fraction string.
-     * 
+     *
      * @return A capacity string.
      */
     public String toCapacityString() {

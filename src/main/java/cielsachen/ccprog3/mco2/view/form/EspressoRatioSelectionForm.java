@@ -9,22 +9,22 @@ import java.awt.event.ActionListener;
 import java.util.Arrays;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import cielsachen.ccprog3.mco2.model.coffee.EspressoRatio;
 
 public class EspressoRatioSelectionForm extends JFrame {
-    public final JList<EspressoRatio> coffeeSizeComboBox;
+    public final JComboBox<EspressoRatio> coffeeSizeComboBox;
     public final JButton submitButton = new JButton("Submit");
 
     public EspressoRatioSelectionForm(JFrame parentFrame, EspressoRatio[] espressoRatios) {
-        super("Coffee Selection");
+        super("Espresso Ratio Selection");
 
-        this.coffeeSizeComboBox = new JList<EspressoRatio>(espressoRatios);
+        this.coffeeSizeComboBox = new JComboBox<EspressoRatio>(espressoRatios);
 
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -42,7 +42,7 @@ public class EspressoRatioSelectionForm extends JFrame {
                 Arrays.stream(espressoRatios).map((er) -> new String[] { er.name, er.toString() })
                         .toArray(String[][]::new),
                 new String[] { "Name", "Ratio" }));
-        espressoRatiosTablePanel.setPreferredSize(new Dimension(150, 68));
+        espressoRatiosTablePanel.setPreferredSize(new Dimension(150, 81));
 
         constraints.gridy++;
         constraints.weightx = constraints.weighty = 1.0;

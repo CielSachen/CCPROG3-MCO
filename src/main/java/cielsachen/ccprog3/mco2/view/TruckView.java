@@ -63,7 +63,7 @@ public class TruckView extends JFrame {
                             String.format("%.2f " + ingredient.unitMeasure, ingredient.maximumCapacity) };
                 }).toArray(String[][]::new),
                 new String[] { "Ingredient", "Current Capacity", "Maximum Capacity" }));
-        storageBinsTablePanel.setPreferredSize(new Dimension(336, 180));
+        storageBinsTablePanel.setPreferredSize(new Dimension(430, 183));
 
         constraints.gridy++;
         constraints.weightx = constraints.weighty = 1.0;
@@ -88,7 +88,7 @@ public class TruckView extends JFrame {
             super.add(new JLabel("Prices"), constraints);
 
             var coffeePricesTablePanel = new JScrollPane(new CoffeePricesTable(coffees));
-            coffeePricesTablePanel.setPreferredSize(new Dimension(336, 68));
+            coffeePricesTablePanel.setPreferredSize(new Dimension(430, 71));
 
             constraints.gridy++;
             constraints.weightx = constraints.weighty = 1.0;

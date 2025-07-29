@@ -9,11 +9,11 @@ public class InsufficientCapacityException extends Exception {
 
     /**
      * Creates a new {@code InsufficientCapacityException} object instance.
-     * 
+     *
      * @param ingredient The ingredient of the storage bins.
      */
     public InsufficientCapacityException(Ingredient ingredient) {
-        super("A truck has emptied all storage bins for an ingredient.");
+        super();
 
         this.ingredient = ingredient;
     }

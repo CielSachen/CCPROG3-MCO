@@ -5,23 +5,21 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
+import javax.swing.JTextField;
+import javax.swing.text.PlainDocument;
 
-import cielsachen.ccprog3.mco2.model.coffee.Coffee;
+import cielsachen.ccprog3.mco2.validator.IntegerDocumentFilter;
 
-public class CoffeeSelectionForm extends JFrame {
-    public final JList<Coffee> coffeeComboBox;
+public class EspressoRatioForm extends JFrame {
+    public final JTextField waterRatioField = new JTextField();
     public final JButton submitButton = new JButton("Submit");
 
-    public CoffeeSelectionForm(JFrame parentFrame, List<Coffee> coffees) {
-        super("Coffee Selection");
-
-        this.coffeeComboBox = new JList<Coffee>(coffees.toArray(Coffee[]::new));
+    public EspressoRatioForm(JFrame parentFrame) {
+        super("Espresso Ratio");
 
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -31,30 +29,32 @@ public class CoffeeSelectionForm extends JFrame {
 
         var constraints = new GridBagConstraints();
         constraints.gridx = constraints.gridy = 0;
-        constraints.fill = GridBagConstraints.BOTH;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(20, 20, 2, 20);
 
-        super.add(new JLabel("Please select a coffee to brew…"), constraints);
+        super.add(new JLabel("Please input the ratio of water to coffee beans…"), constraints);
+
+        var waterRatioFieldDoc = (PlainDocument) this.waterRatioField.getDocument();
+        waterRatioFieldDoc.setDocumentFilter(new IntegerDocumentFilter());
 
         constraints.gridy++;
-        constraints.weightx = 1.0;
-        constraints.weighty = 0.5;
         constraints.insets.top = constraints.insets.bottom;
 
-        super.add(this.coffeeComboBox, constraints);
+        super.add(this.waterRatioField, constraints);
 
         constraints.gridy++;
-        constraints.weightx = constraints.weighty = 0.0;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.insets.top = constraints.insets.bottom;
-        constraints.insets.bottom = 20;
+        constraints.insets.top = constraints.insets.bottom = 20;
 
         super.add(this.submitButton, constraints);
 
         this.submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CoffeeSelectionForm.super.dispose();
+                if (EspressoRatioForm.this.waterRatioField.getText().isEmpty()) {
+                    return;
+                }
+
+                EspressoRatioForm.super.dispose();
             }
         });
 

@@ -9,22 +9,22 @@ import java.awt.event.ActionListener;
 import java.util.Arrays;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import cielsachen.ccprog3.mco2.model.coffee.CoffeeSize;
 
 public class CoffeeSizeSelectionForm extends JFrame {
-    public final JList<CoffeeSize> coffeeSizeComboBox;
+    public final JComboBox<CoffeeSize> coffeeSizeComboBox;
     public final JButton submitButton = new JButton("Submit");
 
     public CoffeeSizeSelectionForm(JFrame parentFrame, CoffeeSize[] coffeeSizes) {
-        super("Coffee Selection");
+        super("Coffee Size Selection");
 
-        this.coffeeSizeComboBox = new JList<CoffeeSize>(coffeeSizes);
+        this.coffeeSizeComboBox = new JComboBox<CoffeeSize>(coffeeSizes);
 
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -39,10 +39,10 @@ public class CoffeeSizeSelectionForm extends JFrame {
         super.add(new JLabel("Please select the size of the coffee to brew…"), constraints);
 
         var coffeeSizesTablePanel = new JScrollPane(new JTable(
-                Arrays.stream(coffeeSizes).map((cf) -> new String[] { cf.name, cf.toString() })
+                Arrays.stream(coffeeSizes).map((cf) -> new String[] { cf.cup.name, cf.toString() })
                         .toArray(String[][]::new),
                 new String[] { "Cup", "Capacity" }));
-        coffeeSizesTablePanel.setPreferredSize(new Dimension(150, 68));
+        coffeeSizesTablePanel.setPreferredSize(new Dimension(150, 91));
 
         constraints.gridy++;
         constraints.weightx = constraints.weighty = 1.0;
