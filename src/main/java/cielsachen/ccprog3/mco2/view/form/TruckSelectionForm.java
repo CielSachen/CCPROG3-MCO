@@ -5,20 +5,23 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
+import javax.swing.JList;
 
-public class TruckCreationForm extends JFrame {
-    public final JTextField locationField = new JTextField();
-    public final JCheckBox isSpecialCheckBox = new JCheckBox("Make a Special Truck?");
+import cielsachen.ccprog3.mco2.model.Truck;
+
+public class TruckSelectionForm extends JFrame {
+    public final JList<Truck> truckComboBox;
     public final JButton submitButton = new JButton("Submit");
 
-    public TruckCreationForm(JFrame parentFrame) {
-        super("Create a New Truck");
+    public TruckSelectionForm(JFrame parentFrame, List<Truck> trucks) {
+        super("Truck Selection");
+
+        this.truckComboBox = new JList<Truck>(trucks.toArray(Truck[]::new));
 
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -28,33 +31,30 @@ public class TruckCreationForm extends JFrame {
 
         var constraints = new GridBagConstraints();
         constraints.gridx = constraints.gridy = 0;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.fill = GridBagConstraints.BOTH;
         constraints.insets = new Insets(20, 20, 2, 20);
 
-        super.add(new JLabel("Where will this truck be located?"), constraints);
+        super.add(new JLabel("Please select a truck by its location…"), constraints);
 
         constraints.gridy++;
+        constraints.weightx = 1.0;
+        constraints.weighty = 0.5;
         constraints.insets.top = constraints.insets.bottom;
 
-        super.add(this.locationField, constraints);
+        super.add(this.truckComboBox, constraints);
 
         constraints.gridy++;
-
-        super.add(this.isSpecialCheckBox, constraints);
-
-        constraints.gridy++;
-        constraints.insets.top = constraints.insets.bottom = 20;
+        constraints.weightx = constraints.weighty = 0.0;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.insets.top = constraints.insets.bottom;
+        constraints.insets.bottom = 20;
 
         super.add(this.submitButton, constraints);
 
         this.submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (TruckCreationForm.this.locationField.getText().isEmpty()) {
-                    return;
-                }
-
-                TruckCreationForm.super.dispose();
+                TruckSelectionForm.super.dispose();
             }
         });
 

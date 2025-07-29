@@ -29,8 +29,8 @@ public class DashboardView extends JFrame {
         super.setLayout(new GridBagLayout());
 
         var constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = constraints.gridy = 0;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(20, 20, 2, 20);
 
         super.add(new JLabel("Deployed Trucks: " + truckCnt), constraints);

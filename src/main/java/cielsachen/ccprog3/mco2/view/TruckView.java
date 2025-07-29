@@ -1,5 +1,6 @@
 package cielsachen.ccprog3.mco2.view;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -8,9 +9,12 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 
 import cielsachen.ccprog3.mco2.model.Ingredient;
+import cielsachen.ccprog3.mco2.model.Product;
 import cielsachen.ccprog3.mco2.model.StorageBin;
 import cielsachen.ccprog3.mco2.model.Truck;
 import cielsachen.ccprog3.mco2.model.coffee.Coffee;
@@ -18,7 +22,7 @@ import cielsachen.ccprog3.mco2.view.component.CoffeePricesTable;
 
 public class TruckView extends JFrame {
     public TruckView(JFrame parentFrame, Truck truck, List<StorageBin> storageBins, List<Coffee> coffees,
-            String espressoPriceString, String syrupPriceString) {
+            Product extraEspressoShot, Product syrupAddOn) {
         super("Truck #" + truck.id);
 
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -28,8 +32,8 @@ public class TruckView extends JFrame {
         super.setLayout(new GridBagLayout());
 
         var constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = constraints.gridy = 0;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(20, 20, 2, 20);
 
         super.add(new JLabel("ID: " + truck.id), constraints);
@@ -49,7 +53,7 @@ public class TruckView extends JFrame {
 
         super.add(new JLabel("Storage Bins"), constraints);
 
-        var storageBinsTablePane = new JScrollPane(new JTable(
+        var storageBinsTablePanel = new JScrollPane(new JTable(
                 storageBins.stream().map((storageBin) -> {
                     Ingredient ingredient = storageBin.getIngredient();
 
@@ -59,44 +63,50 @@ public class TruckView extends JFrame {
                             String.format("%.2f " + ingredient.unitMeasure, ingredient.maximumCapacity) };
                 }).toArray(String[][]::new),
                 new String[] { "Ingredient", "Current Capacity", "Maximum Capacity" }));
+        storageBinsTablePanel.setPreferredSize(new Dimension(336, 180));
 
         constraints.gridy++;
+        constraints.weightx = constraints.weighty = 1.0;
         constraints.fill = GridBagConstraints.BOTH;
-        constraints.weightx = 1.0;
-        constraints.weighty = 0.5;
         constraints.insets.top = constraints.insets.bottom;
         constraints.insets.bottom = 20;
 
-        super.add(storageBinsTablePane, constraints);
+        super.add(storageBinsTablePanel, constraints);
 
-        if (coffees != null && espressoPriceString != null && syrupPriceString != null) {
+        if (coffees != null && extraEspressoShot != null && syrupAddOn != null) {
             constraints.gridy++;
-            constraints.fill = GridBagConstraints.NONE;
+            constraints.insets.top = constraints.insets.bottom = 0;
+
+            super.add(new JSeparator(SwingConstants.HORIZONTAL), constraints);
+
+            constraints.gridy++;
             constraints.weightx = constraints.weighty = 0.0;
-            constraints.insets.bottom = constraints.insets.top;
+            constraints.fill = GridBagConstraints.NONE;
+            constraints.insets.top = 12;
+            constraints.insets.bottom = 2;
 
             super.add(new JLabel("Prices"), constraints);
 
+            var coffeePricesTablePanel = new JScrollPane(new CoffeePricesTable(coffees));
+            coffeePricesTablePanel.setPreferredSize(new Dimension(336, 68));
+
             constraints.gridy++;
+            constraints.weightx = constraints.weighty = 1.0;
             constraints.fill = GridBagConstraints.BOTH;
-            constraints.weightx = 1.0;
-            constraints.weighty = 0.5;
             constraints.insets.top = constraints.insets.bottom;
 
-            super.add(
-                    new JScrollPane(new CoffeePricesTable(coffees, espressoPriceString, syrupPriceString)),
-                    constraints);
+            super.add(coffeePricesTablePanel, constraints);
 
             constraints.gridy++;
-            constraints.fill = GridBagConstraints.NONE;
             constraints.weightx = constraints.weighty = 0.0;
+            constraints.fill = GridBagConstraints.NONE;
 
-            super.add(new JLabel("Extra Espresso Shots: " + espressoPriceString), constraints);
+            super.add(new JLabel("Extra Espresso Shots: " + extraEspressoShot.toPriceString()), constraints);
 
             constraints.gridy++;
             constraints.insets.bottom = 20;
 
-            super.add(new JLabel("Add-On Syrups: " + syrupPriceString), constraints);
+            super.add(new JLabel("Add-On Syrups: " + syrupAddOn.toPriceString()), constraints);
         }
 
         super.pack();

@@ -37,9 +37,9 @@ public class StorageBinAssignmentForm extends JFrame {
         super.setLayout(new GridBagLayout());
 
         var constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 0;
         constraints.gridy = -1;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(20, 20, 20, 20);
 
         for (int i = 0; i < this.ingredientComboBoxes.size(); i++) {

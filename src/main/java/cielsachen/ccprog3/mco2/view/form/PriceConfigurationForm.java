@@ -40,24 +40,15 @@ public class PriceConfigurationForm extends JFrame {
         super.setLayout(new GridBagLayout());
 
         var constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 0;
         constraints.gridy = -1;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(20, 20, 20, 20);
 
         int i;
 
         for (i = 0; i < coffees.length; i++) {
-            constraints.gridy++;
-            constraints.insets.bottom = 2;
-
-            super.add(new JLabel(coffees[i].name), constraints);
-
-            constraints.gridy++;
-            constraints.insets.top = constraints.insets.bottom;
-            constraints.insets.bottom = 4;
-
-            super.add(this.priceFields.get(i), constraints);
+            this.addLabeledComponent(new JLabel(coffees[i].name), this.priceFields.get(i), constraints);
         }
 
         constraints.gridx++;

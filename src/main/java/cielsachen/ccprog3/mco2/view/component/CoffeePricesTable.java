@@ -8,7 +8,7 @@ import cielsachen.ccprog3.mco2.model.coffee.Coffee;
 import cielsachen.ccprog3.mco2.model.coffee.CoffeeSize;
 
 public class CoffeePricesTable extends JTable {
-    public CoffeePricesTable(List<Coffee> coffees, String espressoPriceString, String syrupPriceString) {
+    public CoffeePricesTable(List<Coffee> coffees) {
         super(
                 coffees.stream().map((c) -> new String[] {
                         c.name,

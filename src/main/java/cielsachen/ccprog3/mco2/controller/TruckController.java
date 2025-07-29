@@ -99,11 +99,12 @@ public class TruckController {
                                     new StorageBin(i + 1, truck, (Ingredient) ingredientComboBox.getSelectedItem()));
                         }
 
-                        boolean isFirstTruck = !TruckController.this.coffeeController.isPricesSet();
+                        boolean isFirstTruck = !TruckController.this.coffeeService.isPricesSet();
 
-                        if (isFirstTruck || Modal.showConfirmation("Do you want to update the prices?",
+                        if (isFirstTruck || Modal.showConfirmation(
+                                "Do you want to update the prices?",
                                 "Update Prices") == JOptionPane.YES_OPTION) {
-                            TruckController.this.coffeeController.updatePrices(storageBinAssignmentForm, truck);
+                            TruckController.this.coffeeController.updatePrices(storageBinAssignmentForm);
                         }
 
                         new TruckView(
@@ -111,8 +112,8 @@ public class TruckController {
                                 truck,
                                 TruckController.this.storageBinService.getStorageBinsByTruck(truck),
                                 isFirstTruck ? null : TruckController.this.coffeeService.getCoffeesByTruck(truck),
-                                isFirstTruck ? null : TruckController.this.coffeeService.espresso.toPriceString(),
-                                isFirstTruck ? null : TruckController.this.coffeeService.syrup.toPriceString());
+                                isFirstTruck ? null : TruckController.this.coffeeService.espresso,
+                                isFirstTruck ? null : TruckController.this.coffeeService.syrup);
                     }
                 });
             }

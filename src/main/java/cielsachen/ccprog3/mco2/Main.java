@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 import cielsachen.ccprog3.mco2.controller.CoffeeController;
 import cielsachen.ccprog3.mco2.controller.MenuController;
-import cielsachen.ccprog3.mco2.controller.TransactionController;
 import cielsachen.ccprog3.mco2.controller.TruckController;
 import cielsachen.ccprog3.mco2.helper.Input;
 import cielsachen.ccprog3.mco2.model.StorageBin;
@@ -37,13 +36,12 @@ public class Main {
         var coffeeService = new CoffeeService(storageBinService);
         var truckService = new TruckService(trucks);
 
-        var transactionController = new TransactionController(transactionService);
-        var coffeeController = new CoffeeController(coffeeService, storageBinService, transactionService, scanner,
-                input);
+        var coffeeController = new CoffeeController(coffeeService);
         var truckController = new TruckController(coffeeController, truckService, storageBinService, coffeeService,
                 scanner, input);
-        var menuController = new MenuController(truckController, coffeeController, truckService, storageBinService,
-                transactionService);
+        var menuController = new MenuController(
+                truckController, coffeeController,
+                truckService, storageBinService, coffeeService, transactionService);
 
         menuController.showMainMenu();
     }

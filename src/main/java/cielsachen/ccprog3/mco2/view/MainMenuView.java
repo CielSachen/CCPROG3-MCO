@@ -24,22 +24,20 @@ public class MainMenuView extends JFrame {
 
         super.setLayout(new GridBagLayout());
 
-        var constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-
         var subtitleLabel = new JLabel("What Would You Like to Do?");
         subtitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         subtitleLabel.setFont(new Font("Arial", Font.BOLD, 25));
 
+        var constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = constraints.gridy = 0;
         constraints.insets = new Insets(20, 20, 20, 20);
 
         super.add(subtitleLabel, constraints);
 
-        constraints.ipadx = constraints.ipady = 10;
-        constraints.insets.top = constraints.insets.bottom = 5;
-
         constraints.gridy++;
+        constraints.insets.top = constraints.insets.bottom = 5;
+        constraints.ipadx = constraints.ipady = 10;
 
         super.add(this.createTruckButton, constraints);
 

@@ -31,7 +31,7 @@ public enum EspressoRatio {
 
     /**
      * Gets the standardized espresso ratios.
-     * 
+     *
      * @return The standardized espresso ratios.
      */
     public static EspressoRatio[] regularValues() {
@@ -40,7 +40,7 @@ public enum EspressoRatio {
 
     /**
      * Sets the ratio of the {@link EspressoRatio#CUSTOM custom espresso ratio}.
-     * 
+     *
      * @param waterRatio The water ratio to use.
      */
     public static void setCustomRatio(double waterRatio) {
@@ -49,7 +49,7 @@ public enum EspressoRatio {
 
     /**
      * Gets the ratio of water.
-     * 
+     *
      * @return The ratio of water.
      */
     public double getWater() {
@@ -58,7 +58,7 @@ public enum EspressoRatio {
 
     /**
      * Sets the ratio of water.
-     * 
+     *
      * @param newWaterRatio The ratio of water to use.
      */
     private void setWater(double newWaterRatio) {
@@ -67,7 +67,7 @@ public enum EspressoRatio {
 
     /**
      * Gets the decimal ratio of water.
-     * 
+     *
      * @return The decimal ratio of water.
      */
     public double getWaterDecimal() {
@@ -76,13 +76,13 @@ public enum EspressoRatio {
 
     /**
      * Converts the coffee beans and water ratios into a ratio string.
-     * 
+     *
      * @return A ratio string.
      */
     @Override
     public String toString() {
         if (this.equals(EspressoRatio.CUSTOM)) {
-            return "TBD";
+            return "Customize";
         }
 
         return (int) this.coffeeBean + " " + Ingredient.COFFEE_BEANS.name + " : " + (int) this.water + " "

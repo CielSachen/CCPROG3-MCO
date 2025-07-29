@@ -11,7 +11,7 @@ public class Truck {
 
     /**
      * Creates a new {@code Truck} object instance.
-     * 
+     *
      * @param id        The ID of the truck.
      * @param location  The location of the truck.
      * @param isSpecial Whether the truck is special.
@@ -24,7 +24,7 @@ public class Truck {
 
     /**
      * Gets the location of the truck.
-     * 
+     *
      * @return The location of the truck.
      */
     public String getLocation() {
@@ -33,11 +33,15 @@ public class Truck {
 
     /**
      * Sets the location of the truck.
-     * 
+     *
      * @param newLocation The new location to use.
      */
     public void setLocation(String newLocation) {
         this.location = newLocation;
     }
 
+    @Override
+    public String toString() {
+        return "Located at: " + this.getLocation();
+    }
 }

@@ -20,7 +20,7 @@ public class Coffee extends Product {
 
     /**
      * Creates a new {@code Coffee} object instance.
-     * 
+     *
      * @param name                 The name of the coffee.
      * @param extraIngredient      The extra ingredient needed to brew the coffee.
      * @param espressoRatio        Ratio of espresso to use to brew the coffee.
@@ -35,7 +35,7 @@ public class Coffee extends Product {
 
     /**
      * Gets the price of the coffee based on a size.
-     * 
+     *
      * @param size The size to use.
      * @return The price of the coffee based on the size.
      */
@@ -49,7 +49,7 @@ public class Coffee extends Product {
 
     /**
      * Converts the prices of all sizes of the coffee into a joined localized string.
-     * 
+     *
      * @return A joined localized prices string.
      */
     @Override
@@ -60,11 +60,16 @@ public class Coffee extends Product {
 
     /**
      * Converts the price of the coffee of a size into a localized string.
-     * 
+     *
      * @param size The size to use.
      * @return A localized price string.
      */
     public String toPriceString(CoffeeSize size) {
         return this.getPrice(size) + " PHP";
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }
