@@ -8,13 +8,13 @@ public class Product {
     /** The price of the product. */
     protected float price = Product.DEFAULT_PRICE;
 
-    /** Creates a new {@code Product} object instance. */
+    /** Creates and returns a new {@code Product} object instance. */
     public Product() {
     }
 
     /**
      * Gets the price of the product.
-     * 
+     *
      * @return The price of the product.
      */
     public float getPrice() {
@@ -23,7 +23,7 @@ public class Product {
 
     /**
      * Sets the price of the product.
-     * 
+     *
      * @param newPrice The new price to use.
      * @return Whether the price of the product was changed.
      */
@@ -39,7 +39,7 @@ public class Product {
 
     /**
      * Converts the price of the product into a localized string.
-     * 
+     *
      * @return A localized price string.
      */
     public String toPriceString() {

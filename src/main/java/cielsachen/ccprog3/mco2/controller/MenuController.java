@@ -17,9 +17,20 @@ import cielsachen.ccprog3.mco2.view.TruckView;
 import cielsachen.ccprog3.mco2.view.component.Modal;
 import cielsachen.ccprog3.mco2.view.form.SimulationForm;
 
+/** Represents a controller for handling the main menus. */
 public class MenuController {
     private final MainMenuView view;
 
+    /**
+     * Creates and returns a new {@code MenuController} object instance.
+     *
+     * @param truckController    The truck controller to use.
+     * @param coffeeController   The coffee controller to use.
+     * @param truckService       The truck service to use.
+     * @param storageBinService  The storage bin service to use.
+     * @param coffeeService      The coffee service to use.
+     * @param transactionService The transaction service to use.
+     */
     public MenuController(TruckController truckController, CoffeeController coffeeController, TruckService truckService,
             StorageBinService storageBinService, CoffeeService coffeeService, TransactionService transactionService) {
         this.view = new MainMenuView();
@@ -109,6 +120,7 @@ public class MenuController {
         });
     }
 
+    /** Shows the main menu application GUI. */
     public void showMainMenu() {
         this.view.setVisible(true);
     }

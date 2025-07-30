@@ -15,8 +15,8 @@ public class TransactionController {
     private final TransactionService service;
 
     /**
-     * Creates a new {@code TransactionController} object instance.
-     * 
+     * Creates and returns a new {@code TransactionController} object instance.
+     *
      * @param service The transaction service to use.
      */
     public TransactionController(TransactionService service) {
@@ -26,7 +26,7 @@ public class TransactionController {
     /**
      * Checks if a truck has any linked transactions. This wraps the {@link TransactionService#hasTransactions
      * hasTransactions()} method.
-     * 
+     *
      * @param truck The truck to check.
      * @return Whether the truck has linked transactions.
      */
@@ -36,7 +36,7 @@ public class TransactionController {
 
     /**
      * Prints all of the transactions linked with a truck.
-     * 
+     *
      * @param truck The truck to use.
      */
     public void printTransactions(Truck truck) {

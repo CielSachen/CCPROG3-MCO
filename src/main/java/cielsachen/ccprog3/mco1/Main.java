@@ -1,17 +1,13 @@
 package cielsachen.ccprog3.mco1;
 
-/** Represents the entry point class for Java programs. */
+/** Represents the entry point for Java programs. */
 public class Main {
-    /** Creates a new {@code Main} object instance. */
-    public Main() {
-    }
-
     /**
      * Executes the Java program.
      *
-     * @param arguments The CLI arguments.
+     * @param args The CLI arguments.
      */
-    public static void main(String[] arguments) {
+    public static void main(String[] args) {
         var simulator = new Simulator();
 
         simulator.launch();

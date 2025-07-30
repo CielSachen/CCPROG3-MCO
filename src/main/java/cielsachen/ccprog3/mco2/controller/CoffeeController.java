@@ -27,7 +27,7 @@ import cielsachen.ccprog3.mco2.view.form.EspressoRatioForm;
 import cielsachen.ccprog3.mco2.view.form.EspressoRatioSelectionForm;
 import cielsachen.ccprog3.mco2.view.form.PriceConfigurationForm;
 
-/** Represents a controller for interacting with coffees. */
+/** Represents a controller for handling coffees. */
 public class CoffeeController {
     private final CoffeeService service;
     private final StorageBinService storageBinService;
@@ -37,9 +37,11 @@ public class CoffeeController {
     private float additionalCost;
 
     /**
-     * Creates a new {@code CoffeeController} object instance.
+     * Creates and returns a new {@code CoffeeController} object instance.
      *
-     * @param service The coffee service to use.
+     * @param service            The coffee service to use.
+     * @param storageBinService  The storage bin service to use.
+     * @param transactionService The transaction service to use.
      */
     public CoffeeController(CoffeeService service, StorageBinService storageBinService,
             TransactionService transactionService) {
@@ -48,7 +50,11 @@ public class CoffeeController {
         this.transactionService = transactionService;
     }
 
-    /** Changes the prices of all coffees and add-ons. */
+    /**
+     * Updates the prices of all coffees and add-ons.
+     *
+     * @param parentFrame The parent frame of the windows to be shown.
+     */
     public void updatePrices(JFrame parentFrame) {
         Coffee[] coffees = this.service.getCoffees();
 
@@ -82,15 +88,20 @@ public class CoffeeController {
 
     /**
      * Prepares a coffee in a truck. This will decrease the capacities of relevant storage bins and create a new
-     * transaction.
+     * {@link Transaction transaction}.
      *
-     * @param truck The truck to prepare the coffee in.
+     * @param parentFrame The parent frame of the windows to be shown.
+     * @param truck       The truck to prepare the coffee in.
      */
     public void prepareCoffee(JFrame parentFrame, Truck truck) {
         List<Coffee> coffees = this.service.getCoffeesByTruck(truck);
 
         var selectedCoffee = (Coffee) Modal.showSelectionDialog(parentFrame, "Please select a coffee to brew…",
                 "Coffee Selection", coffees, coffees.getFirst());
+
+        if (selectedCoffee == null) {
+            return;
+        }
 
         var coffeeSizeSelectionForm = new CoffeeSizeSelectionForm(parentFrame, Stream.of(CoffeeSize.values())
                 .filter((cs) -> !this.storageBinService.getStorageBinsByTruck(truck, cs.cup).isEmpty())
@@ -177,10 +188,18 @@ public class CoffeeController {
             Ingredient selectedSyrup = Modal.showSelectionDialog(parentFrame, "How many extra shots should be added?",
                     "Add-On Syrup", syrups, syrups.getFirst());
 
+            if (selectedSyrup == null) {
+                return;
+            }
+
             int syrupCnt = 0;
 
             while (true) {
                 String givenCnt = Modal.showInputDialog(parentFrame, "How many pumps should be added?", "Add-On Syrup");
+
+                if (givenCnt == null) {
+                    return;
+                }
 
                 try {
                     syrupCnt = Integer.parseInt(givenCnt);
@@ -240,6 +259,10 @@ public class CoffeeController {
                     String givenCnt = Modal.showInputDialog(parentFrame, "How many extra shots should be added?",
                             "Extra Espresso Shots");
 
+                    if (givenCnt == null) {
+                        break;
+                    }
+
                     try {
                         this.extraEspressoShotsCnt = Integer.parseInt(givenCnt);
 
@@ -249,59 +272,62 @@ public class CoffeeController {
                     }
                 }
 
-                var espressoRatioSelectionForm = new EspressoRatioSelectionForm(parentFrame, EspressoRatio.values());
+                if (this.extraEspressoShotsCnt > 0) {
+                    var espressoRatioSelectionForm = new EspressoRatioSelectionForm(parentFrame,
+                            EspressoRatio.values());
 
-                espressoRatioSelectionForm.submitButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent evt) {
-                        var selectedRatio = (EspressoRatio) espressoRatioSelectionForm.coffeeSizeComboBox
-                                .getSelectedItem();
+                    espressoRatioSelectionForm.submitButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent evt) {
+                            var selectedRatio = (EspressoRatio) espressoRatioSelectionForm.coffeeSizeComboBox
+                                    .getSelectedItem();
 
-                        if (selectedRatio.equals(EspressoRatio.CUSTOM)) {
-                            var espressoRatioForm = new EspressoRatioForm(parentFrame);
+                            if (selectedRatio.equals(EspressoRatio.CUSTOM)) {
+                                var espressoRatioForm = new EspressoRatioForm(parentFrame);
 
-                            espressoRatioForm.submitButton.addActionListener(new ActionListener() {
-                                public void actionPerformed(ActionEvent evt) {
-                                    int waterRatio;
+                                espressoRatioForm.submitButton.addActionListener(new ActionListener() {
+                                    public void actionPerformed(ActionEvent evt) {
+                                        int waterRatio;
 
-                                    try {
-                                        waterRatio = Integer.parseInt(espressoRatioForm.waterRatioField.getText());
-                                    } catch (NumberFormatException e) {
-                                        Modal.showErrorDialog(parentFrame, "All fields must be filled!",
-                                                "Missing Fields");
+                                        try {
+                                            waterRatio = Integer.parseInt(espressoRatioForm.waterRatioField.getText());
+                                        } catch (NumberFormatException e) {
+                                            Modal.showErrorDialog(parentFrame, "All fields must be filled!",
+                                                    "Missing Fields");
 
-                                        return;
-                                    }
+                                            return;
+                                        }
 
-                                    EspressoRatio.setCustomRatio(waterRatio);
+                                        EspressoRatio.setCustomRatio(waterRatio);
 
-                                    CoffeeController.this.addEspressoShots(parentFrame, truck, ratio,
-                                            amountsByIngredient);
+                                        CoffeeController.this.addEspressoShots(parentFrame, truck, ratio,
+                                                amountsByIngredient);
 
-                                    if (CoffeeController.this.storageBinService.truckHasSyrups(truck)) {
-                                        CoffeeController.this.addSyrup(parentFrame, truck, amountsByIngredient);
-                                    }
+                                        if (CoffeeController.this.storageBinService.truckHasSyrups(truck)) {
+                                            CoffeeController.this.addSyrup(parentFrame, truck, amountsByIngredient);
+                                        }
 
-                                    CoffeeController.this.finishBrewing(parentFrame, truck, coffee, size, ratio,
-                                            amountsByIngredient);
-                                };
-                            });
+                                        CoffeeController.this.finishBrewing(parentFrame, truck, coffee, size, ratio,
+                                                amountsByIngredient);
+                                    };
+                                });
 
-                            return;
+                                return;
+                            }
+
+                            CoffeeController.this.addEspressoShots(parentFrame, truck, ratio, amountsByIngredient);
+
+                            if (CoffeeController.this.storageBinService.truckHasSyrups(truck)) {
+                                CoffeeController.this.addSyrup(parentFrame, truck, amountsByIngredient);
+                            }
+
+                            CoffeeController.this.finishBrewing(parentFrame, truck, coffee, size, ratio,
+                                    amountsByIngredient);
                         }
+                    });
 
-                        CoffeeController.this.addEspressoShots(parentFrame, truck, ratio, amountsByIngredient);
-
-                        if (CoffeeController.this.storageBinService.truckHasSyrups(truck)) {
-                            CoffeeController.this.addSyrup(parentFrame, truck, amountsByIngredient);
-                        }
-
-                        CoffeeController.this.finishBrewing(parentFrame, truck, coffee, size, ratio,
-                                amountsByIngredient);
-                    }
-                });
-
-                return;
+                    return;
+                }
             }
 
             this.addSyrup(parentFrame, truck, amountsByIngredient);

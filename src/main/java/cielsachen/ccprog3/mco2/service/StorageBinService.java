@@ -17,7 +17,7 @@ public class StorageBinService {
     private final List<StorageBin> storageBins;
 
     /**
-     * Creates a new {@code StorageBinService} object instance.
+     * Creates and returns a new {@code StorageBinService} object instance.
      *
      * @param storageBins The list of storage bins to use.
      */

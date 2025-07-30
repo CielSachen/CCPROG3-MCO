@@ -23,8 +23,8 @@ public class TruckController {
     private final StorageBinService storageBinService;
 
     /**
-     * Creates a new {@code TruckController} object instance.
-     * 
+     * Creates and returns a new {@code TruckController} object instance.
+     *
      * @param service           The truck service to use.
      * @param storageBinService The storage bin service to use.
      * @param scanner           The console input scanner to use.
@@ -38,8 +38,8 @@ public class TruckController {
     }
 
     /**
-     * Creates a new truck.
-     * 
+     * Creates and returns a new truck.
+     *
      * @return A new truck.
      */
     public Truck createTruck() {
@@ -147,7 +147,7 @@ public class TruckController {
 
     /**
      * Moves the truck to a new unoccupied location.
-     * 
+     *
      * @param truck The truck to relocate.
      */
     public void relocateTruck(Truck truck) {
@@ -179,7 +179,7 @@ public class TruckController {
 
     /**
      * Restocks, empties, or changes the ingredient of a truck's storage bin.
-     * 
+     *
      * @param truck The truck to update a storage bin of.
      */
     public void updateStorageBins(Truck truck) {
@@ -448,7 +448,7 @@ public class TruckController {
 
     /**
      * Prints the information summary of a truck.
-     * 
+     *
      * @param truck The truck to print get the info from.
      */
     public void printTruckInfo(Truck truck) {

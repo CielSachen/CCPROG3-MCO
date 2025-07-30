@@ -16,8 +16,8 @@ public class StorageBinService {
     private final List<StorageBin> storageBins;
 
     /**
-     * Creates a new {@code StorageBinService} object instance.
-     * 
+     * Creates and returns a new {@code StorageBinService} object instance.
+     *
      * @param storageBins The list of storage bins to use.
      */
     public StorageBinService(List<StorageBin> storageBins) {
@@ -26,7 +26,7 @@ public class StorageBinService {
 
     /**
      * Gets all storage bins belonging to any trucks.
-     * 
+     *
      * @return The storage bins.
      */
     public List<StorageBin> getStorageBins() {
@@ -35,7 +35,7 @@ public class StorageBinService {
 
     /**
      * Adds a storage bin to the list.
-     * 
+     *
      * @param storage The storage bin to add.
      */
     public void addStorageBin(StorageBin storage) {
@@ -47,7 +47,7 @@ public class StorageBinService {
      * <p>
      * The storage bins are "overflowed", meaning that once a storage bin is empty, the next storage bin's capacity will
      * be decreased.
-     * 
+     *
      * @param truck      The truck owning the storage bins.
      * @param ingredient The ingredient contained by the storage bins.
      * @param amount     The amount to decrease the capacities by.
@@ -77,7 +77,7 @@ public class StorageBinService {
 
     /**
      * Gets the storage bin belonging to a truck with a specific ID.
-     * 
+     *
      * @param id    The ID of the storage bin to get.
      * @param truck The truck owning the storage bin.
      * @return The storage bin with the ID.
@@ -94,7 +94,7 @@ public class StorageBinService {
 
     /**
      * Gets all storage bins containing an ingredient.
-     * 
+     *
      * @param ingredient The ingredient contained by the storage bins to get.
      * @return The storage bins containing the ingredient.
      */
@@ -104,7 +104,7 @@ public class StorageBinService {
 
     /**
      * Gets all storage bins belonging to a truck containing an ingredient.
-     * 
+     *
      * @param truck      The truck owning the storage bins to get.
      * @param ingredient The ingredient contained by the storage bins.
      * @return The storage bins belonging to the truck containing the ingredient.
@@ -117,7 +117,7 @@ public class StorageBinService {
 
     /**
      * Gets all storage bins belonging to a truck.
-     * 
+     *
      * @param truck The truck owning the storage bins to get.
      * @return The storage bins belonging to the truck.
      */
@@ -127,7 +127,7 @@ public class StorageBinService {
 
     /**
      * Gets the total capacity of all storage bins belonging to a truck containing an ingredient.
-     * 
+     *
      * @param truck      The truck owning the storage bins.
      * @param ingredient The ingredient contained by the storage bins.
      * @return The total capacity of the storage bins.
@@ -139,7 +139,7 @@ public class StorageBinService {
 
     /**
      * Checks if a truck has any storage bins for certain ingredients.
-     * 
+     *
      * @param truck       The truck to check.
      * @param ingredients The ingredients to check.
      * @return Whether truck has storage bins for the ingredients.
@@ -166,7 +166,7 @@ public class StorageBinService {
 
     /**
      * Checks if a truck has any storage bins for syrups.
-     * 
+     *
      * @param truck The truck to check.
      * @return Whether the truck has storage bins for syrups.
      */

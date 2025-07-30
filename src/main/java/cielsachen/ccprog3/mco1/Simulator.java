@@ -22,7 +22,7 @@ import cielsachen.ccprog3.mco1.service.TruckService;
 
 /** Represents the simulator program. */
 public class Simulator {
-    /** Creates a new {@code Simulator} object instance. */
+    /** Creates and returns a new {@code Simulator} object instance. */
     public Simulator() {
     }
 

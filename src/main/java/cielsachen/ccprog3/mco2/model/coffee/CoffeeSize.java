@@ -11,10 +11,10 @@ public enum CoffeeSize {
     /** A large cup of coffee. */
     LARGE_CUP(16, Ingredient.LARGE_CUP);
 
-    /** The capacity of a cup of the coffee size. */
-    public final int capacity;
-    /** The cup of the coffee size. */
+    /** The cup of the size. */
     public final Ingredient cup;
+    /** The capacity of a cup of the size. */
+    public final int capacity;
     /** The unit of measure for the capacity of the cup. */
     public final String unitMeasure = "fl oz";
 
@@ -24,9 +24,9 @@ public enum CoffeeSize {
     }
 
     /**
-     * Converts the capacity of a cup of the coffee size into a quantity string.
+     * Converts the size into its string representation.
      *
-     * @return A quantity string.
+     * @return The stylized capacity of a cup of the size.
      */
     @Override
     public String toString() {

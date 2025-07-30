@@ -23,7 +23,7 @@ import cielsachen.ccprog3.mco2.view.form.StorageBinRestockingForm;
 import cielsachen.ccprog3.mco2.view.form.StorageBinSelectionForm;
 import cielsachen.ccprog3.mco2.view.form.TruckCreationForm;
 
-/** Represents a controller for interacting with trucks. */
+/** Represents a controller for handling trucks. */
 public class TruckController {
     private final CoffeeController coffeeController;
 
@@ -32,11 +32,12 @@ public class TruckController {
     private final CoffeeService coffeeService;
 
     /**
-     * Creates a new {@code TruckController} object instance.
+     * Creates and returns a new {@code TruckController} object instance.
      *
      * @param coffeeController  The coffee controller to use.
      * @param service           The truck service to use.
      * @param storageBinService The storage bin service to use.
+     * @param coffeeService     The coffee service to use.
      */
     public TruckController(CoffeeController coffeeController, TruckService service, StorageBinService storageBinService,
             CoffeeService coffeeService) {
@@ -48,9 +49,9 @@ public class TruckController {
     }
 
     /**
-     * Creates a new truck.
+     * Creates a new truck and adds it to the system.
      *
-     * @return A new truck.
+     * @param parentFrame The parent frame of the windows to be shown.
      */
     public void createTruck(JFrame parentFrame) {
         var creationForm = new TruckCreationForm(parentFrame);
@@ -110,9 +111,10 @@ public class TruckController {
     }
 
     /**
-     * Moves the truck to a new unoccupied location.
+     * Moves a truck to a new unoccupied location.
      *
-     * @param truck The truck to relocate.
+     * @param parentFrame The parent frame of the windows to be shown.
+     * @param truck       The truck to move.
      */
     public void relocateTruck(JFrame parentFrame, Truck truck) {
         String newLocation;
@@ -123,7 +125,9 @@ public class TruckController {
 
             System.out.println();
 
-            if (!this.service.isOccupiedLocation(newLocation)) {
+            if (newLocation == null) {
+                return;
+            } else if (!this.service.isOccupiedLocation(newLocation)) {
                 break;
             }
 
@@ -139,7 +143,8 @@ public class TruckController {
     /**
      * Restocks, empties, or changes the ingredient of a truck's storage bin.
      *
-     * @param truck The truck to update a storage bin of.
+     * @param parentFrame The parent frame of the windows to be shown.
+     * @param truck       The truck to update a storage bin of.
      */
     public void restockStorageBins(JFrame parentFrame, Truck truck) {
         List<StorageBin> storageBins = new ArrayList<StorageBin>(this.storageBinService.getStorageBinsByTruck(truck));
@@ -171,6 +176,10 @@ public class TruckController {
                         while (true) {
                             String givenNum = Modal.showInputDialog(parentFrame,
                                     "How much " + currIngredient.name + " should be restocked?", "Add-On Syrup");
+
+                            if (givenNum == null) {
+                                return;
+                            }
 
                             try {
                                 additionalCapacity = Double.parseDouble(givenNum);

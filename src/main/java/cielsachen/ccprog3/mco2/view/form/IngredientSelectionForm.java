@@ -16,7 +16,7 @@ import javax.swing.JTable;
 
 import cielsachen.ccprog3.mco2.model.Ingredient;
 import cielsachen.ccprog3.mco2.model.StorageBin;
-import cielsachen.ccprog3.mco2.util.TableSize;
+import cielsachen.ccprog3.mco2.view.component.TableSize;
 
 public class IngredientSelectionForm extends JFrame {
     public final JComboBox<Ingredient> ingredientComboBox;

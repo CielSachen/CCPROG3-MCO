@@ -4,21 +4,22 @@ import cielsachen.ccprog3.mco2.model.Ingredient;
 
 /** Represents the ratio of coffee beans to water in a shot of espresso. */
 public enum EspressoRatio {
-    /** The customizable ratio (of water only) for a shot of espresso. */
+    /** The customizable ratio (of water only) of coffee beans to water. */
     CUSTOM("Custom", 1, 0),
-    /** The standard light ratio for a shot of espresso. */
+    /** The standard light ratio of coffee beans to water. */
     LIGHT("Light", 1, 20),
-    /** The standard ratio for a shot of espresso. */
+    /** The standard ratio of coffee beans to water. */
     STANDARD("Standard", 1, 18),
-    /** The standard strong ratio for a shot of espresso. */
+    /** The standard strong ratio of coffee beans to water. */
     STRONG("Strong", 1, 15);
+
+    /** The name of the ratio. */
+    public final String name;
 
     /** The ratio of coffee beans. */
     public final double coffeeBean;
     /** The decimal ratio of coffee beans. */
     public final double coffeeBeanDecimal;
-    /** The name of the espresso ratio. */
-    public final String name;
 
     private double water;
 
@@ -30,9 +31,9 @@ public enum EspressoRatio {
     }
 
     /**
-     * Gets the standardized espresso ratios.
+     * Gets the standard espresso ratios.
      *
-     * @return The standardized espresso ratios.
+     * @return The standard espresso ratios.
      */
     public static EspressoRatio[] regularValues() {
         return new EspressoRatio[] { EspressoRatio.LIGHT, EspressoRatio.STANDARD, EspressoRatio.STRONG };
@@ -75,9 +76,9 @@ public enum EspressoRatio {
     }
 
     /**
-     * Converts the coffee beans and water ratios into a ratio string.
+     * Converts the ratio into its string representation.
      *
-     * @return A ratio string.
+     * @return The stylized coffee beans to water ratio.
      */
     @Override
     public String toString() {

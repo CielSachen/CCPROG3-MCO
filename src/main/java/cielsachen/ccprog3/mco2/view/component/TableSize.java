@@ -1,4 +1,4 @@
-package cielsachen.ccprog3.mco2.util;
+package cielsachen.ccprog3.mco2.view.component;
 
 import java.awt.Dimension;
 

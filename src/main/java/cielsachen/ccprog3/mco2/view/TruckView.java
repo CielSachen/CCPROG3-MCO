@@ -20,11 +20,22 @@ import cielsachen.ccprog3.mco2.model.StorageBin;
 import cielsachen.ccprog3.mco2.model.Transaction;
 import cielsachen.ccprog3.mco2.model.Truck;
 import cielsachen.ccprog3.mco2.model.coffee.Coffee;
-import cielsachen.ccprog3.mco2.util.TableSize;
 import cielsachen.ccprog3.mco2.view.component.CoffeePricesTable;
 import cielsachen.ccprog3.mco2.view.component.IngredientsTable;
+import cielsachen.ccprog3.mco2.view.component.TableSize;
 
 public class TruckView extends JFrame {
+    /**
+     * Creates and returns a new {@code TruckView} object instance.
+     *
+     * @param parentFrame
+     * @param truck
+     * @param storageBins
+     * @param coffees
+     * @param espresso
+     * @param syrup
+     * @param transactions
+     */
     public TruckView(JFrame parentFrame, Truck truck, List<StorageBin> storageBins, List<Coffee> coffees,
             Product espresso, Product syrup, List<Transaction> transactions) {
         super("Truck #" + truck.id);

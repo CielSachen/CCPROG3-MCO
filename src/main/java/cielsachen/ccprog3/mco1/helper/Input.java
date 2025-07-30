@@ -8,8 +8,8 @@ public class Input {
     private final Scanner scanner;
 
     /**
-     * Creates a new {@code Input} object instance.
-     * 
+     * Creates and returns a new {@code Input} object instance.
+     *
      * @param scanner The scanner to use.
      */
     public Input(Scanner scanner) {
@@ -18,7 +18,7 @@ public class Input {
 
     /**
      * Gets a boolean input from the user.
-     * 
+     *
      * @param prompt    The prompt to show the user.
      * @param isNewLine Whether the prompt is printed on a new line.
      * @return The user's boolean input.
@@ -53,7 +53,7 @@ public class Input {
 
     /**
      * Gets a boolean input from the user.
-     * 
+     *
      * @param prompt The prompt to show the user.
      * @return The user's boolean input.
      */
@@ -63,7 +63,7 @@ public class Input {
 
     /**
      * Gets a character input from the user.
-     * 
+     *
      * @param isNewLine Whether the prompt is printed on a new line.
      * @return The user's character input.
      */
@@ -81,7 +81,7 @@ public class Input {
 
     /**
      * Gets a character input from the user.
-     * 
+     *
      * @return The user's character input.
      */
     public char getCharacter() {
@@ -90,7 +90,7 @@ public class Input {
 
     /**
      * Gets a float input from the user.
-     * 
+     *
      * @param prompt    The prompt to show the user.
      * @param isNewLine Whether the prompt is printed on a new line.
      * @return The user's float input.
@@ -125,7 +125,7 @@ public class Input {
 
     /**
      * Gets a float input from the user.
-     * 
+     *
      * @param prompt The prompt to show the user.
      * @return The user's float input.
      */
@@ -135,7 +135,7 @@ public class Input {
 
     /**
      * Gets an integer input from the user.
-     * 
+     *
      * @param prompt    The prompt to show the user.
      * @param isNewLine Whether the prompt is printed on a new line.
      * @return The user's integer input.
@@ -170,7 +170,7 @@ public class Input {
 
     /**
      * Gets an integer input from the user.
-     * 
+     *
      * @param prompt The prompt to show the user.
      * @return The user's integer input.
      */

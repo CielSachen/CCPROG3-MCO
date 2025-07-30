@@ -15,7 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import cielsachen.ccprog3.mco2.model.coffee.CoffeeSize;
-import cielsachen.ccprog3.mco2.util.TableSize;
+import cielsachen.ccprog3.mco2.view.component.TableSize;
 
 public class CoffeeSizeSelectionForm extends JFrame {
     public final JComboBox<CoffeeSize> coffeeSizeComboBox;

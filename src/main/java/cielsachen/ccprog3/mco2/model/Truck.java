@@ -1,16 +1,16 @@
 package cielsachen.ccprog3.mco2.model;
 
-/** Represents a coffee truck (JavaJeep). */
+/** Represents a coffee truck. */
 public class Truck {
-    /** The ID of the truck (one-based). */
+    /** The one-based ID of the truck. */
     public final int id;
-    /** Whether the truck is special (JavaJeep+). */
+    /** Whether the truck is special. */
     public final boolean isSpecial;
 
     private String location;
 
     /**
-     * Creates a new {@code Truck} object instance.
+     * Creates and returns a new {@code Truck} object instance.
      *
      * @param id        The ID of the truck.
      * @param location  The location of the truck.
@@ -40,6 +40,11 @@ public class Truck {
         this.location = newLoc;
     }
 
+    /**
+     * Converts the truck into its string representation.
+     *
+     * @return The stylized location of the truck.
+     */
     @Override
     public String toString() {
         return "Located at: " + this.getLocation();

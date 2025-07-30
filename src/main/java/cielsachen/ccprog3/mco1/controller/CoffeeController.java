@@ -31,8 +31,8 @@ public class CoffeeController {
     private final TransactionService transactionService;
 
     /**
-     * Creates a new {@code CoffeeController} object instance.
-     * 
+     * Creates and returns a new {@code CoffeeController} object instance.
+     *
      * @param service            The coffee service to use.
      * @param storageBinService  The storage bin service to use.
      * @param transactionService The transaction service to use.
@@ -51,7 +51,7 @@ public class CoffeeController {
     /**
      * Checks if the truck can brew any coffee. This wraps the {@link CoffeeService#isCapableOfBrewing
      * isCapableOfBrewing()} method.
-     * 
+     *
      * @param truck The truck to check.
      * @return Whether the truck can brew any coffee.
      */
@@ -62,7 +62,7 @@ public class CoffeeController {
     /**
      * Checks if the prices of the coffees and add-ons have been set. This wraps {@link CoffeeService#isPricesSet
      * isPricesSet()} the method.
-     * 
+     *
      * @return Whether the prices of the coffees and add-ons are not the default.
      */
     public boolean isPricesSet() {
@@ -102,7 +102,7 @@ public class CoffeeController {
     /**
      * Prepares a coffee in a truck. This will decrease the capacities of relevant storage bins and create a new
      * transaction.
-     * 
+     *
      * @param truck The truck to prepare the coffee in.
      */
     public void prepareCoffee(Truck truck) {
@@ -452,7 +452,7 @@ public class CoffeeController {
 
     /**
      * Prints the prices of all coffees and add-ons.
-     * 
+     *
      * @param truck The truck to print the prices of.
      */
     public void printPrices(Truck truck) {

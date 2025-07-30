@@ -14,7 +14,7 @@ import cielsachen.ccprog3.mco2.service.StorageBinService;
 import cielsachen.ccprog3.mco2.service.TransactionService;
 import cielsachen.ccprog3.mco2.service.TruckService;
 
-/** Represents the entry point class for Java programs. */
+/** Represents the entry point for Java programs. */
 public class Main {
     /**
      * Executes the Java program.

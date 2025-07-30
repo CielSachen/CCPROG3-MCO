@@ -13,8 +13,8 @@ import cielsachen.ccprog3.mco2.model.Ingredient;
 import cielsachen.ccprog3.mco2.model.coffee.Coffee;
 import cielsachen.ccprog3.mco2.model.coffee.CoffeeSize;
 import cielsachen.ccprog3.mco2.model.coffee.EspressoRatio;
-import cielsachen.ccprog3.mco2.util.TableSize;
 import cielsachen.ccprog3.mco2.view.component.IngredientsTable;
+import cielsachen.ccprog3.mco2.view.component.TableSize;
 
 public class BrewCompletionView extends JFrame {
     public BrewCompletionView(JFrame parentFrame, Coffee coffee, EspressoRatio ratio, CoffeeSize size,

@@ -17,8 +17,8 @@ import javax.swing.SwingConstants;
 
 import cielsachen.ccprog3.mco2.model.Ingredient;
 import cielsachen.ccprog3.mco2.model.Transaction;
-import cielsachen.ccprog3.mco2.util.TableSize;
 import cielsachen.ccprog3.mco2.view.component.IngredientsTable;
+import cielsachen.ccprog3.mco2.view.component.TableSize;
 
 public class DashboardView extends JFrame {
     public DashboardView(JFrame parentFrame, int truckCnt, int specialTruckCnt,

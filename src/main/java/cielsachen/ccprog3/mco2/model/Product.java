@@ -1,8 +1,8 @@
 package cielsachen.ccprog3.mco2.model;
 
-/** Represents a sellable product. */
+/** Represents a purchasable product. */
 public class Product {
-    /** The default initial price for products. */
+    /** The default initial price of a product. */
     public static final float DEFAULT_PRICE = -1;
 
     /** The price of the product. */
@@ -34,9 +34,9 @@ public class Product {
     }
 
     /**
-     * Converts the price of the product into a localized string.
+     * Converts the product into its price string representation.
      *
-     * @return A localized price string.
+     * @return The stylized price of the product.
      */
     public String toPriceString() {
         return this.price + " PHP";

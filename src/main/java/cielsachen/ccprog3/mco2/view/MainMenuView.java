@@ -15,6 +15,7 @@ public class MainMenuView extends JFrame {
     public final JButton simulateButton = new JButton("Simulate");
     public final JButton dashboardButton = new JButton("Dashboard");
 
+    /** Creates and returns a new {@code MainMenuView} object instance. */
     public MainMenuView() {
         super("Coffee Truck Manager Simulator: MCO2");
 

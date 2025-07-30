@@ -5,13 +5,13 @@ import cielsachen.ccprog3.mco2.model.Product;
 
 /** Represents a brew able coffee. */
 public class Coffee extends Product {
-    /** The modifier for the prices of other coffee sizes. */
+    /** The modifier for the price of a coffee in other sizes. */
     private static final float PRICE_SIZE_MODIFIER = 0.1f;
 
-    /** The extra ingredient needed to brew the coffee. */
-    public final Ingredient extraIngredient;
     /** The name of the coffee. */
     public final String name;
+    /** The extra ingredient needed to brew the coffee. */
+    public final Ingredient extraIngredient;
 
     /** Ratio of espresso to use to brew the coffee. */
     public final double espressoRatio;
@@ -19,7 +19,7 @@ public class Coffee extends Product {
     public final double extraIngredientRatio;
 
     /**
-     * Creates a new {@code Coffee} object instance.
+     * Creates and returns a new {@code Coffee} object instance.
      *
      * @param name                 The name of the coffee.
      * @param extraIngredient      The extra ingredient needed to brew the coffee.
@@ -48,9 +48,9 @@ public class Coffee extends Product {
     }
 
     /**
-     * Converts the prices of all sizes of the coffee into a joined localized string.
+     * Converts the coffee into its price string representation.
      *
-     * @return A joined localized prices string.
+     * @return The stylized prices of all sizes of the coffee.
      */
     @Override
     public String toPriceString() {
@@ -59,15 +59,20 @@ public class Coffee extends Product {
     }
 
     /**
-     * Converts the price of the coffee of a size into a localized string.
+     * Converts the coffee into its price string representation.
      *
      * @param size The size to use.
-     * @return A localized price string.
+     * @return The stylized price of a medium cup of the coffee.
      */
     public String toPriceString(CoffeeSize size) {
         return this.getPrice(size) + " PHP";
     }
 
+    /**
+     * Converts the coffee into its string representation.
+     *
+     * @return The name of the coffee.
+     */
     @Override
     public String toString() {
         return this.name;

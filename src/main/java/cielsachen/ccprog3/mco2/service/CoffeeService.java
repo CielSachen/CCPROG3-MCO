@@ -34,8 +34,8 @@ public class CoffeeService {
     private final StorageBinService storageBinService;
 
     /**
-     * Creates a new {@code CoffeeService} object instance.
-     * 
+     * Creates and returns a new {@code CoffeeService} object instance.
+     *
      * @param storageBinService The storage bin service to use.
      */
     public CoffeeService(StorageBinService storageBinService) {
@@ -44,7 +44,7 @@ public class CoffeeService {
 
     /**
      * Adds syrup to an already brewed coffee. This will decrease the capacities of relevant storage bins.
-     * 
+     *
      * @param truck  The truck to add from.
      * @param syrup  The syrup to add.
      * @param amount The amount of syrup to add.
@@ -60,7 +60,7 @@ public class CoffeeService {
 
     /**
      * Brews a coffee from scratch. This will decrease the capacities of relevant storage bins.
-     * 
+     *
      * @param truck  The truck to brew from.
      * @param coffee The coffee to brew.
      * @param size   The size of the coffee.
@@ -85,7 +85,7 @@ public class CoffeeService {
 
     /**
      * Brews espresso shots. This will decrease the capacities of relevant storage bins.
-     * 
+     *
      * @param truck The truck to brew from.
      * @param count The number of espresso shots to brew.
      * @param ratio The espresso ratio to use.
@@ -104,7 +104,7 @@ public class CoffeeService {
 
     /**
      * Asserts that a truck has the ingredients to add syrup to a coffee.
-     * 
+     *
      * @param truck  The truck to check.
      * @param syrup  The syrup to check.
      * @param amount The amount of syrup to add.
@@ -121,7 +121,7 @@ public class CoffeeService {
 
     /**
      * Asserts that a truck has the ingredients to brew a coffee.
-     * 
+     *
      * @param truck  The truck to check.
      * @param coffee The coffee to check.
      * @param size   The size of the coffee.
@@ -150,7 +150,7 @@ public class CoffeeService {
 
     /**
      * Asserts that a truck has the ingredients to brew espresso shots.
-     * 
+     *
      * @param truck The coffee to check.
      * @param count The number of espresso shots to brew.
      * @param ratio The espresso ratio to use.
@@ -172,7 +172,7 @@ public class CoffeeService {
 
     /**
      * Gets all the brew able coffees.
-     * 
+     *
      * @return The coffees.
      */
     public Coffee[] getCoffees() {
@@ -181,7 +181,7 @@ public class CoffeeService {
 
     /**
      * Gets all the coffees a truck can brew.
-     * 
+     *
      * @param truck The truck to use.
      * @return The coffees brew able by the truck.
      */
@@ -199,7 +199,7 @@ public class CoffeeService {
 
     /**
      * Checks if a truck can brew any coffee.
-     * 
+     *
      * @param truck The truck to check.
      * @return Whether the truck can brew any coffee.
      */
@@ -209,7 +209,7 @@ public class CoffeeService {
 
     /**
      * Checks if a truck can brew a coffee.
-     * 
+     *
      * @param truck  The truck to check.
      * @param coffee The coffee to check.
      * @return Whether the truck can brew the coffee.
@@ -221,7 +221,7 @@ public class CoffeeService {
 
     /**
      * Checks if the prices of the coffees and add-ons have been set.
-     * 
+     *
      * @return Whether the prices of the coffees and add-ons are not the default.
      */
     public boolean isPricesSet() {

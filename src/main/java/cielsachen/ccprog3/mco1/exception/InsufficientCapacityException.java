@@ -8,8 +8,8 @@ public class InsufficientCapacityException extends Exception {
     public final Ingredient ingredient;
 
     /**
-     * Creates a new {@code InsufficientCapacityException} object instance.
-     * 
+     * Creates and returns a new {@code InsufficientCapacityException} object instance.
+     *
      * @param ingredient The ingredient of the storage bins.
      */
     public InsufficientCapacityException(Ingredient ingredient) {
