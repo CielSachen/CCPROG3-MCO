@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"cielsachen.mco1"},{"l":"cielsachen.mco1.controller"},{"l":"cielsachen.mco1.exception"},{"l":"cielsachen.mco1.helper"},{"l":"cielsachen.mco1.model"},{"l":"cielsachen.mco1.model.coffee"},{"l":"cielsachen.mco1.service"},{"l":"cielsachen.mco1.util"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"}];updateSearchResults();
