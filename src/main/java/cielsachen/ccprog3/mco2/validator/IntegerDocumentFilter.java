@@ -20,7 +20,7 @@ public class IntegerDocumentFilter extends DocumentFilter {
         }
     }
 
-    /** @inheritDoc */
+    /** {inheritDoc} */
     @Override
     public void insertString(FilterBypass fb, int offset, String str, AttributeSet attrs)
             throws BadLocationException {
@@ -29,7 +29,7 @@ public class IntegerDocumentFilter extends DocumentFilter {
         }
     }
 
-    /** @inheritDoc */
+    /** {inheritDoc} */
     @Override
     public void replace(FilterBypass fb, int offset, int len, String text, AttributeSet attrs)
             throws BadLocationException {

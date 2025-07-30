@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-/** The selection of storage bins to select from for inputting the properties of a new truck. */
+/** Represents the window containing the form for inputting the properties of a new truck. */
 public class TruckCreationForm extends JFrame {
     /** The field to input the desired location of the truck. */
     public final JTextField locationField = new JTextField();

@@ -17,7 +17,7 @@ public class StorageBinRestockingMenuView extends JFrame {
     public final JButton restockButton = new JButton("Restock");
     /** The button to click to empty a storage bin. */
     public final JButton emptyButton = new JButton("Empty");
-    /** The button to change the ingredient a storage bin contains. */
+    /** The button to click to change the ingredient a storage bin contains. */
     public final JButton changeIngredientButton = new JButton("Change Ingredients");
 
     /**

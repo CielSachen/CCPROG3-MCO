@@ -180,11 +180,28 @@ public class TruckView extends JFrame {
         super.setVisible(true);
     }
 
+    /**
+     * Creates and returns a new {@code TruckView} object instance.
+     *
+     * @param parentComponent The parent component of the window.
+     * @param truck           The truck to use.
+     * @param storageBins     The storage bins of the truck to use.
+     * @param coffees         The coffees the truck to use can brew.
+     * @param espresso        The addable extra espresso shot.
+     * @param syrup           The addable syrup add-on.
+     */
     public TruckView(Component parentComponent, Truck truck, List<StorageBin> storageBins, List<Coffee> coffees,
             Product espresso, Product syrup) {
         this(parentComponent, truck, storageBins, coffees, espresso, syrup, null);
     }
 
+    /**
+     * Creates and returns a new {@code TruckView} object instance.
+     *
+     * @param parentComponent The parent component of the window.
+     * @param truck           The truck to use.
+     * @param storageBins     The storage bins of the truck to use.
+     */
     public TruckView(Component parentComponent, Truck truck, List<StorageBin> storageBins) {
         this(parentComponent, truck, storageBins, null, null, null);
     }
