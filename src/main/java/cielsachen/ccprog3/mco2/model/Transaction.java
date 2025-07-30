@@ -6,16 +6,17 @@ import java.util.Map;
 
 import cielsachen.ccprog3.mco2.model.coffee.CoffeeSize;
 
-/** Represents a transaction of purchasing a product. */
+/** Represents the purchase of a coffee from a truck. */
 public class Transaction {
     /** The name of the purchased coffee. */
     public final String coffeeName;
     /** The size of the purchased coffee. */
     public final CoffeeSize coffeeSize;
-    /** The total cost of purchasing the coffee. */
-    public final float cost;
     /** The number of extra espresso shots added. */
     public final int extraEspressoShotCount;
+    /** The total cost of purchasing the coffee. */
+    public final float cost;
+
     /** The truck the coffee was purchased from. */
     public final Truck truck;
 
@@ -56,13 +57,14 @@ public class Transaction {
      * @return The syrups added to the coffee.
      */
     public List<Ingredient> getSyrups() {
-        return this.ingredients.entrySet().stream().filter((e) -> e.getKey().isSpecial).map((e) -> e.getKey()).toList();
+        return this.ingredients.entrySet().stream().filter((e) -> e.getKey().isSpecial).map((e) -> e.getKey())
+                .toList();
     }
 
     /**
-     * Converts the cost of the transaction into a localized string.
+     * Converts the transaction into its cost string representation.
      *
-     * @return A localized cost string.
+     * @return The stylized total cost of purchasing the coffee.
      */
     public String toCostString() {
         return this.cost + " PHP";

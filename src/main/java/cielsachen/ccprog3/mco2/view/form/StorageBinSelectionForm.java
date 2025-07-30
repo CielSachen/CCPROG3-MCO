@@ -45,7 +45,7 @@ public class StorageBinSelectionForm extends JFrame {
         storageBinsTablePane.setPreferredSize(TableSize.SMALL.dimension);
 
         constraints.gridy++;
-        constraints.weightx = constraints.weighty = 1;
+        constraints.weightx = constraints.weighty = 1.0;
         constraints.fill = GridBagConstraints.BOTH;
         constraints.insets.top = constraints.insets.bottom;
 
@@ -58,7 +58,7 @@ public class StorageBinSelectionForm extends JFrame {
         super.add(this.storageBinComboBox, constraints);
 
         constraints.gridy++;
-        constraints.weightx = constraints.weighty = 0;
+        constraints.weightx = constraints.weighty = 0.0;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets.top = constraints.insets.bottom;
         constraints.insets.bottom = 20;

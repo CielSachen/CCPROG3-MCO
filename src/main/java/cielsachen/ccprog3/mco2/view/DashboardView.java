@@ -21,6 +21,15 @@ import cielsachen.ccprog3.mco2.view.component.IngredientsTable;
 import cielsachen.ccprog3.mco2.view.component.TableSize;
 
 public class DashboardView extends JFrame {
+    /**
+     * Creates and returns a new {@code DashboardView} object instance.
+     *
+     * @param parentFrame
+     * @param truckCnt
+     * @param specialTruckCnt
+     * @param capacitiesByIngredient
+     * @param transactions
+     */
     public DashboardView(JFrame parentFrame, int truckCnt, int specialTruckCnt,
             Map<Ingredient, Double> capacitiesByIngredient, List<Transaction> transactions) {
         super("Dashboard");
@@ -75,7 +84,7 @@ public class DashboardView extends JFrame {
             panel.add(new JSeparator(SwingConstants.HORIZONTAL), constraints);
 
             constraints.gridy++;
-            constraints.weightx = constraints.weighty = 0;
+            constraints.weightx = constraints.weighty = 0.0;
             constraints.fill = GridBagConstraints.HORIZONTAL;
             constraints.insets.top = 12;
             constraints.insets.bottom = 2;

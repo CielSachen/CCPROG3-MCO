@@ -6,7 +6,9 @@ import java.util.List;
 import cielsachen.ccprog3.mco2.model.Truck;
 
 /**
- * Represents a service for managing trucks. This uses a standard Java {@link List} instead of a dedicated repository.
+ * Represents a service for managing trucks. The business logic happens here instead of in the models.
+ * <p>
+ * This uses a standard Java {@link List list} instead of a dedicated repository.
  */
 public class TruckService {
     private final List<Truck> trucks;
@@ -30,7 +32,17 @@ public class TruckService {
     }
 
     /**
-     * Adds a truck to the list if it's located in an unoccupied location.
+     * Gets the special trucks.
+     *
+     * @return The special trucks.
+     */
+    public List<Truck> getSpecialTrucks() {
+        return this.trucks.stream().filter((t) -> t.isSpecial).toList();
+    }
+
+    /**
+     * Adds a truck to the list. If the truck’s location is already occupied by an existing truck, the truck will not be
+     * added.
      *
      * @param truck The truck to add.
      * @return Whether the truck was added to the list.
@@ -46,19 +58,10 @@ public class TruckService {
     }
 
     /**
-     * Gets the special trucks.
-     *
-     * @return The special trucks.
-     */
-    public List<Truck> getSpecialTrucks() {
-        return this.trucks.stream().filter((truck) -> truck.isSpecial).toList();
-    }
-
-    /**
-     * Checks if a truck is already occupying a location.
+     * Checks whether a location is occupied by another truck.
      *
      * @param location The location to check.
-     * @return Whether the location is occupied by a truck.
+     * @return Whether the location is occupied by another truck.
      */
     public boolean isOccupiedLocation(String location) {
         return this.trucks.stream().anyMatch((truck) -> truck.getLocation().equals(location));

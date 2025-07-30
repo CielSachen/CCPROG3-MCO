@@ -58,18 +58,17 @@ public class CoffeeController {
     public void updatePrices(JFrame parentFrame) {
         Coffee[] coffees = this.service.getCoffees();
 
-        var priceConfigurationView = new PriceConfigurationForm(parentFrame, coffees);
+        var priceConfigForm = new PriceConfigurationForm(parentFrame, coffees);
 
-        priceConfigurationView.submitButton.addActionListener(new ActionListener() {
+        priceConfigForm.submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 List<Float> prices;
 
                 try {
-                    prices = priceConfigurationView.priceFields.stream()
-                            .map((field) -> Float.parseFloat(field.getText())).toList();
+                    prices = priceConfigForm.priceFields.stream().map((pf) -> Float.parseFloat(pf.getText())).toList();
                 } catch (NumberFormatException e) {
-                    Modal.showErrorDialog(priceConfigurationView, "All fields must be filled!", "Missing Fields");
+                    Modal.showErrorDialog(priceConfigForm, "All fields must be filled!", "Missing Fields");
 
                     return;
                 }
@@ -87,7 +86,7 @@ public class CoffeeController {
     }
 
     /**
-     * Prepares a coffee in a truck. This will decrease the capacities of relevant storage bins and create a new
+     * Prepares coffee in a truck. This will decrease the capacities of relevant storage bins and create a new
      * {@link Transaction transaction}.
      *
      * @param parentFrame The parent frame of the windows to be shown.
@@ -103,14 +102,14 @@ public class CoffeeController {
             return;
         }
 
-        var coffeeSizeSelectionForm = new CoffeeSizeSelectionForm(parentFrame, Stream.of(CoffeeSize.values())
+        var coffeeSizeSelForm = new CoffeeSizeSelectionForm(parentFrame, Stream.of(CoffeeSize.values())
                 .filter((cs) -> !this.storageBinService.getStorageBinsByTruck(truck, cs.cup).isEmpty())
                 .toArray(CoffeeSize[]::new));
 
-        coffeeSizeSelectionForm.submitButton.addActionListener(new ActionListener() {
+        coffeeSizeSelForm.submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                var selectedSize = (CoffeeSize) coffeeSizeSelectionForm.coffeeSizeComboBox.getSelectedItem();
+                var selectedSize = (CoffeeSize) coffeeSizeSelForm.coffeeSizeComboBox.getSelectedItem();
 
                 if (!truck.isSpecial) {
                     CoffeeController.this.brewCoffee(parentFrame, truck, selectedCoffee, selectedSize,
@@ -119,13 +118,13 @@ public class CoffeeController {
                     return;
                 }
 
-                var espressoRatioSelectionForm = new EspressoRatioSelectionForm(parentFrame,
+                var espressoRatioSelForm = new EspressoRatioSelectionForm(parentFrame,
                         truck.isSpecial ? EspressoRatio.values() : EspressoRatio.regularValues());
 
-                espressoRatioSelectionForm.submitButton.addActionListener(new ActionListener() {
+                espressoRatioSelForm.submitButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent evt) {
-                        var selectedRatio = (EspressoRatio) espressoRatioSelectionForm.coffeeSizeComboBox
+                        var selectedRatio = (EspressoRatio) espressoRatioSelForm.coffeeSizeComboBox
                                 .getSelectedItem();
 
                         if (selectedRatio.equals(EspressoRatio.CUSTOM)) {
@@ -273,13 +272,12 @@ public class CoffeeController {
                 }
 
                 if (this.extraEspressoShotsCnt > 0) {
-                    var espressoRatioSelectionForm = new EspressoRatioSelectionForm(parentFrame,
-                            EspressoRatio.values());
+                    var espressoRatioSelForm = new EspressoRatioSelectionForm(parentFrame, EspressoRatio.values());
 
-                    espressoRatioSelectionForm.submitButton.addActionListener(new ActionListener() {
+                    espressoRatioSelForm.submitButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent evt) {
-                            var selectedRatio = (EspressoRatio) espressoRatioSelectionForm.coffeeSizeComboBox
+                            var selectedRatio = (EspressoRatio) espressoRatioSelForm.coffeeSizeComboBox
                                     .getSelectedItem();
 
                             if (selectedRatio.equals(EspressoRatio.CUSTOM)) {

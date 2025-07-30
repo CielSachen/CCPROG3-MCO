@@ -16,14 +16,16 @@ import cielsachen.ccprog3.mco2.model.coffee.EspressoRatio;
 import cielsachen.ccprog3.mco2.util.UnitConversion;
 
 /**
- * Represents a service for managing coffees. This uses a standard Java {@link List} instead of a dedicated repository.
+ * Represents a service for managing coffees. The business logic happens here instead of in the models.
+ * <p>
+ * This uses a standard Java {@link List list} instead of a dedicated repository.
  */
 public class CoffeeService {
-    /** The brew able americano coffee. */
+    /** The brewable americano coffee. */
     public final Coffee americano = new Coffee("Café Americano", Ingredient.WATER, 1.0 / 3.0, 2.0 / 3.0);
-    /** The brew able cappuccino coffee. */
+    /** The brewable Cappuccino coffee. */
     public final Coffee cappuccino = new Coffee("Cappuccino", Ingredient.MILK, 1.0 / 3.0, 2.0 / 3.0);
-    /** The brew able latte coffee. */
+    /** The brewable Latte coffee. */
     public final Coffee latte = new Coffee("Latte", Ingredient.MILK, 1.0 / 5.0, 4.0 / 5.0);
 
     /** The addable extra espresso shot. */
@@ -43,6 +45,33 @@ public class CoffeeService {
     }
 
     /**
+     * Gets all the brewable coffees.
+     *
+     * @return The brewable coffees.
+     */
+    public Coffee[] getCoffees() {
+        return new Coffee[] { this.americano, this.latte, this.cappuccino };
+    }
+
+    /**
+     * Gets all coffees a truck can brew.
+     *
+     * @param truck The truck that can brew the coffees.
+     * @return The coffees the truck can brew.
+     */
+    public List<Coffee> getCoffeesByTruck(Truck truck) {
+        List<Coffee> coffees = new ArrayList<Coffee>();
+
+        for (Coffee coffee : this.getCoffees()) {
+            if (this.isCapableOfBrewing(truck, coffee)) {
+                coffees.add(coffee);
+            }
+        }
+
+        return coffees;
+    }
+
+    /**
      * Adds syrup to an already brewed coffee. This will decrease the capacities of relevant storage bins.
      *
      * @param truck  The truck to add from.
@@ -51,15 +80,15 @@ public class CoffeeService {
      * @return The ingredients used mapped to their amount.
      */
     public Map<Ingredient, Double> addSyrup(Truck truck, Ingredient syrup, int amount) {
-        double syrupAmount = 0.5 * amount;
+        double syrupAmt = 0.5 * amount;
 
-        this.storageBinService.decreaseCapacityByTruck(truck, syrup, syrupAmount);
+        this.storageBinService.decreaseCapacityByTruck(truck, syrup, syrupAmt);
 
-        return Map.of(syrup, amount * syrupAmount);
+        return Map.of(syrup, amount * syrupAmt);
     }
 
     /**
-     * Brews a coffee from scratch. This will decrease the capacities of relevant storage bins.
+     * Brews a coffee. This will decrease the capacities of relevant storage bins.
      *
      * @param truck  The truck to brew from.
      * @param coffee The coffee to brew.
@@ -68,17 +97,17 @@ public class CoffeeService {
      * @return The ingredients used mapped to their amount.
      */
     public Map<Ingredient, Double> brewCoffee(Truck truck, Coffee coffee, CoffeeSize size, EspressoRatio ratio) {
-        double extraIngredientAmount = coffee.extraIngredientRatio * size.capacity;
-        double cupCount = 1;
+        double extraIngredientAmt = coffee.extraIngredientRatio * size.capacity;
+        double cupCnt = 1;
 
         Map<Ingredient, Double> transactionIngredients = new LinkedHashMap<Ingredient, Double>(
                 this.brewEspressoShots(truck, coffee.espressoRatio * size.capacity, ratio));
 
-        this.storageBinService.decreaseCapacityByTruck(truck, coffee.extraIngredient, extraIngredientAmount);
-        this.storageBinService.decreaseCapacityByTruck(truck, size.cup, cupCount);
+        this.storageBinService.decreaseCapacityByTruck(truck, coffee.extraIngredient, extraIngredientAmt);
+        this.storageBinService.decreaseCapacityByTruck(truck, size.cup, cupCnt);
 
-        transactionIngredients.put(coffee.extraIngredient, extraIngredientAmount);
-        transactionIngredients.put(size.cup, cupCount);
+        transactionIngredients.put(coffee.extraIngredient, extraIngredientAmt);
+        transactionIngredients.put(size.cup, cupCnt);
 
         return Collections.unmodifiableMap(transactionIngredients);
     }
@@ -92,13 +121,13 @@ public class CoffeeService {
      * @return The ingredients used mapped to their amount.
      */
     public Map<Ingredient, Double> brewEspressoShots(Truck truck, double count, EspressoRatio ratio) {
-        double coffeeBeanAmount = UnitConversion.fluidOuncesToGrams(ratio.coffeeBeanDecimal) * count;
-        double waterAmount = ratio.getWaterDecimal() * count;
+        double coffeeBeanAmt = UnitConversion.fluidOuncesToGrams(ratio.coffeeBeanDecimal) * count;
+        double waterAmt = ratio.getWaterDecimal() * count;
 
-        this.storageBinService.decreaseCapacityByTruck(truck, Ingredient.COFFEE_BEANS, coffeeBeanAmount);
-        this.storageBinService.decreaseCapacityByTruck(truck, Ingredient.WATER, waterAmount);
+        this.storageBinService.decreaseCapacityByTruck(truck, Ingredient.COFFEE_BEANS, coffeeBeanAmt);
+        this.storageBinService.decreaseCapacityByTruck(truck, Ingredient.WATER, waterAmt);
 
-        return Map.of(Ingredient.COFFEE_BEANS, coffeeBeanAmount, Ingredient.WATER, waterAmount);
+        return Map.of(Ingredient.COFFEE_BEANS, coffeeBeanAmt, Ingredient.WATER, waterAmt);
 
     }
 
@@ -106,7 +135,7 @@ public class CoffeeService {
      * Asserts that a truck has the ingredients to add syrup to a coffee.
      *
      * @param truck  The truck to check.
-     * @param syrup  The syrup to check.
+     * @param syrup  The syrup to check against.
      * @param amount The amount of syrup to add.
      * @return Whether the truck has the ingredients to add the syrup.
      * @throws InsufficientCapacityException If the truck does not have the ingredients to add the syrup.
@@ -123,7 +152,7 @@ public class CoffeeService {
      * Asserts that a truck has the ingredients to brew a coffee.
      *
      * @param truck  The truck to check.
-     * @param coffee The coffee to check.
+     * @param coffee The coffee to check against.
      * @param size   The size of the coffee.
      * @param ratio  The espresso ratio to use.
      * @return Whether the truck has the ingredients to brew the coffee.
@@ -171,34 +200,7 @@ public class CoffeeService {
     }
 
     /**
-     * Gets all the brew able coffees.
-     *
-     * @return The coffees.
-     */
-    public Coffee[] getCoffees() {
-        return new Coffee[] { this.americano, this.latte, this.cappuccino };
-    }
-
-    /**
-     * Gets all the coffees a truck can brew.
-     *
-     * @param truck The truck to use.
-     * @return The coffees brew able by the truck.
-     */
-    public List<Coffee> getCoffeesByTruck(Truck truck) {
-        List<Coffee> coffees = new ArrayList<Coffee>();
-
-        for (Coffee coffee : this.getCoffees()) {
-            if (this.isCapableOfBrewing(truck, coffee)) {
-                coffees.add(coffee);
-            }
-        }
-
-        return coffees;
-    }
-
-    /**
-     * Checks if a truck can brew any coffee.
+     * Checks whether a truck can brew any coffee.
      *
      * @param truck The truck to check.
      * @return Whether the truck can brew any coffee.
@@ -208,10 +210,10 @@ public class CoffeeService {
     }
 
     /**
-     * Checks if a truck can brew a coffee.
+     * Checks whether a truck can brew a coffee.
      *
      * @param truck  The truck to check.
-     * @param coffee The coffee to check.
+     * @param coffee The coffee to check against.
      * @return Whether the truck can brew the coffee.
      */
     public boolean isCapableOfBrewing(Truck truck, Coffee coffee) {
@@ -220,9 +222,9 @@ public class CoffeeService {
     }
 
     /**
-     * Checks if the prices of the coffees and add-ons have been set.
+     * Checks whether the prices of the coffees and add-ons have been set.
      *
-     * @return Whether the prices of the coffees and add-ons are not the default.
+     * @return Whether the prices of the coffees and add-ons are not equal to {@link Coffee#DEFAULT_PRICE}.
      */
     public boolean isPricesSet() {
         if (this.espresso.getPrice() == Coffee.DEFAULT_PRICE

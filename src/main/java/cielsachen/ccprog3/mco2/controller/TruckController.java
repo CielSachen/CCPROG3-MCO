@@ -59,13 +59,13 @@ public class TruckController {
         creationForm.submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String givenLocation = creationForm.locationField.getText();
+                String givenLoc = creationForm.locationField.getText();
 
-                if (givenLocation.isEmpty()) {
+                if (givenLoc.isEmpty()) {
                     Modal.showErrorDialog(parentFrame, "A location must be specified!", "Missing Field");
 
                     return;
-                } else if (TruckController.this.service.isOccupiedLocation(givenLocation)) {
+                } else if (TruckController.this.service.isOccupiedLocation(givenLoc)) {
                     Modal.showErrorDialog(parentFrame, "A truck already exists on this location!", "Invalid Input");
 
                     return;
@@ -73,7 +73,7 @@ public class TruckController {
 
                 boolean isSpecial = creationForm.isSpecialCheckBox.isSelected();
 
-                Truck truck = new Truck(TruckController.this.service.getTrucks().size() + 1, givenLocation, isSpecial);
+                Truck truck = new Truck(TruckController.this.service.getTrucks().size() + 1, givenLoc, isSpecial);
 
                 TruckController.this.service.addTruck(truck);
 
@@ -97,9 +97,7 @@ public class TruckController {
                             TruckController.this.coffeeController.updatePrices(storageBinAssignmentForm);
                         }
 
-                        new TruckView(
-                                parentFrame,
-                                truck,
+                        new TruckView(parentFrame, truck,
                                 TruckController.this.storageBinService.getStorageBinsByTruck(truck),
                                 isFirstTruck ? null : TruckController.this.coffeeService.getCoffeesByTruck(truck),
                                 isFirstTruck ? null : TruckController.this.coffeeService.espresso,
@@ -117,27 +115,26 @@ public class TruckController {
      * @param truck       The truck to move.
      */
     public void relocateTruck(JFrame parentFrame, Truck truck) {
-        String newLocation;
+        String newLoc;
 
         while (true) {
-            newLocation = Modal.showInputDialog(parentFrame, "Where will this truck be relocated to?",
-                    "Truck Relocation");
+            newLoc = Modal.showInputDialog(parentFrame, "Where will this truck be relocated to?", "Truck Relocation");
 
             System.out.println();
 
-            if (newLocation == null) {
+            if (newLoc == null) {
                 return;
-            } else if (!this.service.isOccupiedLocation(newLocation)) {
+            } else if (!this.service.isOccupiedLocation(newLoc)) {
                 break;
             }
 
             Modal.showErrorDialog(parentFrame, "A truck already exists on this location!", "Truck Relocation");
         }
 
-        truck.setLocation(newLocation);
+        truck.setLocation(newLoc);
 
-        JOptionPane.showMessageDialog(parentFrame, "Relocated the coffee truck to " + newLocation + "!",
-                "Truck Relocation", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(parentFrame, "Relocated the coffee truck to " + newLoc + "!", "Truck Relocation",
+                JOptionPane.PLAIN_MESSAGE);
     }
 
     /**
@@ -149,12 +146,12 @@ public class TruckController {
     public void restockStorageBins(JFrame parentFrame, Truck truck) {
         List<StorageBin> storageBins = new ArrayList<StorageBin>(this.storageBinService.getStorageBinsByTruck(truck));
 
-        var storageBinSelectionForm = new StorageBinSelectionForm(parentFrame, storageBins);
+        var storageBinSelForm = new StorageBinSelectionForm(parentFrame, storageBins);
 
-        storageBinSelectionForm.submitButton.addActionListener(new ActionListener() {
+        storageBinSelForm.submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                var selectedStorageBin = (StorageBin) storageBinSelectionForm.storageBinComboBox.getSelectedItem();
+                var selectedStorageBin = (StorageBin) storageBinSelForm.storageBinComboBox.getSelectedItem();
 
                 var storageBinRestockingForm = new StorageBinRestockingForm(parentFrame);
 
@@ -233,10 +230,9 @@ public class TruckController {
                         storageBins.remove(selectedStorageBin);
                         ingredients.remove(selectedStorageBin.getIngredient());
 
-                        var ingredientSelectionForm = new IngredientSelectionForm(parentFrame, storageBins,
-                                ingredients);
+                        var ingredientSelForm = new IngredientSelectionForm(parentFrame, storageBins, ingredients);
 
-                        ingredientSelectionForm.submitButton.addActionListener(new ActionListener() {
+                        ingredientSelForm.submitButton.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent evt) {
                                 double currCapacity = selectedStorageBin.getCapacity();
@@ -245,7 +241,7 @@ public class TruckController {
                                     selectedStorageBin.decreaseCapacity(currCapacity);
                                 }
 
-                                var selectedIngredient = (Ingredient) ingredientSelectionForm.ingredientComboBox
+                                var selectedIngredient = (Ingredient) ingredientSelForm.ingredientComboBox
                                         .getSelectedItem();
 
                                 selectedStorageBin.setIngredient(selectedIngredient);

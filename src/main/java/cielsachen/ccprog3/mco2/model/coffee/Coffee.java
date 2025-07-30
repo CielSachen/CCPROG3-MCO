@@ -3,7 +3,7 @@ package cielsachen.ccprog3.mco2.model.coffee;
 import cielsachen.ccprog3.mco2.model.Ingredient;
 import cielsachen.ccprog3.mco2.model.Product;
 
-/** Represents a brew able coffee. */
+/** Represents a brewable coffee. */
 public class Coffee extends Product {
     /** The modifier for the price of a coffee in other sizes. */
     private static final float PRICE_SIZE_MODIFIER = 0.1f;
@@ -36,7 +36,7 @@ public class Coffee extends Product {
     /**
      * Gets the price of the coffee based on a size.
      *
-     * @param size The size to use.
+     * @param size The size of the coffee.
      * @return The price of the coffee based on the size.
      */
     public float getPrice(CoffeeSize size) {
@@ -61,7 +61,7 @@ public class Coffee extends Product {
     /**
      * Converts the coffee into its price string representation.
      *
-     * @param size The size to use.
+     * @param size The size of the coffee.
      * @return The stylized price of a medium cup of the coffee.
      */
     public String toPriceString(CoffeeSize size) {

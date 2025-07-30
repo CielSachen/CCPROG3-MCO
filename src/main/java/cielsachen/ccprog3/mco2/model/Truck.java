@@ -34,10 +34,10 @@ public class Truck {
     /**
      * Sets the location of the truck.
      *
-     * @param newLoc The new location to use.
+     * @param newLocation The new location to use.
      */
-    public void setLocation(String newLoc) {
-        this.location = newLoc;
+    public void setLocation(String newLocation) {
+        this.location = newLocation;
     }
 
     /**

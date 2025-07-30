@@ -7,7 +7,7 @@ public class StorageBin {
     /** The number of storage bins a special truck has. */
     public static final int SPECIAL_TRUCK_COUNT = 10;
 
-    /** The ID of the storage bin (one-based). */
+    /** The one-based ID of the storage bin. */
     public final int id;
     /** The truck that the storage bin belongs to. */
     public final Truck truck;
@@ -50,7 +50,7 @@ public class StorageBin {
     /**
      * Sets ingredient the storage bin will contain.
      *
-     * @param newIngredient The new ingredient to use.
+     * @param newIngredient The new ingredient to contain.
      */
     public void setIngredient(Ingredient newIngredient) {
         this.ingredient = newIngredient;
@@ -58,11 +58,10 @@ public class StorageBin {
 
     /**
      * Decreases the capacity of the storage bin.
-     * <p>
-     * The capacity cannot be less than zero.
      *
-     * @param deductibleCapacity The amount to decrease by.
-     * @return Whether the capacity was decreased.
+     * @param deductibleCapacity The amount to decrease by. If the amount is greater than the current capacity, the
+     *                           capacity will not be decreased.
+     * @return Whether the capacity of the storage bin was decreased.
      */
     public boolean decreaseCapacity(double deductibleCapacity) {
         if (deductibleCapacity > this.capacity) {
@@ -76,11 +75,10 @@ public class StorageBin {
 
     /**
      * Increases the capacity of the storage bin.
-     * <p>
-     * The capacity cannot be greater than the ingredient's maximum.
      *
-     * @param additionalCapacity The amount to increase by.
-     * @return Whether the capacity was increased.
+     * @param additionalCapacity The amount to increase by. If the amount is zero or negative, capacity will not be
+     *                           increased.
+     * @return Whether the capacity of the storage bin was increased.
      */
     public boolean increaseCapacity(double additionalCapacity) {
         if (additionalCapacity <= 0) {
@@ -93,24 +91,29 @@ public class StorageBin {
     }
 
     /**
-     * Checks if the capacity of the storage bin is at critical levels.
+     * Checks whether the capacity of the storage bin is at a critical-level.
      *
-     * @return Whether the capacity is less than a third of the maximum.
+     * @return Whether the capacity of the storage bin is less than a third of the maximum.
      */
     public boolean isCriticalCapacity() {
         return this.capacity < this.ingredient.maximumCapacity / 3;
     }
 
     /**
-     * Converts the capacities of the storage bin into a capacity fraction string.
+     * Converts the storage bin into its capacity string representation.
      *
-     * @return A capacity string.
+     * @return The stylized capacity of the storage bin.
      */
     public String toCapacityString() {
         return String.format("%.2f / ", this.capacity) + (int) this.ingredient.maximumCapacity + " "
                 + this.ingredient.unitMeasure;
     }
 
+    /**
+     * Converts the storage bin into its string representation.
+     *
+     * @return The ID of the storage bin.
+     */
     @Override
     public String toString() {
         return Integer.toString(this.id);

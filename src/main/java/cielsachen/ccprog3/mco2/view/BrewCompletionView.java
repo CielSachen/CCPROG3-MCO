@@ -17,6 +17,17 @@ import cielsachen.ccprog3.mco2.view.component.IngredientsTable;
 import cielsachen.ccprog3.mco2.view.component.TableSize;
 
 public class BrewCompletionView extends JFrame {
+    /**
+     * Creates and returns a new {@code BrewCompletionView} object instance.
+     *
+     * @param parentFrame
+     * @param coffee
+     * @param ratio
+     * @param size
+     * @param extraEspressoShotsCnt
+     * @param amountsByIngredient
+     * @param totalCost
+     */
     public BrewCompletionView(JFrame parentFrame, Coffee coffee, EspressoRatio ratio, CoffeeSize size,
             int extraEspressoShotsCnt, Map<Ingredient, Double> amountsByIngredient, double totalCost) {
         super("Brewing Completed");

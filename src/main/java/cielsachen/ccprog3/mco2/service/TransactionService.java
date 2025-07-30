@@ -7,8 +7,9 @@ import cielsachen.ccprog3.mco2.model.Transaction;
 import cielsachen.ccprog3.mco2.model.Truck;
 
 /**
- * Represents a service for managing transactions. This uses a standard Java {@link List} instead of a dedicated
- * repository.
+ * Represents a service for managing transactions. The business logic happens here instead of in the models.
+ * <p>
+ * This uses a standard Java {@link List list} instead of a dedicated repository.
  */
 public class TransactionService {
     private final List<Transaction> transactions;
@@ -32,21 +33,21 @@ public class TransactionService {
     }
 
     /**
-     * Adds a transaction to the list.
-     *
-     * @param transaction The transaction to add.
-     */
-    public void addTransaction(Transaction transaction) {
-        this.transactions.add(transaction);
-    }
-
-    /**
      * Gets all transactions linked with a truck.
      *
      * @param truck The truck linked with the transactions to get.
      * @return The transactions linked with the truck.
      */
     public List<Transaction> getTransactionsByTruck(Truck truck) {
-        return this.transactions.stream().filter((transaction) -> transaction.truck.equals(truck)).toList();
+        return this.transactions.stream().filter((t) -> t.truck.equals(truck)).toList();
+    }
+
+    /**
+     * Adds a transaction to the list.
+     *
+     * @param transaction The transaction to add.
+     */
+    public void addTransaction(Transaction transaction) {
+        this.transactions.add(transaction);
     }
 }

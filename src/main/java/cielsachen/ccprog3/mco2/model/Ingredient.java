@@ -27,12 +27,13 @@ public enum Ingredient {
     /** Sweetener that can be added to a coffee. */
     SWEETENER("Sweetener (Sucrose)", true, 640, "fl oz");
 
-    /** Whether the ingredient is for special trucks only. */
-    public final boolean isSpecial;
-    /** The maximum storage bin capacity of the ingredient. */
-    public final double maximumCapacity;
     /** The name of the ingredient. */
     public final String name;
+    /** Whether the ingredient is for special trucks. */
+    public final boolean isSpecial;
+
+    /** The maximum storage bin capacity of the ingredient. */
+    public final double maximumCapacity;
     /** The unit of measure for a quantity of the ingredient. */
     public final String unitMeasure;
 
@@ -49,7 +50,7 @@ public enum Ingredient {
 
     /**
      * Gets the ingredients that can be used by any truck.
-     * 
+     *
      * @return The non-special ingredients.
      */
     public static List<Ingredient> regularValues() {
@@ -58,7 +59,7 @@ public enum Ingredient {
 
     /**
      * Gets the ingredients that can only be used by special trucks.
-     * 
+     *
      * @return The special ingredients.
      */
     public static List<Ingredient> specialValues() {
@@ -66,8 +67,8 @@ public enum Ingredient {
     }
 
     /**
-     * Gets the name of the ingredient.
-     * 
+     * Converts the ingredient into its string representation.
+     *
      * @return The name of the ingredient.
      */
     @Override

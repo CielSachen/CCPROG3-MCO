@@ -26,15 +26,15 @@ public class Main {
         List<StorageBin> storageBins = new ArrayList<StorageBin>();
         List<Truck> trucks = new ArrayList<Truck>();
 
-        var transactionService = new TransactionService(transactions);
-        var storageBinService = new StorageBinService(storageBins);
-        var coffeeService = new CoffeeService(storageBinService);
-        var truckService = new TruckService(trucks);
+        var transactionSvc = new TransactionService(transactions);
+        var storageBinSvc = new StorageBinService(storageBins);
+        var coffeeSvc = new CoffeeService(storageBinSvc);
+        var truckSvc = new TruckService(trucks);
 
-        var coffeeController = new CoffeeController(coffeeService, storageBinService, transactionService);
-        var truckController = new TruckController(coffeeController, truckService, storageBinService, coffeeService);
-        var menuController = new MenuController(truckController, coffeeController, truckService, storageBinService,
-                coffeeService, transactionService);
+        var coffeeController = new CoffeeController(coffeeSvc, storageBinSvc, transactionSvc);
+        var truckController = new TruckController(coffeeController, truckSvc, storageBinSvc, coffeeSvc);
+        var menuController = new MenuController(truckController, coffeeController, truckSvc, storageBinSvc, coffeeSvc,
+                transactionSvc);
 
         menuController.showMainMenu();
     }
