@@ -1,5 +1,6 @@
 package cielsachen.ccprog3.mco2.view.form;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -12,17 +13,26 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+/** The selection of storage bins to select from for inputting the properties of a new truck. */
 public class TruckCreationForm extends JFrame {
+    /** The field to input the desired location of the truck. */
     public final JTextField locationField = new JTextField();
+    /** The checkbox to mark to signify whether the truck should be special. */
     public final JCheckBox isSpecialCheckBox = new JCheckBox("Make a Special Truck?");
+    /** The button to click to submit the selection. */
     public final JButton submitButton = new JButton("Submit");
 
-    public TruckCreationForm(JFrame parentFrame) {
+    /**
+     * Creates and returns a new {@code TruckCreationForm} object instance.
+     *
+     * @param parentComponent The parent component of the window.
+     */
+    public TruckCreationForm(Component parentComponent) {
         super("Truck Creation");
 
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        super.setLocationRelativeTo(parentFrame);
+        super.setLocationRelativeTo(parentComponent);
 
         super.setLayout(new GridBagLayout());
 

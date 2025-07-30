@@ -13,9 +13,9 @@ public class Coffee extends Product {
     /** The extra ingredient needed to brew the coffee. */
     public final Ingredient extraIngredient;
 
-    /** Ratio of espresso to use to brew the coffee. */
+    /** The ratio of espresso to use to brew the coffee. */
     public final double espressoRatio;
-    /** Ratio of the extra ingredient to use to brew the coffee. */
+    /** The ratio of the extra ingredient to use to brew the coffee. */
     public final double extraIngredientRatio;
 
     /**
@@ -23,14 +23,15 @@ public class Coffee extends Product {
      *
      * @param name                 The name of the coffee.
      * @param extraIngredient      The extra ingredient needed to brew the coffee.
-     * @param espressoRatio        Ratio of espresso to use to brew the coffee.
-     * @param extraIngredientRatio Ratio of the extra ingredient to use to brew the coffee.
+     * @param espressoRatio        The ratio of espresso to use to brew the coffee.
+     * @param extraIngredientRatio The ratio of the extra ingredient to use to brew the coffee.
      */
     public Coffee(String name, Ingredient extraIngredient, double espressoRatio, double extraIngredientRatio) {
-        this.espressoRatio = espressoRatio;
-        this.extraIngredient = extraIngredient;
-        this.extraIngredientRatio = extraIngredientRatio;
         this.name = name;
+        this.extraIngredient = extraIngredient;
+
+        this.espressoRatio = espressoRatio;
+        this.extraIngredientRatio = extraIngredientRatio;
     }
 
     /**

@@ -13,9 +13,9 @@ import cielsachen.ccprog3.mco2.service.TransactionService;
 import cielsachen.ccprog3.mco2.service.TruckService;
 import cielsachen.ccprog3.mco2.view.DashboardView;
 import cielsachen.ccprog3.mco2.view.MainMenuView;
+import cielsachen.ccprog3.mco2.view.SimulationMenuView;
 import cielsachen.ccprog3.mco2.view.TruckView;
 import cielsachen.ccprog3.mco2.view.component.Modal;
-import cielsachen.ccprog3.mco2.view.form.SimulationForm;
 
 /** Represents a controller for handling the main menus. */
 public class MenuController {
@@ -60,7 +60,7 @@ public class MenuController {
                     return;
                 }
 
-                var simulationForm = new SimulationForm(MenuController.this.view);
+                var simulationForm = new SimulationMenuView(MenuController.this.view);
 
                 simulationForm.coffeeSaleButton.addActionListener(new ActionListener() {
                     @Override

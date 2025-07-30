@@ -1,5 +1,6 @@
 package cielsachen.ccprog3.mco2.view.form;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -17,18 +18,27 @@ import javax.swing.JTable;
 import cielsachen.ccprog3.mco2.model.StorageBin;
 import cielsachen.ccprog3.mco2.view.component.TableSize;
 
+/** Represents the window containing the form for selecting a storage bin. */
 public class StorageBinSelectionForm extends JFrame {
+    /** The selection of storage bins to select from. */
     public final JComboBox<StorageBin> storageBinComboBox;
+    /** The button to click to submit the selection. */
     public final JButton submitButton = new JButton("Submit");
 
-    public StorageBinSelectionForm(JFrame parentFrame, List<StorageBin> storageBins) {
+    /**
+     * Creates and returns a new {@code StorageBinSelectionForm} object instance.
+     *
+     * @param parentComponent The parent component of the window.
+     * @param storageBins     The storage bins to use.
+     */
+    public StorageBinSelectionForm(Component parentComponent, List<StorageBin> storageBins) {
         super("Storage Bin Selection");
 
         this.storageBinComboBox = new JComboBox<StorageBin>(storageBins.toArray(StorageBin[]::new));
 
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        super.setLocationRelativeTo(parentFrame);
+        super.setLocationRelativeTo(parentComponent);
 
         super.setLayout(new GridBagLayout());
 

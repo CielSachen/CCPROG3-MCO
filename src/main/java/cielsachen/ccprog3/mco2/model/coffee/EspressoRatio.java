@@ -13,7 +13,7 @@ public enum EspressoRatio {
     /** The standard strong ratio of coffee beans to water. */
     STRONG("Strong", 1, 15);
 
-    /** The name of the ratio. */
+    /** The name of the espresso ratio. */
     public final String name;
 
     /** The ratio of coffee beans. */
@@ -24,9 +24,11 @@ public enum EspressoRatio {
     private double water;
 
     private EspressoRatio(String name, double coffeeBeanRatio, double waterRatio) {
+        this.name = name;
+
         this.coffeeBean = coffeeBeanRatio;
         this.coffeeBeanDecimal = coffeeBeanRatio / (waterRatio + 1.0);
-        this.name = name;
+
         this.water = waterRatio;
     }
 
@@ -76,7 +78,7 @@ public enum EspressoRatio {
     }
 
     /**
-     * Converts the ratio into its string representation.
+     * Converts the espresso ratio into its string representation.
      *
      * @return The stylized coffee beans to water ratio.
      */

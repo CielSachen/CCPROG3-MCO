@@ -48,7 +48,7 @@ public class CoffeeService {
      * @param truck  The truck to add from.
      * @param syrup  The syrup to add.
      * @param amount The amount of syrup to add.
-     * @return The ingredients used mapped to their amount.
+     * @return The ingredients used mapped to their amounts.
      */
     public Map<Ingredient, Double> addSyrup(Truck truck, Ingredient syrup, int amount) {
         double syrupAmount = 0.5 * amount;
@@ -65,7 +65,7 @@ public class CoffeeService {
      * @param coffee The coffee to brew.
      * @param size   The size of the coffee.
      * @param ratio  The espresso ratio to use.
-     * @return The ingredients used mapped to their amount.
+     * @return The ingredients used mapped to their amounts.
      */
     public Map<Ingredient, Double> brewCoffee(Truck truck, Coffee coffee, CoffeeSize size, EspressoRatio ratio) {
         double extraIngredientAmount = coffee.extraIngredientRatio * size.capacity;
@@ -89,7 +89,7 @@ public class CoffeeService {
      * @param truck The truck to brew from.
      * @param count The number of espresso shots to brew.
      * @param ratio The espresso ratio to use.
-     * @return The ingredients used mapped to their amount.
+     * @return The ingredients used mapped to their amounts.
      */
     public Map<Ingredient, Double> brewEspressoShots(Truck truck, double count, EspressoRatio ratio) {
         double coffeeBeanAmount = UnitConversion.fluidOuncesToGrams(ratio.coffeeBeanDecimal) * count;

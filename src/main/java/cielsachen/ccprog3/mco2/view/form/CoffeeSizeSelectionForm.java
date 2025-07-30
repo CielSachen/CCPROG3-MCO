@@ -1,5 +1,6 @@
 package cielsachen.ccprog3.mco2.view.form;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -17,18 +18,27 @@ import javax.swing.JTable;
 import cielsachen.ccprog3.mco2.model.coffee.CoffeeSize;
 import cielsachen.ccprog3.mco2.view.component.TableSize;
 
+/** Represents the window containing a form for selecting a coffee size. */
 public class CoffeeSizeSelectionForm extends JFrame {
+    /** The selection of coffee sizes to select from. */
     public final JComboBox<CoffeeSize> coffeeSizeComboBox;
+    /** The button to click to submit the selection. */
     public final JButton submitButton = new JButton("Submit");
 
-    public CoffeeSizeSelectionForm(JFrame parentFrame, CoffeeSize[] coffeeSizes) {
+    /**
+     * Creates and returns a new {@code CoffeeSizeSelectionForm} object instance.
+     *
+     * @param parentComponent The parent component of the window.
+     * @param coffeeSizes     The coffee sizes to use.
+     */
+    public CoffeeSizeSelectionForm(Component parentComponent, CoffeeSize[] coffeeSizes) {
         super("Coffee Size Selection");
 
         this.coffeeSizeComboBox = new JComboBox<CoffeeSize>(coffeeSizes);
 
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        super.setLocationRelativeTo(parentFrame);
+        super.setLocationRelativeTo(parentComponent);
 
         super.setLayout(new GridBagLayout());
 

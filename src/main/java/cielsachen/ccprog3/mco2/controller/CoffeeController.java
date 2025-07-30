@@ -1,5 +1,6 @@
 package cielsachen.ccprog3.mco2.controller;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedHashMap;
@@ -7,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import cielsachen.ccprog3.mco2.exception.InsufficientCapacityException;
@@ -53,12 +53,12 @@ public class CoffeeController {
     /**
      * Updates the prices of all coffees and add-ons.
      *
-     * @param parentFrame The parent frame of the windows to be shown.
+     * @param parentComponent The parent component of the windows to be shown.
      */
-    public void updatePrices(JFrame parentFrame) {
+    public void updatePrices(Component parentComponent) {
         Coffee[] coffees = this.service.getCoffees();
 
-        var priceConfigForm = new PriceConfigurationForm(parentFrame, coffees);
+        var priceConfigForm = new PriceConfigurationForm(parentComponent, coffees);
 
         priceConfigForm.submitButton.addActionListener(new ActionListener() {
             @Override
@@ -89,20 +89,20 @@ public class CoffeeController {
      * Prepares coffee in a truck. This will decrease the capacities of relevant storage bins and create a new
      * {@link Transaction transaction}.
      *
-     * @param parentFrame The parent frame of the windows to be shown.
-     * @param truck       The truck to prepare the coffee in.
+     * @param parentComponent The parent component of the windows to be shown.
+     * @param truck           The truck to prepare the coffee in.
      */
-    public void prepareCoffee(JFrame parentFrame, Truck truck) {
+    public void prepareCoffee(Component parentComponent, Truck truck) {
         List<Coffee> coffees = this.service.getCoffeesByTruck(truck);
 
-        var selectedCoffee = (Coffee) Modal.showSelectionDialog(parentFrame, "Please select a coffee to brew…",
+        var selectedCoffee = (Coffee) Modal.showSelectionDialog(parentComponent, "Please select a coffee to brew…",
                 "Coffee Selection", coffees, coffees.getFirst());
 
         if (selectedCoffee == null) {
             return;
         }
 
-        var coffeeSizeSelForm = new CoffeeSizeSelectionForm(parentFrame, Stream.of(CoffeeSize.values())
+        var coffeeSizeSelForm = new CoffeeSizeSelectionForm(parentComponent, Stream.of(CoffeeSize.values())
                 .filter((cs) -> !this.storageBinService.getStorageBinsByTruck(truck, cs.cup).isEmpty())
                 .toArray(CoffeeSize[]::new));
 
@@ -112,13 +112,13 @@ public class CoffeeController {
                 var selectedSize = (CoffeeSize) coffeeSizeSelForm.coffeeSizeComboBox.getSelectedItem();
 
                 if (!truck.isSpecial) {
-                    CoffeeController.this.brewCoffee(parentFrame, truck, selectedCoffee, selectedSize,
+                    CoffeeController.this.brewCoffee(parentComponent, truck, selectedCoffee, selectedSize,
                             EspressoRatio.STANDARD);
 
                     return;
                 }
 
-                var espressoRatioSelForm = new EspressoRatioSelectionForm(parentFrame,
+                var espressoRatioSelForm = new EspressoRatioSelectionForm(parentComponent,
                         truck.isSpecial ? EspressoRatio.values() : EspressoRatio.regularValues());
 
                 espressoRatioSelForm.submitButton.addActionListener(new ActionListener() {
@@ -128,7 +128,7 @@ public class CoffeeController {
                                 .getSelectedItem();
 
                         if (selectedRatio.equals(EspressoRatio.CUSTOM)) {
-                            var espressoRatioForm = new EspressoRatioForm(parentFrame);
+                            var espressoRatioForm = new EspressoRatioForm(parentComponent);
 
                             espressoRatioForm.submitButton.addActionListener(new ActionListener() {
                                 public void actionPerformed(ActionEvent evt) {
@@ -137,7 +137,7 @@ public class CoffeeController {
                                     try {
                                         waterRatio = Integer.parseInt(espressoRatioForm.waterRatioField.getText());
                                     } catch (NumberFormatException e) {
-                                        Modal.showErrorDialog(parentFrame, "All fields must be filled!",
+                                        Modal.showErrorDialog(parentComponent, "All fields must be filled!",
                                                 "Missing Fields");
 
                                         return;
@@ -145,7 +145,8 @@ public class CoffeeController {
 
                                     EspressoRatio.setCustomRatio(waterRatio);
 
-                                    CoffeeController.this.brewCoffee(parentFrame, truck, selectedCoffee, selectedSize,
+                                    CoffeeController.this.brewCoffee(parentComponent, truck, selectedCoffee,
+                                            selectedSize,
                                             selectedRatio);
                                 };
                             });
@@ -153,7 +154,7 @@ public class CoffeeController {
                             return;
                         }
 
-                        CoffeeController.this.brewCoffee(parentFrame, truck, selectedCoffee, selectedSize,
+                        CoffeeController.this.brewCoffee(parentComponent, truck, selectedCoffee, selectedSize,
                                 selectedRatio);
                     }
                 });
@@ -161,7 +162,7 @@ public class CoffeeController {
         });
     }
 
-    private void addEspressoShots(JFrame parentFrame, Truck truck, EspressoRatio ratio,
+    private void addEspressoShots(Component parentComponent, Truck truck, EspressoRatio ratio,
             Map<Ingredient, Double> amountsByIngredient) {
         try {
             this.service.canBrewEspressoShots(truck, this.extraEspressoShotsCnt, ratio);
@@ -170,21 +171,22 @@ public class CoffeeController {
 
             this.additionalCost += this.service.espresso.getPrice() * this.extraEspressoShotsCnt;
         } catch (InsufficientCapacityException e) {
-            Modal.showErrorDialog(parentFrame,
+            Modal.showErrorDialog(parentComponent,
                     "The selected truck does not have enough " + e.ingredient.name + " to brew the coffee!",
                     "Insufficient Ingredient");
         }
     }
 
-    private void addSyrup(JFrame parentFrame, Truck truck, Map<Ingredient, Double> amountsByIngredient) {
-        int isAddingSyrups = Modal.showConfirmDialog(parentFrame, "Would you like to add pumps of syrup?",
+    private void addSyrup(Component parentComponent, Truck truck, Map<Ingredient, Double> amountsByIngredient) {
+        int isAddingSyrups = Modal.showConfirmDialog(parentComponent, "Would you like to add pumps of syrup?",
                 "Add-On Syrup");
 
         if (isAddingSyrups == JOptionPane.YES_OPTION) {
             List<Ingredient> syrups = this.storageBinService.getStorageBinsByTruck(truck).stream()
                     .map((sb) -> sb.getIngredient()).filter((i) -> i.isSpecial).toList();
 
-            Ingredient selectedSyrup = Modal.showSelectionDialog(parentFrame, "How many extra shots should be added?",
+            Ingredient selectedSyrup = Modal.showSelectionDialog(parentComponent,
+                    "How many extra shots should be added?",
                     "Add-On Syrup", syrups, syrups.getFirst());
 
             if (selectedSyrup == null) {
@@ -194,7 +196,8 @@ public class CoffeeController {
             int syrupCnt = 0;
 
             while (true) {
-                String givenCnt = Modal.showInputDialog(parentFrame, "How many pumps should be added?", "Add-On Syrup");
+                String givenCnt = Modal.showInputDialog(parentComponent, "How many pumps should be added?",
+                        "Add-On Syrup");
 
                 if (givenCnt == null) {
                     return;
@@ -205,7 +208,7 @@ public class CoffeeController {
 
                     break;
                 } catch (NumberFormatException e) {
-                    Modal.showErrorDialog(parentFrame, "Please only input a whole number!", "Invalid Input");
+                    Modal.showErrorDialog(parentComponent, "Please only input a whole number!", "Invalid Input");
                 }
             }
 
@@ -216,25 +219,27 @@ public class CoffeeController {
 
                 this.additionalCost += this.service.syrup.getPrice() * syrupCnt;
             } catch (InsufficientCapacityException e) {
-                Modal.showErrorDialog(parentFrame,
+                Modal.showErrorDialog(parentComponent,
                         "The selected truck does not have enough " + e.ingredient.name + " to brew the coffee!",
                         "Insufficient Ingredient");
             }
         }
     }
 
-    private void finishBrewing(JFrame parentFrame, Truck truck, Coffee coffee, CoffeeSize size, EspressoRatio ratio,
+    private void finishBrewing(Component parentComponent, Truck truck, Coffee coffee, CoffeeSize size,
+            EspressoRatio ratio,
             Map<Ingredient, Double> amountsByIngredient) {
         float totalCost = coffee.getPrice(size) + this.additionalCost;
 
-        new BrewCompletionView(parentFrame, coffee, ratio, size, this.extraEspressoShotsCnt, amountsByIngredient,
+        new BrewCompletionView(parentComponent, coffee, ratio, size, this.extraEspressoShotsCnt, amountsByIngredient,
                 totalCost);
 
         this.transactionService.addTransaction(
                 new Transaction(coffee.name, size, totalCost, truck, this.extraEspressoShotsCnt, amountsByIngredient));
     }
 
-    private void brewCoffee(JFrame parentFrame, Truck truck, Coffee coffee, CoffeeSize size, EspressoRatio ratio) {
+    private void brewCoffee(Component parentComponent, Truck truck, Coffee coffee, CoffeeSize size,
+            EspressoRatio ratio) {
         this.extraEspressoShotsCnt = 0;
         this.additionalCost = 0;
 
@@ -245,17 +250,17 @@ public class CoffeeController {
                     this.service.brewCoffee(truck, coffee, size, ratio));
 
             if (!truck.isSpecial) {
-                this.finishBrewing(parentFrame, truck, coffee, size, ratio, amountsByIngredient);
+                this.finishBrewing(parentComponent, truck, coffee, size, ratio, amountsByIngredient);
 
                 return;
             }
 
-            int isAddingEspressoShots = Modal.showConfirmDialog(parentFrame,
+            int isAddingEspressoShots = Modal.showConfirmDialog(parentComponent,
                     "Would you like to add extra shots of espresso?", "Extra Espresso Shots");
 
             if (isAddingEspressoShots == JOptionPane.YES_OPTION) {
                 while (true) {
-                    String givenCnt = Modal.showInputDialog(parentFrame, "How many extra shots should be added?",
+                    String givenCnt = Modal.showInputDialog(parentComponent, "How many extra shots should be added?",
                             "Extra Espresso Shots");
 
                     if (givenCnt == null) {
@@ -267,12 +272,12 @@ public class CoffeeController {
 
                         break;
                     } catch (NumberFormatException e) {
-                        Modal.showErrorDialog(parentFrame, "Please only input a whole number!", "Invalid Input");
+                        Modal.showErrorDialog(parentComponent, "Please only input a whole number!", "Invalid Input");
                     }
                 }
 
                 if (this.extraEspressoShotsCnt > 0) {
-                    var espressoRatioSelForm = new EspressoRatioSelectionForm(parentFrame, EspressoRatio.values());
+                    var espressoRatioSelForm = new EspressoRatioSelectionForm(parentComponent, EspressoRatio.values());
 
                     espressoRatioSelForm.submitButton.addActionListener(new ActionListener() {
                         @Override
@@ -281,7 +286,7 @@ public class CoffeeController {
                                     .getSelectedItem();
 
                             if (selectedRatio.equals(EspressoRatio.CUSTOM)) {
-                                var espressoRatioForm = new EspressoRatioForm(parentFrame);
+                                var espressoRatioForm = new EspressoRatioForm(parentComponent);
 
                                 espressoRatioForm.submitButton.addActionListener(new ActionListener() {
                                     public void actionPerformed(ActionEvent evt) {
@@ -290,7 +295,7 @@ public class CoffeeController {
                                         try {
                                             waterRatio = Integer.parseInt(espressoRatioForm.waterRatioField.getText());
                                         } catch (NumberFormatException e) {
-                                            Modal.showErrorDialog(parentFrame, "All fields must be filled!",
+                                            Modal.showErrorDialog(parentComponent, "All fields must be filled!",
                                                     "Missing Fields");
 
                                             return;
@@ -298,14 +303,14 @@ public class CoffeeController {
 
                                         EspressoRatio.setCustomRatio(waterRatio);
 
-                                        CoffeeController.this.addEspressoShots(parentFrame, truck, ratio,
+                                        CoffeeController.this.addEspressoShots(parentComponent, truck, ratio,
                                                 amountsByIngredient);
 
                                         if (CoffeeController.this.storageBinService.truckHasSyrups(truck)) {
-                                            CoffeeController.this.addSyrup(parentFrame, truck, amountsByIngredient);
+                                            CoffeeController.this.addSyrup(parentComponent, truck, amountsByIngredient);
                                         }
 
-                                        CoffeeController.this.finishBrewing(parentFrame, truck, coffee, size, ratio,
+                                        CoffeeController.this.finishBrewing(parentComponent, truck, coffee, size, ratio,
                                                 amountsByIngredient);
                                     };
                                 });
@@ -313,13 +318,13 @@ public class CoffeeController {
                                 return;
                             }
 
-                            CoffeeController.this.addEspressoShots(parentFrame, truck, ratio, amountsByIngredient);
+                            CoffeeController.this.addEspressoShots(parentComponent, truck, ratio, amountsByIngredient);
 
                             if (CoffeeController.this.storageBinService.truckHasSyrups(truck)) {
-                                CoffeeController.this.addSyrup(parentFrame, truck, amountsByIngredient);
+                                CoffeeController.this.addSyrup(parentComponent, truck, amountsByIngredient);
                             }
 
-                            CoffeeController.this.finishBrewing(parentFrame, truck, coffee, size, ratio,
+                            CoffeeController.this.finishBrewing(parentComponent, truck, coffee, size, ratio,
                                     amountsByIngredient);
                         }
                     });
@@ -328,11 +333,11 @@ public class CoffeeController {
                 }
             }
 
-            this.addSyrup(parentFrame, truck, amountsByIngredient);
+            this.addSyrup(parentComponent, truck, amountsByIngredient);
 
-            this.finishBrewing(parentFrame, truck, coffee, size, ratio, amountsByIngredient);
+            this.finishBrewing(parentComponent, truck, coffee, size, ratio, amountsByIngredient);
         } catch (InsufficientCapacityException e) {
-            Modal.showErrorDialog(parentFrame,
+            Modal.showErrorDialog(parentComponent,
                     "The selected truck does not have enough " + e.ingredient.name + " to brew the coffee!",
                     "Insufficient Ingredient");
         }

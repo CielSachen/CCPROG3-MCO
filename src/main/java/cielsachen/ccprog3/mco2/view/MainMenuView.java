@@ -10,9 +10,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+/** Represents the window containing the main menu. */
 public class MainMenuView extends JFrame {
+    /** The button to click to create a new truck. */
     public final JButton createTruckButton = new JButton("Create a Coffee Truck");
+    /** The button to click to simulate a truck’s features. */
     public final JButton simulateButton = new JButton("Simulate");
+    /** The button to click to view the dashboard. */
     public final JButton dashboardButton = new JButton("Dashboard");
 
     /** Creates and returns a new {@code MainMenuView} object instance. */

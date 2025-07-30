@@ -1,5 +1,6 @@
 package cielsachen.ccprog3.mco2.view;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -20,23 +21,24 @@ import cielsachen.ccprog3.mco2.model.Transaction;
 import cielsachen.ccprog3.mco2.view.component.IngredientsTable;
 import cielsachen.ccprog3.mco2.view.component.TableSize;
 
+/** Represents the window containing the dashboard. */
 public class DashboardView extends JFrame {
     /**
      * Creates and returns a new {@code DashboardView} object instance.
      *
-     * @param parentFrame
-     * @param truckCnt
-     * @param specialTruckCnt
-     * @param capacitiesByIngredient
-     * @param transactions
+     * @param parentComponent        The parent component of the window.
+     * @param truckCnt               The number of trucks.
+     * @param specialTruckCnt        The number of special trucks.
+     * @param capacitiesByIngredient The ingredients mapped to their amounts.
+     * @param transactions           The transactions linked with any truck.
      */
-    public DashboardView(JFrame parentFrame, int truckCnt, int specialTruckCnt,
+    public DashboardView(Component parentComponent, int truckCnt, int specialTruckCnt,
             Map<Ingredient, Double> capacitiesByIngredient, List<Transaction> transactions) {
         super("Dashboard");
 
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        super.setLocationRelativeTo(parentFrame);
+        super.setLocationRelativeTo(parentComponent);
 
         var panel = new JPanel(new GridBagLayout());
 
@@ -58,15 +60,14 @@ public class DashboardView extends JFrame {
 
         panel.add(new JLabel("Ingredients"), constraints);
 
-        var ingredientsTablePane = new JScrollPane(new JTable(
-                capacitiesByIngredient.entrySet().stream().map((entry) -> {
+        var ingredientsTablePane = new JScrollPane(
+                new JTable(capacitiesByIngredient.entrySet().stream().map((entry) -> {
                     Ingredient ingredient = entry.getKey();
 
                     return new String[] {
                             ingredient.name,
                             String.format("%.2f " + ingredient.unitMeasure, entry.getValue()) };
-                }).toArray(String[][]::new),
-                new String[] { "Ingredient", "Amount" }));
+                }).toArray(String[][]::new), new String[] { "Ingredient", "Amount" }));
         ingredientsTablePane.setPreferredSize(TableSize.MEDIUM.dimension);
 
         constraints.gridy++;

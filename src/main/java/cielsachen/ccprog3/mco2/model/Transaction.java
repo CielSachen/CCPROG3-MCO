@@ -30,22 +30,24 @@ public class Transaction {
      * @param cost                   The total cost of purchasing the coffee.
      * @param truck                  The truck the coffee was purchased from.
      * @param extraEspressoShotCount The number of extra espresso shots added.
-     * @param ingredients            The ingredients used to brew the coffee mapped to their amount.
+     * @param ingredients            The ingredients used to brew the coffee mapped to their amounts.
      */
     public Transaction(String coffeeName, CoffeeSize coffeeSize, float cost, Truck truck, int extraEspressoShotCount,
             Map<Ingredient, Double> ingredients) {
         this.coffeeName = coffeeName;
         this.coffeeSize = coffeeSize;
-        this.cost = cost;
         this.extraEspressoShotCount = extraEspressoShotCount;
-        this.ingredients = ingredients;
+        this.cost = cost;
+
         this.truck = truck;
+
+        this.ingredients = ingredients;
     }
 
     /**
      * Gets the ingredients used to brew the coffee.
      *
-     * @return The ingredients used to brew the coffee mapped to their amount.
+     * @return The ingredients used to brew the coffee mapped to their amounts.
      */
     public Map<Ingredient, Double> getIngredients() {
         return Collections.unmodifiableMap(this.ingredients);

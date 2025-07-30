@@ -18,11 +18,20 @@ import javax.swing.text.PlainDocument;
 import cielsachen.ccprog3.mco2.model.coffee.Coffee;
 import cielsachen.ccprog3.mco2.validator.FloatDocumentFilter;
 
+/** Represents the window containing a form for setting the prices of all coffees and add-ons. */
 public class PriceConfigurationForm extends JFrame {
+    /** The fields to input the prices of each coffee and add-on. */
     public final List<JTextField> priceFields = new ArrayList<JTextField>();
+    /** The button to click to submit the selection. */
     public final JButton submitButton = new JButton("Submit");
 
-    public PriceConfigurationForm(JFrame parentFrame, Coffee[] coffees) {
+    /**
+     * Creates and returns a new {@code PriceConfigurationForm} object instance.
+     *
+     * @param parentComponent The parent component of the window.
+     * @param coffees         The coffees to use.
+     */
+    public PriceConfigurationForm(Component parentComponent, Coffee[] coffees) {
         super("Coffee Prices Configuration");
 
         for (int i = 0; i < coffees.length + 2; i++) {
@@ -35,7 +44,7 @@ public class PriceConfigurationForm extends JFrame {
 
         super.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-        super.setLocationRelativeTo(parentFrame);
+        super.setLocationRelativeTo(parentComponent);
 
         super.setLayout(new GridBagLayout());
 

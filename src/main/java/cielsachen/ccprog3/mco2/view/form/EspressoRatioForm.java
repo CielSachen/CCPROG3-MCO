@@ -1,5 +1,6 @@
 package cielsachen.ccprog3.mco2.view.form;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -14,16 +15,24 @@ import javax.swing.text.PlainDocument;
 
 import cielsachen.ccprog3.mco2.validator.IntegerDocumentFilter;
 
+/** Represents the window containing a form for inputting the values of the custom espresso ratio. */
 public class EspressoRatioForm extends JFrame {
+    /** The field to input the ratio of water (?:1). */
     public final JTextField waterRatioField = new JTextField();
+    /** The button to click to submit the selection. */
     public final JButton submitButton = new JButton("Submit");
 
-    public EspressoRatioForm(JFrame parentFrame) {
+    /**
+     * Creates and returns a new {@code EspressoRatioForm} object instance.
+     *
+     * @param parentComponent The parent component of the window.
+     */
+    public EspressoRatioForm(Component parentComponent) {
         super("Espresso Ratio");
 
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        super.setLocationRelativeTo(parentFrame);
+        super.setLocationRelativeTo(parentComponent);
 
         super.setLayout(new GridBagLayout());
 

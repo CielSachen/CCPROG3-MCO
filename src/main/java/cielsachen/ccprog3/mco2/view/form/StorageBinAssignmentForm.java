@@ -1,5 +1,6 @@
 package cielsachen.ccprog3.mco2.view.form;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -17,22 +18,31 @@ import cielsachen.ccprog3.mco2.model.Ingredient;
 import cielsachen.ccprog3.mco2.model.StorageBin;
 import cielsachen.ccprog3.mco2.model.Truck;
 
+/** Represents the window containing the form for setting the initial ingredients of all of a truck’s storage bins. */
 public class StorageBinAssignmentForm extends JFrame {
+    /** The selections, for each storage bin, of ingredients to select from. */
     public final List<JComboBox<Ingredient>> ingredientComboBoxes = new ArrayList<JComboBox<Ingredient>>();
+    /** The button to click to submit the selection. */
     public final JButton submitButton = new JButton("Submit");
 
-    public StorageBinAssignmentForm(JFrame parentFrame, Truck truck, boolean isUpdating) {
+    /**
+     * Creates and returns a new {@code StorageBinAssignmentForm} object instance.
+     *
+     * @param parentComponent The parent component of the window.
+     * @param truck           The truck to use.
+     */
+    public StorageBinAssignmentForm(Component parentComponent, Truck truck) {
         super("Storage Bin Assignment");
 
         for (int i = 0; i < (truck.isSpecial ? StorageBin.SPECIAL_TRUCK_COUNT : StorageBin.STANDARD_TRUCK_COUNT); i++) {
-            ingredientComboBoxes.add(new JComboBox<Ingredient>(i < StorageBin.STANDARD_TRUCK_COUNT
-                    ? Ingredient.regularValues().toArray(Ingredient[]::new)
-                    : Ingredient.specialValues().toArray(Ingredient[]::new)));
+            ingredientComboBoxes.add(new JComboBox<Ingredient>(
+                    i < StorageBin.STANDARD_TRUCK_COUNT ? Ingredient.regularValues().toArray(Ingredient[]::new)
+                            : Ingredient.specialValues().toArray(Ingredient[]::new)));
         }
 
         super.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-        super.setLocationRelativeTo(parentFrame);
+        super.setLocationRelativeTo(parentComponent);
 
         super.setLayout(new GridBagLayout());
 

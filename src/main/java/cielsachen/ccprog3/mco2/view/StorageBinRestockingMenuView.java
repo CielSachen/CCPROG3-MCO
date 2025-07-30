@@ -1,5 +1,6 @@
-package cielsachen.ccprog3.mco2.view.form;
+package cielsachen.ccprog3.mco2.view;
 
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -10,17 +11,26 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-public class StorageBinRestockingForm extends JFrame {
+/** Represents the window containing the storage bin restocking menu. */
+public class StorageBinRestockingMenuView extends JFrame {
+    /** The button to click to restock a storage bin. */
     public final JButton restockButton = new JButton("Restock");
+    /** The button to click to empty a storage bin. */
     public final JButton emptyButton = new JButton("Empty");
+    /** The button to change the ingredient a storage bin contains. */
     public final JButton changeIngredientButton = new JButton("Change Ingredients");
 
-    public StorageBinRestockingForm(JFrame parentFrame) {
+    /**
+     * Creates and returns a new {@code StorageBinRestockingForm} object instance.
+     *
+     * @param parentComponent The parent component of the window.
+     */
+    public StorageBinRestockingMenuView(Component parentComponent) {
         super("Storage Bin Restocking");
 
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        super.setLocationRelativeTo(parentFrame);
+        super.setLocationRelativeTo(parentComponent);
 
         super.setLayout(new GridBagLayout());
 

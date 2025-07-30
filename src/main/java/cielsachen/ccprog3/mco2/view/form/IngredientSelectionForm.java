@@ -1,5 +1,6 @@
 package cielsachen.ccprog3.mco2.view.form;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -18,18 +19,30 @@ import cielsachen.ccprog3.mco2.model.Ingredient;
 import cielsachen.ccprog3.mco2.model.StorageBin;
 import cielsachen.ccprog3.mco2.view.component.TableSize;
 
+/** Represents the window containing a form for selecting the new ingredient a storage bin should contain. */
 public class IngredientSelectionForm extends JFrame {
+    /** The selection of ingredients to select from. */
     public final JComboBox<Ingredient> ingredientComboBox;
+    /** The button to click to submit the selection. */
     public final JButton submitButton = new JButton("Submit");
 
-    public IngredientSelectionForm(JFrame parentFrame, List<StorageBin> storageBins, List<Ingredient> ingredients) {
+    /**
+     * Creates and returns a new {@code IngredientSelectionForm} object instance.
+     *
+     * @param parentComponent The parent component of the window.
+     * @param storageBins     The storage bins to use for context. This should exclude the storage bin whose ingredient
+     *                        is being replaced.
+     * @param ingredients     The ingredients to use.
+     */
+    public IngredientSelectionForm(Component parentComponent, List<StorageBin> storageBins,
+            List<Ingredient> ingredients) {
         super("Storage Bin Selection");
 
         this.ingredientComboBox = new JComboBox<Ingredient>(ingredients.toArray(Ingredient[]::new));
 
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        super.setLocationRelativeTo(parentFrame);
+        super.setLocationRelativeTo(parentComponent);
 
         super.setLayout(new GridBagLayout());
 

@@ -1,12 +1,12 @@
 package cielsachen.ccprog3.mco2.controller;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import cielsachen.ccprog3.mco2.model.Ingredient;
@@ -15,11 +15,11 @@ import cielsachen.ccprog3.mco2.model.Truck;
 import cielsachen.ccprog3.mco2.service.CoffeeService;
 import cielsachen.ccprog3.mco2.service.StorageBinService;
 import cielsachen.ccprog3.mco2.service.TruckService;
+import cielsachen.ccprog3.mco2.view.StorageBinRestockingMenuView;
 import cielsachen.ccprog3.mco2.view.TruckView;
 import cielsachen.ccprog3.mco2.view.component.Modal;
 import cielsachen.ccprog3.mco2.view.form.IngredientSelectionForm;
 import cielsachen.ccprog3.mco2.view.form.StorageBinAssignmentForm;
-import cielsachen.ccprog3.mco2.view.form.StorageBinRestockingForm;
 import cielsachen.ccprog3.mco2.view.form.StorageBinSelectionForm;
 import cielsachen.ccprog3.mco2.view.form.TruckCreationForm;
 
@@ -51,10 +51,10 @@ public class TruckController {
     /**
      * Creates a new truck and adds it to the system.
      *
-     * @param parentFrame The parent frame of the windows to be shown.
+     * @param parentComponent The parent component of the windows to be shown.
      */
-    public void createTruck(JFrame parentFrame) {
-        var creationForm = new TruckCreationForm(parentFrame);
+    public void createTruck(Component parentComponent) {
+        var creationForm = new TruckCreationForm(parentComponent);
 
         creationForm.submitButton.addActionListener(new ActionListener() {
             @Override
@@ -62,11 +62,11 @@ public class TruckController {
                 String givenLoc = creationForm.locationField.getText();
 
                 if (givenLoc.isEmpty()) {
-                    Modal.showErrorDialog(parentFrame, "A location must be specified!", "Missing Field");
+                    Modal.showErrorDialog(parentComponent, "A location must be specified!", "Missing Field");
 
                     return;
                 } else if (TruckController.this.service.isOccupiedLocation(givenLoc)) {
-                    Modal.showErrorDialog(parentFrame, "A truck already exists on this location!", "Invalid Input");
+                    Modal.showErrorDialog(parentComponent, "A truck already exists on this location!", "Invalid Input");
 
                     return;
                 }
@@ -77,7 +77,7 @@ public class TruckController {
 
                 TruckController.this.service.addTruck(truck);
 
-                var storageBinAssignmentForm = new StorageBinAssignmentForm(creationForm, truck, false);
+                var storageBinAssignmentForm = new StorageBinAssignmentForm(creationForm, truck);
 
                 storageBinAssignmentForm.submitButton.addActionListener(new ActionListener() {
                     @Override
@@ -92,12 +92,13 @@ public class TruckController {
 
                         boolean isFirstTruck = !TruckController.this.coffeeService.isPricesSet();
 
-                        if (isFirstTruck || Modal.showConfirmDialog(parentFrame, "Do you want to update the prices?",
-                                "Update Prices") == JOptionPane.YES_OPTION) {
+                        if (isFirstTruck
+                                || Modal.showConfirmDialog(parentComponent, "Do you want to update the prices?",
+                                        "Update Prices") == JOptionPane.YES_OPTION) {
                             TruckController.this.coffeeController.updatePrices(storageBinAssignmentForm);
                         }
 
-                        new TruckView(parentFrame, truck,
+                        new TruckView(parentComponent, truck,
                                 TruckController.this.storageBinService.getStorageBinsByTruck(truck),
                                 isFirstTruck ? null : TruckController.this.coffeeService.getCoffeesByTruck(truck),
                                 isFirstTruck ? null : TruckController.this.coffeeService.espresso,
@@ -111,14 +112,15 @@ public class TruckController {
     /**
      * Moves a truck to a new unoccupied location.
      *
-     * @param parentFrame The parent frame of the windows to be shown.
-     * @param truck       The truck to move.
+     * @param parentComponent The parent component of the windows to be shown.
+     * @param truck           The truck to move.
      */
-    public void relocateTruck(JFrame parentFrame, Truck truck) {
+    public void relocateTruck(Component parentComponent, Truck truck) {
         String newLoc;
 
         while (true) {
-            newLoc = Modal.showInputDialog(parentFrame, "Where will this truck be relocated to?", "Truck Relocation");
+            newLoc = Modal.showInputDialog(parentComponent, "Where will this truck be relocated to?",
+                    "Truck Relocation");
 
             System.out.println();
 
@@ -128,32 +130,33 @@ public class TruckController {
                 break;
             }
 
-            Modal.showErrorDialog(parentFrame, "A truck already exists on this location!", "Truck Relocation");
+            Modal.showErrorDialog(parentComponent, "A truck already exists on this location!", "Truck Relocation");
         }
 
         truck.setLocation(newLoc);
 
-        JOptionPane.showMessageDialog(parentFrame, "Relocated the coffee truck to " + newLoc + "!", "Truck Relocation",
+        JOptionPane.showMessageDialog(parentComponent, "Relocated the coffee truck to " + newLoc + "!",
+                "Truck Relocation",
                 JOptionPane.PLAIN_MESSAGE);
     }
 
     /**
      * Restocks, empties, or changes the ingredient of a truck's storage bin.
      *
-     * @param parentFrame The parent frame of the windows to be shown.
-     * @param truck       The truck to update a storage bin of.
+     * @param parentComponent The parent component of the windows to be shown.
+     * @param truck           The truck to update a storage bin of.
      */
-    public void restockStorageBins(JFrame parentFrame, Truck truck) {
+    public void restockStorageBins(Component parentComponent, Truck truck) {
         List<StorageBin> storageBins = new ArrayList<StorageBin>(this.storageBinService.getStorageBinsByTruck(truck));
 
-        var storageBinSelForm = new StorageBinSelectionForm(parentFrame, storageBins);
+        var storageBinSelForm = new StorageBinSelectionForm(parentComponent, storageBins);
 
         storageBinSelForm.submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 var selectedStorageBin = (StorageBin) storageBinSelForm.storageBinComboBox.getSelectedItem();
 
-                var storageBinRestockingForm = new StorageBinRestockingForm(parentFrame);
+                var storageBinRestockingForm = new StorageBinRestockingMenuView(parentComponent);
 
                 storageBinRestockingForm.restockButton.addActionListener(new ActionListener() {
                     @Override
@@ -171,7 +174,7 @@ public class TruckController {
                         double additionalCapacity = 0;
 
                         while (true) {
-                            String givenNum = Modal.showInputDialog(parentFrame,
+                            String givenNum = Modal.showInputDialog(parentComponent,
                                     "How much " + currIngredient.name + " should be restocked?", "Add-On Syrup");
 
                             if (givenNum == null) {
@@ -183,7 +186,7 @@ public class TruckController {
 
                                 break;
                             } catch (NumberFormatException e) {
-                                Modal.showErrorDialog(parentFrame, "Please only input a floating point number!",
+                                Modal.showErrorDialog(parentComponent, "Please only input a floating point number!",
                                         "Invalid Input");
                             }
                         }
@@ -230,7 +233,7 @@ public class TruckController {
                         storageBins.remove(selectedStorageBin);
                         ingredients.remove(selectedStorageBin.getIngredient());
 
-                        var ingredientSelForm = new IngredientSelectionForm(parentFrame, storageBins, ingredients);
+                        var ingredientSelForm = new IngredientSelectionForm(parentComponent, storageBins, ingredients);
 
                         ingredientSelForm.submitButton.addActionListener(new ActionListener() {
                             @Override

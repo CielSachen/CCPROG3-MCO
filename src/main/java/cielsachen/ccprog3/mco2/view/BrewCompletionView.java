@@ -1,5 +1,6 @@
 package cielsachen.ccprog3.mco2.view;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -16,25 +17,26 @@ import cielsachen.ccprog3.mco2.model.coffee.EspressoRatio;
 import cielsachen.ccprog3.mco2.view.component.IngredientsTable;
 import cielsachen.ccprog3.mco2.view.component.TableSize;
 
+/** Represents the window containing information about a brewed coffee. */
 public class BrewCompletionView extends JFrame {
     /**
      * Creates and returns a new {@code BrewCompletionView} object instance.
      *
-     * @param parentFrame
-     * @param coffee
-     * @param ratio
-     * @param size
-     * @param extraEspressoShotsCnt
-     * @param amountsByIngredient
-     * @param totalCost
+     * @param parentComponent       The parent component of the window.
+     * @param coffee                The brewed coffee.
+     * @param ratio                 The espresso ratio of the brewed coffee.
+     * @param size                  The size of the brewed coffee.
+     * @param extraEspressoShotsCnt The number of extra espresso shots added.
+     * @param amountsByIngredient   The ingredients used to brew the coffee mapped to their amounts.
+     * @param totalCost             The total cost of purchasing the brewed coffee.
      */
-    public BrewCompletionView(JFrame parentFrame, Coffee coffee, EspressoRatio ratio, CoffeeSize size,
+    public BrewCompletionView(Component parentComponent, Coffee coffee, EspressoRatio ratio, CoffeeSize size,
             int extraEspressoShotsCnt, Map<Ingredient, Double> amountsByIngredient, double totalCost) {
         super("Brewing Completed");
 
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        super.setLocationRelativeTo(parentFrame);
+        super.setLocationRelativeTo(parentComponent);
 
         super.setLayout(new GridBagLayout());
 
@@ -56,8 +58,7 @@ public class BrewCompletionView extends JFrame {
 
         constraints.gridy++;
 
-        super.add(
-                new JLabel("With Syrup: " + amountsByIngredient.keySet().stream().anyMatch((i) -> i.isSpecial)),
+        super.add(new JLabel("With Syrup: " + amountsByIngredient.keySet().stream().anyMatch((i) -> i.isSpecial)),
                 constraints);
 
         constraints.gridy++;

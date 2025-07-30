@@ -19,6 +19,7 @@ public class Truck {
     public Truck(int id, String location, boolean isSpecial) {
         this.id = id;
         this.isSpecial = isSpecial;
+
         this.location = location;
     }
 

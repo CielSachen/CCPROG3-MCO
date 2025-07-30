@@ -38,9 +38,10 @@ public enum Ingredient {
     public final String unitMeasure;
 
     private Ingredient(String name, boolean isSpecial, double maximumCapacity, String unitMeasure) {
-        this.isSpecial = isSpecial;
-        this.maximumCapacity = maximumCapacity;
         this.name = name;
+        this.isSpecial = isSpecial;
+
+        this.maximumCapacity = maximumCapacity;
         this.unitMeasure = unitMeasure;
     }
 

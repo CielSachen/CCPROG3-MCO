@@ -9,24 +9,25 @@ public class StorageBin {
 
     /** The one-based ID of the storage bin. */
     public final int id;
-    /** The truck that the storage bin belongs to. */
+    /** The truck the storage bin belongs to. */
     public final Truck truck;
 
-    private double capacity = 0;
     private Ingredient ingredient;
+    private double capacity = 0;
 
     /**
      * Creates and returns a new {@code StorageBin} object instance.
      *
      * @param id         The ID of the storage bin.
-     * @param truck      The truck that the storage bin belongs to.
+     * @param truck      The truck the storage bin belongs to.
      * @param ingredient The ingredient the storage bin contains.
      */
     public StorageBin(int id, Truck truck, Ingredient ingredient) {
-        this.capacity = ingredient.maximumCapacity;
         this.id = id;
-        this.ingredient = ingredient;
         this.truck = truck;
+
+        this.ingredient = ingredient;
+        this.capacity = ingredient.maximumCapacity;
     }
 
     /**

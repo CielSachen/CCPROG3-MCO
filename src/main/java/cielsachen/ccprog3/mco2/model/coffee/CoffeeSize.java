@@ -2,7 +2,7 @@ package cielsachen.ccprog3.mco2.model.coffee;
 
 import cielsachen.ccprog3.mco2.model.Ingredient;
 
-/** Represents a size of coffee. */
+/** Represents the size of a coffee. */
 public enum CoffeeSize {
     /** A small cup of coffee. */
     SMALL_CUP(8, Ingredient.SMALL_CUP),
@@ -19,8 +19,8 @@ public enum CoffeeSize {
     public final String unitMeasure = "fl oz";
 
     private CoffeeSize(int capacity, Ingredient cup) {
-        this.capacity = capacity;
         this.cup = cup;
+        this.capacity = capacity;
     }
 
     /**

@@ -1,5 +1,6 @@
 package cielsachen.ccprog3.mco2.view;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -24,25 +25,26 @@ import cielsachen.ccprog3.mco2.view.component.CoffeePricesTable;
 import cielsachen.ccprog3.mco2.view.component.IngredientsTable;
 import cielsachen.ccprog3.mco2.view.component.TableSize;
 
+/** Represents the window containing information about a truck. */
 public class TruckView extends JFrame {
     /**
      * Creates and returns a new {@code TruckView} object instance.
      *
-     * @param parentFrame
-     * @param truck
-     * @param storageBins
-     * @param coffees
-     * @param espresso
-     * @param syrup
-     * @param transactions
+     * @param parentComponent The parent component of the window.
+     * @param truck           The truck to use.
+     * @param storageBins     The storage bins of the truck to use.
+     * @param coffees         The coffees the truck to use can brew.
+     * @param espresso        The addable extra espresso shot.
+     * @param syrup           The addable syrup add-on.
+     * @param transactions    The transactions linked with the truck to use.
      */
-    public TruckView(JFrame parentFrame, Truck truck, List<StorageBin> storageBins, List<Coffee> coffees,
+    public TruckView(Component parentComponent, Truck truck, List<StorageBin> storageBins, List<Coffee> coffees,
             Product espresso, Product syrup, List<Transaction> transactions) {
         super("Truck #" + truck.id);
 
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        super.setLocationRelativeTo(parentFrame);
+        super.setLocationRelativeTo(parentComponent);
 
         var panel = new JPanel(new GridBagLayout());
 
@@ -68,15 +70,13 @@ public class TruckView extends JFrame {
 
         panel.add(new JLabel("Storage Bins"), constraints);
 
-        var storageBinsTablePane = new JScrollPane(new JTable(
-                storageBins.stream().map((storageBin) -> {
-                    Ingredient ingredient = storageBin.getIngredient();
+        var storageBinsTablePane = new JScrollPane(new JTable(storageBins.stream().map((storageBin) -> {
+            Ingredient ingredient = storageBin.getIngredient();
 
-                    return new String[] { Integer.toString(storageBin.id), ingredient.name,
-                            String.format("%.2f " + ingredient.unitMeasure, storageBin.getCapacity()),
-                            String.format("%.2f " + ingredient.unitMeasure, ingredient.maximumCapacity) };
-                }).toArray(String[][]::new),
-                new String[] { "ID", "Ingredient", "Current Capacity", "Maximum Capacity" }));
+            return new String[] { Integer.toString(storageBin.id), ingredient.name,
+                    String.format("%.2f " + ingredient.unitMeasure, storageBin.getCapacity()),
+                    String.format("%.2f " + ingredient.unitMeasure, ingredient.maximumCapacity) };
+        }).toArray(String[][]::new), new String[] { "ID", "Ingredient", "Current Capacity", "Maximum Capacity" }));
         storageBinsTablePane.setPreferredSize(TableSize.LARGE.dimension);
 
         constraints.gridy++;
@@ -109,18 +109,24 @@ public class TruckView extends JFrame {
             constraints.fill = GridBagConstraints.BOTH;
             constraints.insets.top = constraints.insets.bottom;
 
+            if (!truck.isSpecial) {
+                constraints.insets.bottom = 20;
+            }
+
             panel.add(coffeePricesTablePane, constraints);
 
-            constraints.gridy++;
-            constraints.weightx = constraints.weighty = 0.0;
-            constraints.fill = GridBagConstraints.NONE;
+            if (truck.isSpecial) {
+                constraints.gridy++;
+                constraints.weightx = constraints.weighty = 0.0;
+                constraints.fill = GridBagConstraints.NONE;
 
-            panel.add(new JLabel("Extra Espresso Shots: " + espresso.toPriceString()), constraints);
+                panel.add(new JLabel("Extra Espresso Shots: " + espresso.toPriceString()), constraints);
 
-            constraints.gridy++;
-            constraints.insets.bottom = 20;
+                constraints.gridy++;
+                constraints.insets.bottom = 20;
 
-            panel.add(new JLabel("Add-On Syrups: " + syrup.toPriceString()), constraints);
+                panel.add(new JLabel("Add-On Syrups: " + syrup.toPriceString()), constraints);
+            }
         }
 
         if (transactions != null) {
@@ -174,12 +180,12 @@ public class TruckView extends JFrame {
         super.setVisible(true);
     }
 
-    public TruckView(JFrame parentFrame, Truck truck, List<StorageBin> storageBins, List<Coffee> coffees,
+    public TruckView(Component parentComponent, Truck truck, List<StorageBin> storageBins, List<Coffee> coffees,
             Product espresso, Product syrup) {
-        this(parentFrame, truck, storageBins, coffees, espresso, syrup, null);
+        this(parentComponent, truck, storageBins, coffees, espresso, syrup, null);
     }
 
-    public TruckView(JFrame parentFrame, Truck truck, List<StorageBin> storageBins) {
-        this(parentFrame, truck, storageBins, null, null, null);
+    public TruckView(Component parentComponent, Truck truck, List<StorageBin> storageBins) {
+        this(parentComponent, truck, storageBins, null, null, null);
     }
 }
