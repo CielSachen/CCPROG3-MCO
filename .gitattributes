@@ -7,9 +7,9 @@
 *.prefs       text
 *.ps1         text
 *.txt         text
+*.xml         text
 .editorconfig text
 
 # Archive Creation
 .gitattributes export-ignore
 .gitignore     export-ignore
-.gitkeep       export-ignore

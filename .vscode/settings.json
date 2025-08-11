@@ -1,4 +1,4 @@
 {
-  "terminal.integrated.cwd": "${workspaceFolder}/src/main/java",
-  "java.settings.url": ".vscode/settings.prefs"
+  "java.settings.url": ".vscode/settings.prefs",
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

@@ -1,9 +1,11 @@
 # Editor Settings
 .vscode/
 
-# Java Bytecode
-**/*.class
-# JavaDoc Output
+# Build Outputs
+**/build/
+**/target/
+
+# Documentation Output
 docs/
 
 # Flattened Source Files
